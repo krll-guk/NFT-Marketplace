@@ -15,6 +15,7 @@ extension UIImage {
 
     enum NavigationBar {
         static let backward = UIImage(named: "Backward")
+        static let forward = UIImage(named: "Forward")
         static let close = UIImage(named: "Close")
         static let edit = UIImage(named: "Edit")
         static let sort = UIImage(named: "Sort")
@@ -22,5 +23,9 @@ extension UIImage {
 
     enum ProfileTable {
         static let chevron = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
+    }
+    
+    enum User {
+        static let avatarPlaceholder = UIImage(named: "avatar-placeholder")
     }
 }
