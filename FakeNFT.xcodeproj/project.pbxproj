@@ -37,6 +37,7 @@
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
 		3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExampleRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
+		8E9CE4102A9909530083B285 /* CatalogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9CE40F2A9909530083B285 /* CatalogTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
+		8E9CE40F2A9909530083B285 /* CatalogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,12 +136,12 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		2967C4902A98A55C0074D074 /* Сatalog */ = {
+		2967C4902A98A55C0074D074 /* TabСatalog */ = {
 			isa = PBXGroup;
 			children = (
-				2967C4952A98A8050074D074 /* CatalogViewController.swift */,
+				8E9CE40B2A99076C0083B285 /* Catalog */,
 			);
-			path = "Сatalog";
+			path = "TabСatalog";
 			sourceTree = "<group>";
 		};
 		2967C4912A98A70A0074D074 /* Statistics */ = {
@@ -246,7 +248,7 @@
 			children = (
 				2967C48C2A989E4D0074D074 /* TabBar */,
 				2967C48F2A98A52D0074D074 /* Profile */,
-				2967C4902A98A55C0074D074 /* Сatalog */,
+				2967C4902A98A55C0074D074 /* TabСatalog */,
 				2967C4922A98A75B0074D074 /* Cart */,
 				2967C4912A98A70A0074D074 /* Statistics */,
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
@@ -306,6 +308,23 @@
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 			);
 			path = Requests;
+			sourceTree = "<group>";
+		};
+		8E9CE40B2A99076C0083B285 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				8E9CE40D2A99082F0083B285 /* View */,
+			);
+			path = Catalog;
+			sourceTree = "<group>";
+		};
+		8E9CE40D2A99082F0083B285 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8E9CE40F2A9909530083B285 /* CatalogTableViewCell.swift */,
+				2967C4952A98A8050074D074 /* CatalogViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -481,6 +500,7 @@
 				2967C49E2A98BBCA0074D074 /* Labels.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
+				8E9CE4102A9909530083B285 /* CatalogTableViewCell.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				2967C4A72A98EA230074D074 /* Observable.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
