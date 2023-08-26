@@ -134,7 +134,6 @@ extension StatisticsListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         guard let userCell = cell as? UserViewCell else {
-            assertionFailure("Can't get cell for statisticsPage")
             return UITableViewCell()
         }
         
