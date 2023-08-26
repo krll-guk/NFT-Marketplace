@@ -168,8 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				9A44DBB52A9A0378005A0219 /* UserViewScreen */,
-				9A44DBAE2A99F820005A0219 /* UserView */,
-				9A44DB972A99F1EA005A0219 /* List */,
+				9A44DB972A99F1EA005A0219 /* UsersList */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -336,23 +335,16 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
-		9A44DB972A99F1EA005A0219 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				9A44DB982A99F21D005A0219 /* StatisticsListModel.swift */,
-				9A44DB9A2A99F247005A0219 /* StatisticsListViewController.swift */,
-				9A44DB9C2A99F263005A0219 /* StatisticsListViewModel.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		9A44DBAE2A99F820005A0219 /* UserView */ = {
+		9A44DB972A99F1EA005A0219 /* UsersList */ = {
 			isa = PBXGroup;
 			children = (
 				9A44DBAF2A99F832005A0219 /* UserViewCell.swift */,
 				9A44DBB12A99F849005A0219 /* UserViewCellViewModel.swift */,
+				9A44DB982A99F21D005A0219 /* StatisticsListModel.swift */,
+				9A44DB9A2A99F247005A0219 /* StatisticsListViewController.swift */,
+				9A44DB9C2A99F263005A0219 /* StatisticsListViewModel.swift */,
 			);
-			path = UserView;
+			path = UsersList;
 			sourceTree = "<group>";
 		};
 		9A44DBB52A9A0378005A0219 /* UserViewScreen */ = {
