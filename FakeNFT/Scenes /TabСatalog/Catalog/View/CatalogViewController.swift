@@ -7,9 +7,8 @@ final class CatalogViewController: UIViewController {
         
         table.register(CatalogTableViewCell.self)
         table.separatorStyle = .none
-        table.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
-        table.allowsSelection = false
         
+        table.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         return table
     }()
     
@@ -17,6 +16,7 @@ final class CatalogViewController: UIViewController {
         super.viewDidLoad()
         
         catalogTable.dataSource = self
+        catalogTable.delegate = self
         
         setupNavigationBar()
         makeViewLayout()
@@ -63,5 +63,13 @@ extension CatalogViewController: UITableViewDataSource {
         let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
         cell.configure(cover: UIImage(named: "TestCoverCell"), caption: "Test (\(indexPath.row))")
         return cell
+    }
+}
+
+extension CatalogViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        navigationController?.pushViewController(CollectionViewController(), animated: true)
     }
 }
