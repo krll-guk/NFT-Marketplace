@@ -45,10 +45,23 @@ final class CollectionViewController: UIViewController {
         return label
     }()
     
+    private let nftCollection: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        
+        collection.register(NFTCollectionViewCell.self)
+        collection.isScrollEnabled = false
+        
+        return collection
+    }()
+    
     private let scrollView = UIScrollView()
+    private let widthParameters = CollectionWidthParameters(cellsNumber: 3, leftInset: 16, rightInset: 16, interCellSpacing: 10)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nftCollection.dataSource = self
+        nftCollection.delegate = self
         
         setupNavigationBar()
         makeViewLayout()
@@ -59,8 +72,6 @@ final class CollectionViewController: UIViewController {
         
         var insets = view.safeAreaInsets
         insets.top = 0 // ignore only top safe area inset
-        insets.bottom += 20
-        
         scrollView.contentInset = insets
     }
     
@@ -103,6 +114,10 @@ final class CollectionViewController: UIViewController {
             mainStack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
         ])
+        
+        view.layoutIfNeeded()
+        let contentHeight = nftCollection.collectionViewLayout.collectionViewContentSize.height
+        nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
     private func makeMainStack() -> UIStackView {
@@ -116,10 +131,10 @@ final class CollectionViewController: UIViewController {
         mainStack.addArrangedSubview(titleLabel)
         mainStack.addArrangedSubview(authorStack)
         mainStack.addArrangedSubview(descriptionLabel)
+        mainStack.addArrangedSubview(nftCollection)
         
         mainStack.setCustomSpacing(16, after: coverImage)
         mainStack.setCustomSpacing(8, after: titleLabel)
-        mainStack.setCustomSpacing(24, after: descriptionLabel)
         
         NSLayoutConstraint.activate([
             coverImage.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
@@ -133,6 +148,9 @@ final class CollectionViewController: UIViewController {
             
             descriptionLabel.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -16),
+            
+            nftCollection.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
+            nftCollection.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor),
         ])
         return mainStack
     }
@@ -152,5 +170,43 @@ final class CollectionViewController: UIViewController {
         stack.addArrangedSubview(UIView())
         
         return stack
+    }
+}
+
+extension CollectionViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        
+        cell.configure(
+            image: UIImage(named: "TestImageNFT"),
+            rating: indexPath.item % 5 + 1,
+            name: "Test \(indexPath.item)",
+            price: indexPath.item,
+            isInCart: indexPath.item % 2 == 0,
+            isFavorite: indexPath.item % 2 == 0
+        )
+        return cell
+    }
+}
+
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let availableWidth = collectionView.bounds.width - widthParameters.widthInsets
+        let cellWidth =  availableWidth / CGFloat(widthParameters.cellsNumber)
+        return CGSize(width: cellWidth, height: 192)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 24, left: widthParameters.leftInset, bottom: 20, right: widthParameters.rightInset)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
 }

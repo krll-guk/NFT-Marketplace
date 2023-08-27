@@ -11,6 +11,8 @@ extension UIImage {
     enum NFTCard {
         static let heart = UIImage(named: "Heart")
         static let star = UIImage(named: "Star")
+        static let inCart = UIImage(named: "InCart")
+        static let notInCart = UIImage(named: "NotInCart")
     }
 
     enum NavigationBar {
