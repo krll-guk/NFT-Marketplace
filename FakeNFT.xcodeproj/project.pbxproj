@@ -68,6 +68,9 @@
 		9A44DBB02A99F832005A0219 /* UserViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBAF2A99F832005A0219 /* UserViewCell.swift */; };
 		9A44DBB22A99F849005A0219 /* UserViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB12A99F849005A0219 /* UserViewCellViewModel.swift */; };
 		9A44DBB42A99F965005A0219 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB32A99F965005A0219 /* Common.swift */; };
+		9A563EC32A9D05F50009A987 /* UserViewScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A563EC22A9D05F50009A987 /* UserViewScreenModel.swift */; };
+		9A563EC52A9D06070009A987 /* UserViewScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A563EC42A9D06070009A987 /* UserViewScreenViewController.swift */; };
+		9A563EC72A9D06180009A987 /* UserViewScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A563EC62A9D06180009A987 /* UserViewScreenViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +155,9 @@
 		9A44DBAF2A99F832005A0219 /* UserViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewCell.swift; sourceTree = "<group>"; };
 		9A44DBB12A99F849005A0219 /* UserViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewCellViewModel.swift; sourceTree = "<group>"; };
 		9A44DBB32A99F965005A0219 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		9A563EC22A9D05F50009A987 /* UserViewScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenModel.swift; sourceTree = "<group>"; };
+		9A563EC42A9D06070009A987 /* UserViewScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenViewController.swift; sourceTree = "<group>"; };
+		9A563EC62A9D06180009A987 /* UserViewScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,6 +349,7 @@
 		2967C4912A98A70A0074D074 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				9A563EC12A9D05E20009A987 /* UserViewScreen */,
 				9A44DB972A99F1EA005A0219 /* UsersList */,
 			);
 			path = Statistics;
@@ -587,6 +594,16 @@
 			path = UsersList;
 			sourceTree = "<group>";
 		};
+		9A563EC12A9D05E20009A987 /* UserViewScreen */ = {
+			isa = PBXGroup;
+			children = (
+				9A563EC22A9D05F50009A987 /* UserViewScreenModel.swift */,
+				9A563EC42A9D06070009A987 /* UserViewScreenViewController.swift */,
+				9A563EC62A9D06180009A987 /* UserViewScreenViewModel.swift */,
+			);
+			path = UserViewScreen;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -752,6 +769,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A44DBB42A99F965005A0219 /* Common.swift in Sources */,
+				9A563EC32A9D05F50009A987 /* UserViewScreenModel.swift in Sources */,
 				2967C4962A98A8050074D074 /* CatalogViewController.swift in Sources */,
 				292B28702AA11BAC002824B5 /* ProfileNFTViewModel.swift in Sources */,
 				9A44DBAA2A99F50B005A0219 /* Statistics.swift in Sources */,
@@ -766,6 +784,7 @@
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				290FCBA72AAB479800EC3B20 /* Cache.swift in Sources */,
+				9A563EC52A9D06070009A987 /* UserViewScreenViewController.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				292B28752AA2094F002824B5 /* UserDefaults+Enum.swift in Sources */,
 				2967C49E2A98BBCA0074D074 /* Labels.swift in Sources */,
@@ -801,6 +820,7 @@
 				292B28732AA1220C002824B5 /* ProfileNFTTableViewCell.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				9A44DB992A99F21D005A0219 /* StatisticsListModel.swift in Sources */,
+				9A563EC72A9D06180009A987 /* UserViewScreenViewModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				2932642B2AA118BE000EC052 /* ProfileNFTViewController.swift in Sources */,
 				2932BBFD2A9CBB74007FD4CE /* ProfileService.swift in Sources */,
