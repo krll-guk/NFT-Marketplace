@@ -18,6 +18,7 @@ final class UserViewScreenViewController: UIViewController {
         super.viewDidLoad()
         UINavigationBar.appearance().tintColor = UIColor.Themed.black
         view.tintColor = UIColor.Themed.black
+        
         let model = UserVIewScreenModel()
         viewModel = UserViewScreenViewModel(model: model)
         viewModel.onChange = configure
@@ -41,14 +42,19 @@ final class UserViewScreenViewController: UIViewController {
         self.userId = userId
         super.init(nibName: nil, bundle: nil)
     }
+    
+    @objc func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private lazy var nameView: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.Themed.black
-        label.font = .boldSystemFont(ofSize: 22)
+        label.font = UIFont.Bold.size22
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,7 +71,7 @@ final class UserViewScreenViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = UIColor.Themed.black
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont.Regular.size13
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,7 +80,7 @@ final class UserViewScreenViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Перейти на сайт пользователя", for: .normal)
         button.setTitleColor(UIColor.Themed.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.Regular.size15
         button.layer.cornerRadius = 17
         button.clipsToBounds = true
         button.tintColor = .clear
@@ -83,15 +89,27 @@ final class UserViewScreenViewController: UIViewController {
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(openWebView), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        
         return button
     }()
+    
     private lazy var collectionButtonLabel: UILabel = {
         let label = UILabel()
         label.text = "Коллекция NFT"
         label.textColor = UIColor.Themed.black
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = UIFont.Bold.size17
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return label
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage.NavigationBar.backward, for: .normal)
+        button.contentMode = .scaleAspectFit // Set content mode
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30) // Set the desired size
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        return button
     }()
 
     private lazy var collectionButton: UIButton = {
@@ -160,11 +178,11 @@ final class UserViewScreenViewController: UIViewController {
              }
          }
         nameView.text = user.name
-        nameView.font = .boldSystemFont(ofSize: 22)
+        nameView.font = UIFont.Bold.size22
         descriptionView.text = user.description
         collectionButtonLabel.text = "Коллекция NFT (\(user.nfts.count))"
         collectionButtonLabel.tintColor = UIColor.Themed.black
-        collectionButtonLabel.font = .boldSystemFont(ofSize: 17)
+        collectionButtonLabel.font = UIFont.Bold.size17
     }
 
     @objc
@@ -194,6 +212,7 @@ final class UserViewScreenViewController: UIViewController {
         avatarView.layer.cornerRadius = 35
         avatarView.layer.masksToBounds = true
         navigationItem.titleView?.backgroundColor = UIColor.Themed.black
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationController?.navigationBar.tintColor = UIColor.Themed.black
         
         NSLayoutConstraint.activate([
@@ -219,7 +238,9 @@ final class UserViewScreenViewController: UIViewController {
             collectionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            collectionButton.heightAnchor.constraint(equalToConstant: 40)
+            collectionButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            backButton.widthAnchor.constraint(equalToConstant: 20)
         ])
     }
 }

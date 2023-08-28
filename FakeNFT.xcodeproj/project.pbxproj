@@ -45,7 +45,7 @@
 		9A44DBB02A99F832005A0219 /* UserViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBAF2A99F832005A0219 /* UserViewCell.swift */; };
 		9A44DBB22A99F849005A0219 /* UserViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB12A99F849005A0219 /* UserViewCellViewModel.swift */; };
 		9A44DBB42A99F965005A0219 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB32A99F965005A0219 /* Common.swift */; };
-		9A44DBB72A9A03A3005A0219 /* UserVIewScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB62A9A03A3005A0219 /* UserVIewScreenModel.swift */; };
+		9A44DBB72A9A03A3005A0219 /* UserViewScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB62A9A03A3005A0219 /* UserViewScreenModel.swift */; };
 		9A44DBB92A9A03BB005A0219 /* UserViewScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBB82A9A03BB005A0219 /* UserViewScreenViewController.swift */; };
 		9A44DBBB2A9A03EE005A0219 /* UserViewScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DBBA2A9A03EE005A0219 /* UserViewScreenViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -108,7 +108,7 @@
 		9A44DBAF2A99F832005A0219 /* UserViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewCell.swift; sourceTree = "<group>"; };
 		9A44DBB12A99F849005A0219 /* UserViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewCellViewModel.swift; sourceTree = "<group>"; };
 		9A44DBB32A99F965005A0219 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		9A44DBB62A9A03A3005A0219 /* UserVIewScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVIewScreenModel.swift; sourceTree = "<group>"; };
+		9A44DBB62A9A03A3005A0219 /* UserViewScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenModel.swift; sourceTree = "<group>"; };
 		9A44DBB82A9A03BB005A0219 /* UserViewScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenViewController.swift; sourceTree = "<group>"; };
 		9A44DBBA2A9A03EE005A0219 /* UserViewScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewScreenViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -350,7 +350,7 @@
 		9A44DBB52A9A0378005A0219 /* UserViewScreen */ = {
 			isa = PBXGroup;
 			children = (
-				9A44DBB62A9A03A3005A0219 /* UserVIewScreenModel.swift */,
+				9A44DBB62A9A03A3005A0219 /* UserViewScreenModel.swift */,
 				9A44DBB82A9A03BB005A0219 /* UserViewScreenViewController.swift */,
 				9A44DBBA2A9A03EE005A0219 /* UserViewScreenViewModel.swift */,
 			);
@@ -541,7 +541,7 @@
 				9A44DBB22A99F849005A0219 /* UserViewCellViewModel.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
-				9A44DBB72A9A03A3005A0219 /* UserVIewScreenModel.swift in Sources */,
+				9A44DBB72A9A03A3005A0219 /* UserViewScreenModel.swift in Sources */,
 				2967C49C2A98AE2E0074D074 /* Images.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				2967C48E2A989E740074D074 /* TabBarController.swift in Sources */,
