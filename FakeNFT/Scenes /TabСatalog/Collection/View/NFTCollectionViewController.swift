@@ -1,6 +1,6 @@
 import UIKit
 
-final class CollectionViewController: UIViewController {
+final class NFTCollectionViewController: UIViewController {
     
     private let coverImage: UIImageView = {
         let image = UIImageView()
@@ -54,8 +54,10 @@ final class CollectionViewController: UIViewController {
         return collection
     }()
     
-    private let scrollView = UIScrollView()
     private let widthParameters = CollectionWidthParameters(cellsNumber: 3, leftInset: 16, rightInset: 16, interCellSpacing: 10)
+    private let scrollView = UIScrollView()
+    
+    // MARK: Override functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +76,8 @@ final class CollectionViewController: UIViewController {
         insets.top = 0 // ignore only top safe area inset
         scrollView.contentInset = insets
     }
+    
+    // MARK: Private functions
     
     private func setupNavigationBar() {
         guard let bar = navigationController?.navigationBar else {
@@ -173,7 +177,9 @@ final class CollectionViewController: UIViewController {
     }
 }
 
-extension CollectionViewController: UICollectionViewDataSource {
+// MARK: - UICollectionViewDataSource
+
+extension NFTCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 8
@@ -194,7 +200,9 @@ extension CollectionViewController: UICollectionViewDataSource {
     }
 }
 
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension NFTCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.bounds.width - widthParameters.widthInsets

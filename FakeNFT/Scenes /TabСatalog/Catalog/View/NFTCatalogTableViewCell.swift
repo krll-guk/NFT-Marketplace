@@ -1,6 +1,6 @@
 import UIKit
 
-final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
+final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
     
     private let coverImage: UIImageView = {
         let image = UIImageView()
@@ -21,6 +21,8 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         return label
     }()
     
+    // MARK: Initializers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -31,10 +33,14 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Internal functions
+    
     func configure(cover: UIImage?, caption: String) {
         coverImage.image = cover
         captionLabel.text = caption
     }
+    
+    // MARK: Private functions
     
     private func makeViewLayout() {
         contentView.heightAnchor.constraint(equalToConstant: 187).isActive = true

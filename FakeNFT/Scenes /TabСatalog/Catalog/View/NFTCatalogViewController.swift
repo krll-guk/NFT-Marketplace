@@ -1,16 +1,18 @@
 import UIKit
 
-final class CatalogViewController: UIViewController {
+final class NFTCatalogViewController: UIViewController {
     
     private let catalogTable: UITableView = {
         let table = UITableView(frame: .zero)
         
-        table.register(CatalogTableViewCell.self)
+        table.register(NFTCatalogTableViewCell.self)
         table.separatorStyle = .none
         
         table.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         return table
     }()
+    
+    // MARK: Override functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +23,8 @@ final class CatalogViewController: UIViewController {
         setupNavigationBar()
         makeViewLayout()
     }
+    
+    // MARK: Private functions
     
     @objc
     private func didTapSortButton() {
@@ -53,23 +57,27 @@ final class CatalogViewController: UIViewController {
     }
 }
 
-extension CatalogViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource
+
+extension NFTCatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
+        let cell: NFTCatalogTableViewCell = tableView.dequeueReusableCell()
         cell.configure(cover: UIImage(named: "TestCoverCell"), caption: "Test (\(indexPath.row))")
         return cell
     }
 }
 
-extension CatalogViewController: UITableViewDelegate {
+// MARK: - UITableViewDelegate
+
+extension NFTCatalogViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(CollectionViewController(), animated: true)
+        navigationController?.pushViewController(NFTCollectionViewController(), animated: true)
     }
 }

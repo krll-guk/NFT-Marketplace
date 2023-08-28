@@ -59,6 +59,8 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         return button
     }()
     
+    // MARK: Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -68,6 +70,8 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Internal functions
     
     func configure(image: UIImage?, rating: Int, name: String, price: Int, isInCart: Bool, isFavorite: Bool) {
         nftImage.image = image
@@ -79,6 +83,8 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         favoriteButton.setImage(.NFTCard.heart, for: .normal)
         favoriteButton.tintColor = isFavorite ? .Universal.red : .Universal.white
     }
+    
+    // MARK: Private functions
     
     @objc
     private func didTapCartButton() {
