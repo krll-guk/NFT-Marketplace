@@ -115,7 +115,12 @@ final class StatisticsListViewController: UIViewController {
 
 extension StatisticsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: make transition to user view screen
+        let user = viewModel.users[indexPath.row]
+
+        let viewController = UserViewScreenViewController(userId: user.id)
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
