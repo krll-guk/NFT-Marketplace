@@ -24,6 +24,10 @@
 		2967C4A52A98C91E0074D074 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2967C4A42A98C91E0074D074 /* SF-Pro-Text-Medium.otf */; };
 		2967C4A72A98EA230074D074 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2967C4A62A98EA230074D074 /* Observable.swift */; };
 		299A148C2A9E0D6E0061A745 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A148B2A9E0D6E0061A745 /* ProfileTableViewCell.swift */; };
+		299A14942A9E37C30061A745 /* ProfileEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14932A9E37C30061A745 /* ProfileEdited.swift */; };
+		299A14962A9E37ED0061A745 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14952A9E37ED0061A745 /* ProfileEditViewController.swift */; };
+		299A14982A9E38050061A745 /* ProfileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14972A9E38050061A745 /* ProfileEditViewModel.swift */; };
+		299A149A2A9E52B50061A745 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14992A9E52B50061A745 /* UIViewController+hideKeyboard.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -81,6 +85,10 @@
 		2967C4A62A98EA230074D074 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		299A148B2A9E0D6E0061A745 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		299A148D2A9E2AE70061A745 /* Profile_decomposition.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Profile_decomposition.md; sourceTree = "<group>"; };
+		299A14932A9E37C30061A745 /* ProfileEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEdited.swift; sourceTree = "<group>"; };
+		299A14952A9E37ED0061A745 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		299A14972A9E38050061A745 /* ProfileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewModel.swift; sourceTree = "<group>"; };
+		299A14992A9E52B50061A745 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -186,7 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				2932BC002A9CBC23007FD4CE /* ProfileMainScreen */,
-				2932BC082A9D074D007FD4CE /* UIBlockingProgressHUD.swift */,
+				299A148F2A9E370C0061A745 /* ProfileEditScreen */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -241,6 +249,49 @@
 			path = Docs;
 			sourceTree = "<group>";
 		};
+		299A148F2A9E370C0061A745 /* ProfileEditScreen */ = {
+			isa = PBXGroup;
+			children = (
+				299A14922A9E37810061A745 /* Model */,
+				299A14912A9E377A0061A745 /* View */,
+				299A14902A9E376E0061A745 /* ViewModel */,
+			);
+			path = ProfileEditScreen;
+			sourceTree = "<group>";
+		};
+		299A14902A9E376E0061A745 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				299A14972A9E38050061A745 /* ProfileEditViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		299A14912A9E377A0061A745 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				299A14952A9E37ED0061A745 /* ProfileEditViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		299A14922A9E37810061A745 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				299A14932A9E37C30061A745 /* ProfileEdited.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		299A149B2A9E97C80061A745 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				299A14992A9E52B50061A745 /* UIViewController+hideKeyboard.swift */,
+				2932BC082A9D074D007FD4CE /* UIBlockingProgressHUD.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +334,7 @@
 				3F6806C929CBBCAF00B4F915 /* Models */,
 				3F6806C729CBBC5B00B4F915 /* Scenes  */,
 				3F6806C629CBBC4E00B4F915 /* Services */,
+				299A149B2A9E97C80061A745 /* Helpers */,
 				299A148E2A9E2F4D0061A745 /* Docs */,
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
@@ -562,16 +614,20 @@
 				2932BBFF2A9CBBC0007FD4CE /* ProfileRequests.swift in Sources */,
 				2967C4A72A98EA230074D074 /* Observable.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
+				299A14942A9E37C30061A745 /* ProfileEdited.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				2932BC072A9CF305007FD4CE /* ProfileViewModel.swift in Sources */,
 				2967C49C2A98AE2E0074D074 /* Images.swift in Sources */,
 				2932BC052A9CBEA7007FD4CE /* Profile.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
+				299A14982A9E38050061A745 /* ProfileEditViewModel.swift in Sources */,
 				2967C48E2A989E740074D074 /* TabBarController.swift in Sources */,
 				2967C4982A98A8140074D074 /* CartViewController.swift in Sources */,
 				2967C4942A98A7C30074D074 /* ProfileViewController.swift in Sources */,
 				2932BC092A9D074D007FD4CE /* UIBlockingProgressHUD.swift in Sources */,
+				299A14962A9E37ED0061A745 /* ProfileEditViewController.swift in Sources */,
 				2967C49A2A98A8310074D074 /* StatisticsViewController.swift in Sources */,
+				299A149A2A9E52B50061A745 /* UIViewController+hideKeyboard.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				2932BBFD2A9CBB74007FD4CE /* ProfileService.swift in Sources */,

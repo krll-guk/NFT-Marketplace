@@ -1,6 +1,6 @@
 import Foundation
 
-struct Profile: Decodable {
+struct Profile: Decodable, Equatable {
     let name: String
     let avatar: String
     let description: String
@@ -10,10 +10,17 @@ struct Profile: Decodable {
     let id: String
 }
 
-struct ProfileEdited: Encodable {
-    let name: String
-    let description: String
-    let website: String
+// default value
+extension Profile {
+    init() {
+        self.name = ""
+        self.avatar = ""
+        self.description = ""
+        self.website = ""
+        self.nfts = []
+        self.likes = []
+        self.id = ""
+    }
 }
 
 struct ProfileLikes: Encodable {

@@ -1,25 +1,19 @@
 import Foundation
 
 protocol ProfileServiceProtocol {
-    func getProfile(completion: @escaping (Result<Profile, Error>) -> Void)
+    func getProfile(with request: NetworkRequest, completion: @escaping (Result<Profile, Error>) -> Void)
 }
 
 final class ProfileService: ProfileServiceProtocol {
     private var task: URLSessionDataTask?
     private let networkClient: NetworkClient
-    private let request: NetworkRequest
 
-    init(
-        task: URLSessionDataTask? = nil,
-        networkClient: NetworkClient = DefaultNetworkClient(),
-        request: NetworkRequest = ProfileGetRequest()
-    ) {
+    init(task: URLSessionDataTask? = nil, networkClient: NetworkClient = DefaultNetworkClient()) {
         self.task = task
         self.networkClient = networkClient
-        self.request = request
     }
 
-    func getProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
+    func getProfile(with request: NetworkRequest, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
 

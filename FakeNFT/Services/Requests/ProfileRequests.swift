@@ -11,7 +11,7 @@ struct ProfileGetRequest: NetworkRequest {
 struct ProfilePutRequest: NetworkRequest {
     private let profile: ProfileEdited
 
-    init(profile: ProfileEdited) {
+    init(_ profile: ProfileEdited) {
         self.profile = profile
     }
 

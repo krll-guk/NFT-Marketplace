@@ -56,7 +56,7 @@ final class ProfileViewController: UIViewController {
         text.isEditable = false
         text.isScrollEnabled = false
         text.textColor = .Universal.blue
-        text.tintColor = .Universal.blue
+        text.linkTextAttributes = [.foregroundColor: UIColor.Universal.blue ?? .blue]
         text.font = .Regular.size15
         text.textContainer.lineFragmentPadding = 0
         text.textContainerInset = .zero
@@ -88,12 +88,8 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         viewModel.profileObservable.bind { [weak self] profile in
-            guard
-                let self = self,
-                let profile = profile
-            else { return }
+            guard let self = self else { return }
             self.setProfile(profile)
-            self.tableView.reloadData()
             self.showLoader(false)
         }
     }
@@ -182,11 +178,23 @@ final class ProfileViewController: UIViewController {
                                                                attributes: [.paragraphStyle: paragraphStyle])
 
         profileWebsite.text = profile.website
+
+        tableView.reloadData()
     }
 
     @objc
     private func editButtonTapped() {
-
+        let profile = ProfileEdited(name: profileName.text ?? "",
+                                    description: profileDescription.text ?? "",
+                                    website: profileWebsite.text ?? "")
+        let vc = ProfileEditViewController(ProfileEditViewModel(profile), profileImage.image)
+        vc.completionHandler = { [weak self] profile in
+            guard let self = self else { return }
+            if self.viewModel.profile != profile {
+                self.setProfile(profile)
+            }
+        }
+        present(vc, animated: true)
     }
 
     @objc
@@ -221,8 +229,8 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ProfileTableViewCell = tableView.dequeueReusableCell()
 
-        let nfts = viewModel.profile?.nfts.count ?? 0
-        let likes = viewModel.profile?.likes.count ?? 0
+        let nfts = viewModel.profile.nfts.count
+        let likes = viewModel.profile.likes.count
 
         switch indexPath.row {
         case 0:
@@ -251,10 +259,7 @@ extension ProfileViewController: UITableViewDelegate {
         case 1:
             break
         case 2:
-            guard
-                let urlString = viewModel.profile?.website,
-                let url = URL(string: urlString)
-            else { return }
+            guard let url = URL(string: viewModel.profile.website) else { return }
             openWebView(with: url)
         default:
             break
