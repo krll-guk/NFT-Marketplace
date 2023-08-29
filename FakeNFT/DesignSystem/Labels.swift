@@ -8,4 +8,11 @@ extension String {
         static let cart = NSLocalizedString("", value: "Корзина", comment: "")
         static let statistics = NSLocalizedString("", value: "Статистика", comment: "")
     }
+
+    // Profile
+    enum ProfileTable {
+        static let myNFTs = NSLocalizedString("", value: "Мои NFT ", comment: "")
+        static let myLikes = NSLocalizedString("", value: "Избранные NFT ", comment: "")
+        static let about = NSLocalizedString("", value: "О разработчике", comment: "")
+    }
 }

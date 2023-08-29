@@ -19,4 +19,8 @@ extension UIImage {
         static let edit = UIImage(named: "Edit")
         static let sort = UIImage(named: "Sort")
     }
+
+    enum ProfileTable {
+        static let chevron = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
+    }
 }
