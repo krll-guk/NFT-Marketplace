@@ -10,4 +10,3 @@ enum StatSortType: String {
     case byRatingAsc = "BYRATING_ASC"
     case byRatingDesc = "BYRATING_DESC"
 }
-

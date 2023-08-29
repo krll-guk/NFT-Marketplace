@@ -7,8 +7,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
-
     func application(_: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
