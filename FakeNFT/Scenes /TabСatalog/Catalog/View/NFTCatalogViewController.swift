@@ -12,6 +12,8 @@ final class NFTCatalogViewController: UIViewController {
         return table
     }()
     
+    private let viewModel = NFTCatalogViewModel()
+    
     // MARK: Override functions
     
     override func viewDidLoad() {
@@ -22,6 +24,13 @@ final class NFTCatalogViewController: UIViewController {
         
         setupNavigationBar()
         makeViewLayout()
+        
+        viewModel.$catalogList.bind { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.catalogTable.reloadData()
+        }
     }
     
     // MARK: Private functions
@@ -62,12 +71,12 @@ final class NFTCatalogViewController: UIViewController {
 extension NFTCatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        viewModel.catalogList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NFTCatalogTableViewCell = tableView.dequeueReusableCell()
-        cell.configure(cover: UIImage(named: "TestCoverCell"), caption: "Test (\(indexPath.row))")
+        cell.catalogModel = viewModel.catalogList[indexPath.row]
         return cell
     }
 }

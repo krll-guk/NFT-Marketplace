@@ -1,6 +1,19 @@
 import UIKit
+import Kingfisher
 
 final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
+    
+    var catalogModel: NFTCatalogModel! {
+        didSet {
+            let linkEncoded = catalogModel.coverLink.percentEncoded
+            
+            guard let coverURL = URL(string: linkEncoded) else {
+                preconditionFailure("Failed to init URL from string \(linkEncoded)")
+            }
+            coverImage.kf.setImage(with: coverURL)
+            captionLabel.text = catalogModel.caption
+        }
+    }
     
     private let coverImage: UIImageView = {
         let image = UIImageView()
@@ -8,7 +21,9 @@ final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 12
         
+        image.contentMode = .scaleAspectFill
         image.heightAnchor.constraint(equalToConstant: 140).isActive = true
+        
         return image
     }()
     
@@ -33,11 +48,12 @@ final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Internal functions
+    // MARK: Override functions
     
-    func configure(cover: UIImage?, caption: String) {
-        coverImage.image = cover
-        captionLabel.text = caption
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        coverImage.kf.cancelDownloadTask()
     }
     
     // MARK: Private functions
