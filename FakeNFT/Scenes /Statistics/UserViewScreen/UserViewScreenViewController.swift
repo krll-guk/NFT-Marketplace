@@ -11,7 +11,6 @@ import SafariServices
 
 final class UserViewScreenViewController: UIViewController {
     private var viewModel: UserViewScreenViewModel!
-    private let submitButton = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
     private let userId: String
 
     override func viewDidLoad() {
@@ -21,7 +20,6 @@ final class UserViewScreenViewController: UIViewController {
 
         let model = UserVIewScreenModel()
         viewModel = UserViewScreenViewModel(model: model)
-        viewModel.onChange = configure
         viewModel.onChange = { [weak self] in
             self?.configure()
         }
@@ -62,6 +60,8 @@ final class UserViewScreenViewController: UIViewController {
     private lazy var avatarView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        view.layer.cornerRadius = view.frame.size.width / 2
         view.clipsToBounds = true
 
         return view
@@ -151,9 +151,7 @@ final class UserViewScreenViewController: UIViewController {
         guard  let validUrl = URL(string: user.avatar) else {return}
         let imageSize = CGSize(width: 70, height: 70)
         let placeholderSize = CGSize(width: 70, height: 70)
-        let processor = RoundCornerImageProcessor(radius: Radius.heightFraction(0.5))
         let options: KingfisherOptionsInfo = [
-            .processor(processor),
             .scaleFactor(UIScreen.main.scale),
             .transition(.fade(1)),
             .cacheOriginalImage
@@ -177,6 +175,7 @@ final class UserViewScreenViewController: UIViewController {
                    self.present(alert, animated: true, completion: nil)
              }
          }
+        
         nameView.text = user.name
         nameView.font = UIFont.Bold.size22
         descriptionView.text = user.description
