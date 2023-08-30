@@ -15,4 +15,11 @@ extension String {
         static let myLikes = NSLocalizedString("", value: "Избранные NFT ", comment: "")
         static let about = NSLocalizedString("", value: "О разработчике", comment: "")
     }
+
+    enum ProfileEdit {
+        static let name = NSLocalizedString("", value: "Имя", comment: "")
+        static let description = NSLocalizedString("", value: "Описание", comment: "")
+        static let website = NSLocalizedString("", value: "Сайт", comment: "")
+        static let changePhoto = NSLocalizedString("", value: "Сменить фото", comment: "")
+    }
 }

@@ -37,9 +37,7 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
     }
 
     func setProfileEdited(_ value: ProfileEdited) {
-        if profileEdited != value {
-            profileEdited = value
-            changeProfile()
-        }
+        profileEdited = value
+        changeProfile()
     }
 }

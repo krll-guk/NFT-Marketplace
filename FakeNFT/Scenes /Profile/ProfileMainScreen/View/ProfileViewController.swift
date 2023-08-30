@@ -190,9 +190,7 @@ final class ProfileViewController: UIViewController {
         let vc = ProfileEditViewController(ProfileEditViewModel(profile), profileImage.image)
         vc.completionHandler = { [weak self] profile in
             guard let self = self else { return }
-            if self.viewModel.profile != profile {
-                self.setProfile(profile)
-            }
+            self.setProfile(profile)
         }
         present(vc, animated: true)
     }

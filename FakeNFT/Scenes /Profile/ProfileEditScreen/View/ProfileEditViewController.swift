@@ -33,7 +33,7 @@ final class ProfileEditViewController: UIViewController {
         let label = UILabel()
         label.font = .Medium.size10
         label.textColor = .Universal.white
-        label.text = "Сменить фото"
+        label.text = .ProfileEdit.changePhoto
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -45,15 +45,15 @@ final class ProfileEditViewController: UIViewController {
     }()
 
     private lazy var profileNameTitle: UILabel = {
-        return defaultLabel("Имя")
+        return defaultLabel(.ProfileEdit.name)
     }()
 
     private lazy var profileDescriptionTitle: UILabel = {
-        return defaultLabel("Описание")
+        return defaultLabel(.ProfileEdit.description)
     }()
 
     private lazy var profileWebsiteTitle: UILabel = {
-        return defaultLabel("Сайт")
+        return defaultLabel(.ProfileEdit.website)
     }()
 
     private lazy var profileName: UITextView = {
@@ -83,7 +83,9 @@ final class ProfileEditViewController: UIViewController {
         setupView()
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
+            self.showLoader(false)
             self.completionHandler?(profile)
+            self.dismiss(animated: true)
         }
     }
 
@@ -110,7 +112,6 @@ final class ProfileEditViewController: UIViewController {
         text.font = .Regular.size17
         text.textContainer.lineFragmentPadding = 16
         text.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
-        text.delegate = self
         return text
     }
 
@@ -194,19 +195,27 @@ final class ProfileEditViewController: UIViewController {
 
     @objc
     private func closeButtonTapped() {
-        dismiss(animated: true)
+        setProfileEdited()
     }
 
     private func setProfileEdited() {
         let profile = ProfileEdited(name: profileName.text,
                                     description: profileDescription.text,
                                     website: profileWebsite.text)
-        viewModel.setProfileEdited(profile)
+        if profile != viewModel.profileEdited {
+            showLoader(true)
+            viewModel.setProfileEdited(profile)
+        } else {
+            dismiss(animated: true)
+        }
     }
-}
 
-extension ProfileEditViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        setProfileEdited()
+    private func showLoader(_ isShow: Bool) {
+        switch isShow {
+        case true:
+            UIBlockingProgressHUD.show()
+        case false:
+            UIBlockingProgressHUD.dismiss()
+        }
     }
 }
