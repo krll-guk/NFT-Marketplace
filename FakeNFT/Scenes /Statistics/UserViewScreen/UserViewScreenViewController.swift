@@ -222,7 +222,7 @@ final class UserViewScreenViewController: UIViewController {
             avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 
             nameView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 16),
-            nameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            nameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
 
             descriptionView.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 20),
             descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
