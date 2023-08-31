@@ -11,6 +11,7 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .Universal.blue
         tabBar.unselectedItemTintColor = .Themed.black
         tabBar.backgroundColor = .Themed.white
+        tabBar.isTranslucent = false
 
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSAttributedString.Key.font: UIFont.Medium.size10], for: .normal
