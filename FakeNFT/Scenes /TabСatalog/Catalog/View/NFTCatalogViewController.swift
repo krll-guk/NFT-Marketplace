@@ -87,6 +87,12 @@ extension NFTCatalogViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(NFTCollectionViewController(), animated: true)
+        
+        let collectionController = NFTCollectionViewController(
+            viewModel: NFTCollectionViewModel(
+                collectionID: viewModel.catalogList[indexPath.row].id
+            )
+        )
+        navigationController?.pushViewController(collectionController, animated: true)
     }
 }

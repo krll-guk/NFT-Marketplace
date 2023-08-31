@@ -4,7 +4,6 @@ final class NFTCollectionViewController: UIViewController {
     
     private let coverImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "TestCoverFull")
         
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 12
@@ -17,7 +16,6 @@ final class NFTCollectionViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Test title"
         label.textColor = .Themed.black
         label.font = .Bold.size22
         
@@ -27,7 +25,6 @@ final class NFTCollectionViewController: UIViewController {
     private let authorButton: UIButton = {
         let button = UIButton(type: .custom)
         
-        button.setTitle("Test author", for: .normal)
         button.setTitleColor(.Universal.blue, for: .normal)
         button.titleLabel?.font = .Regular.size15
         
@@ -37,7 +34,6 @@ final class NFTCollectionViewController: UIViewController {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Test description of NFT collection"
         label.textColor = .Themed.black
         label.font = .Regular.size13
         label.numberOfLines = 0
@@ -56,6 +52,18 @@ final class NFTCollectionViewController: UIViewController {
     
     private let widthParameters = CollectionWidthParameters(cellsNumber: 3, leftInset: 16, rightInset: 16, interCellSpacing: 10)
     private let scrollView = UIScrollView()
+    private let viewModel: NFTCollectionViewModel
+    
+    // MARK: Initializers
+    
+    init(viewModel: NFTCollectionViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: Override functions
     
@@ -67,6 +75,7 @@ final class NFTCollectionViewController: UIViewController {
         
         setupNavigationBar()
         makeViewLayout()
+        assignBindings()
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -174,6 +183,27 @@ final class NFTCollectionViewController: UIViewController {
         stack.addArrangedSubview(UIView())
         
         return stack
+    }
+    
+    private func assignBindings() {
+        viewModel.$collectionModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.coverImage.kf.setImage(with: URL(string: self.viewModel.collectionModel?.coverLink.percentEncoded ?? ""))
+                self.titleLabel.text = self.viewModel.collectionModel?.name
+                self.descriptionLabel.text = self.viewModel.collectionModel?.description
+            }
+        }
+        viewModel.$userModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.authorButton.setTitle(self.viewModel.userModel?.name, for: .normal)
+            }
+        }
     }
 }
 
