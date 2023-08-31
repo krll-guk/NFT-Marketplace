@@ -95,7 +95,6 @@ final class StatisticsListViewModel {
         }
     }
  
-
     private func sortUsers() {
         if let sortType = sortType {
             users = getSorted(users: users, by: sortType)

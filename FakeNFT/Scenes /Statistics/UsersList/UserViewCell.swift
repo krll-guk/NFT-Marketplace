@@ -45,7 +45,7 @@ final class UserViewCell: UITableViewCell {
     private lazy var nameView: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.Themed.black
-        label.font = .boldSystemFont(ofSize: 22)
+        label.font = UIFont.Bold.size22
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,7 +53,7 @@ final class UserViewCell: UITableViewCell {
     private lazy var countView: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.Themed.black
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = UIFont.Bold.size17
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
