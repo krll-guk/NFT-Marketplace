@@ -253,7 +253,10 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            break
+            let vm = ProfileNFTViewModel(viewModel.profile)
+            let vc = ProfileNFTViewController(vm)
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         case 1:
             break
         case 2:
