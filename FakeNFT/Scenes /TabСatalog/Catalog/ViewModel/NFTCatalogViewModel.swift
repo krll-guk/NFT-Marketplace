@@ -17,7 +17,7 @@ final class NFTCatalogViewModel {
     
     private func fetchCatalogList() {
         networkClient.send(
-            request: CollectionsNetworkRequest(),
+            request: GetCollectionsNetworkRequest(),
             type: [CollectionNetworkModel].self
         ) { [weak self] result in
             guard let self = self else {

@@ -19,3 +19,29 @@ struct UserNetworkModel: Codable {
     let rating: String
     let id: String
 }
+
+struct NFTNetworkModel: Codable {
+    let createdAt: String
+    let name: String
+    let images: Array<String>
+    let rating: Int
+    let description: String
+    let price: Double
+    let author: String
+    let id: String
+}
+
+struct OrderNetworkModel: Codable {
+    let nfts: Array<String>
+    let id: String
+}
+
+struct ProfileNetworkModel: Codable {
+    let name: String
+    let avatar: String
+    let description: String
+    let website: String
+    let nfts: Array<String>
+    let likes: Array<String>
+    let id: String
+}

@@ -2,6 +2,35 @@ import UIKit
 
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
+    var nftModel: NFTModel! {
+        didSet {
+            let linkEncoded = nftModel.imageLink.percentEncoded
+            
+            guard let imageURL = URL(string: linkEncoded) else {
+                preconditionFailure("Failed to init URL from string \(linkEncoded)")
+            }
+            nftImage.kf.setImage(with: imageURL)
+            fillRatingStack(value: nftModel.rating)
+            nameLabel.text = nftModel.name
+            priceLabel.text = "\(nftModel.price) ETH"
+        }
+    }
+    
+    var orderModel: OrderModel? {
+        didSet {
+            let isInCart = orderModel?.inCartNFTIDs.contains(nftModel.id) ?? false
+            cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
+        }
+    }
+    
+    var profileModel: ProfileModel? {
+        didSet {
+            let isLiked = profileModel?.likedNFTIDs.contains(nftModel.id) ?? false
+            favoriteButton.setImage(.NFTCard.heart, for: .normal)
+            favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
+        }
+    }
+    
     private let nftImage: UIImageView = {
         let image = UIImageView()
         
@@ -71,17 +100,12 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Internal functions
+    // MARK: Override functions
     
-    func configure(image: UIImage?, rating: Int, name: String, price: Int, isInCart: Bool, isFavorite: Bool) {
-        nftImage.image = image
-        fillRatingStack(value: rating)
-        nameLabel.text = name
-        priceLabel.text = "\(price) ETH"
-        cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        favoriteButton.setImage(.NFTCard.heart, for: .normal)
-        favoriteButton.tintColor = isFavorite ? .Universal.red : .Universal.white
+        nftImage.kf.cancelDownloadTask()
     }
     
     // MARK: Private functions

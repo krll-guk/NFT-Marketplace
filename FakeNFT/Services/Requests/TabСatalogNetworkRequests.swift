@@ -2,23 +2,49 @@ import Foundation
 
 private let baseAPIURL = URL(string: "https://64e794d6b0fd9648b79024d3.mockapi.io/api/v1")!
 
-struct CollectionsNetworkRequest: NetworkRequest {
+struct GetCollectionsNetworkRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "/collections", relativeTo: baseAPIURL)
     }
 }
 
-struct CollectionNetworkRequest: NetworkRequest {
-    let collectionID: String
+struct GetCollectionNetworkRequest: NetworkRequest {
     var endpoint: URL? {
-        URL(string: "/collections/\(collectionID)", relativeTo: baseAPIURL)
+        URL(string: "/collections/\(id)", relativeTo: baseAPIURL)
+    }
+    let id: String
+    
+    init(by id: String) {
+        self.id = id
     }
 }
 
-struct UserNetworkRequest: NetworkRequest {
-    let userID: String
+struct GetUserNetworkRequest: NetworkRequest {
     var endpoint: URL? {
-        URL(string: "/users/\(userID)", relativeTo: baseAPIURL)
+        URL(string: "/users/\(id)", relativeTo: baseAPIURL)
+    }
+    let id: String
+    
+    init(by id: String) {
+        self.id = id
+    }
+}
+
+struct GetNFTsNetworkRequest: NetworkRequest {
+    var endpoint: URL? {
+        URL(string: "/nft", relativeTo: baseAPIURL)
+    }
+}
+
+struct GetOrderNetworkRequest: NetworkRequest {
+    var endpoint: URL? {
+        URL(string: "/orders/1", relativeTo: baseAPIURL)
+    }
+}
+
+struct GetProfileNetworkRequest: NetworkRequest {
+    var endpoint: URL? {
+        URL(string: "/profile/1", relativeTo: baseAPIURL)
     }
 }
 

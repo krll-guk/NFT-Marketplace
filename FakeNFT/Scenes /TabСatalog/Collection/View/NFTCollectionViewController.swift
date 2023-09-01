@@ -127,10 +127,6 @@ final class NFTCollectionViewController: UIViewController {
             mainStack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
         ])
-        
-        view.layoutIfNeeded()
-        let contentHeight = nftCollection.collectionViewLayout.collectionViewContentSize.height
-        nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
     private func makeMainStack() -> UIStackView {
@@ -204,6 +200,16 @@ final class NFTCollectionViewController: UIViewController {
                 self.authorButton.setTitle(self.viewModel.userModel?.name, for: .normal)
             }
         }
+        viewModel.$nftList.bind { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.nftCollection.reloadData()
+                let contentHeight = self.nftCollection.collectionViewLayout.collectionViewContentSize.height
+                self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
+            }
+        }
     }
 }
 
@@ -212,20 +218,16 @@ final class NFTCollectionViewController: UIViewController {
 extension NFTCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return viewModel.collectionModel?.nftIDs.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         
-        cell.configure(
-            image: UIImage(named: "TestImageNFT"),
-            rating: indexPath.item % 5 + 1,
-            name: "Test \(indexPath.item)",
-            price: indexPath.item,
-            isInCart: indexPath.item % 2 == 0,
-            isFavorite: indexPath.item % 2 == 0
-        )
+        cell.nftModel = viewModel.getNFT(by: viewModel.collectionModel?.nftIDs[indexPath.item] ?? "1")
+        cell.orderModel = viewModel.orderModel
+        cell.profileModel = viewModel.profileModel
+        
         return cell
     }
 }
