@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
@@ -6,7 +7,9 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     var nftModel: NFTModel! {
         didSet {
+            nftImage.kf.indicatorType = .activity
             nftImage.kf.setImage(with: URL(string: nftModel.imageLink.percentEncoded))
+            
             fillRatingStack(value: nftModel.rating)
             nameLabel.text = nftModel.name
             priceLabel.text = "\(nftModel.price) ETH"
@@ -23,8 +26,8 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     var profileModel: ProfileModel? {
         didSet {
             let isLiked = profileModel?.likedNFTIDs.contains(nftModel.id) ?? false
-            favoriteButton.setImage(.NFTCard.heart, for: .normal)
             favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
+            favoriteButton.setImage(.NFTCard.heart, for: .normal)
         }
     }
     

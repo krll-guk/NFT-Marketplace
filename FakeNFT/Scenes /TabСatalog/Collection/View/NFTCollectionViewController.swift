@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class NFTCollectionViewController: UIViewController {
     
@@ -189,7 +190,9 @@ final class NFTCollectionViewController: UIViewController {
                 guard let self = self else {
                     return
                 }
+                self.coverImage.kf.indicatorType = .activity
                 self.coverImage.kf.setImage(with: URL(string: self.viewModel.collectionModel.coverLink.percentEncoded))
+                
                 self.titleLabel.text = self.viewModel.collectionModel.title
                 self.authorButton.setTitle(self.viewModel.userModel?.name, for: .normal)
                 self.descriptionLabel.text = self.viewModel.collectionModel.description

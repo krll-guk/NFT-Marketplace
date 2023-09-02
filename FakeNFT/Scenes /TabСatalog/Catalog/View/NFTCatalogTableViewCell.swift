@@ -7,7 +7,9 @@ final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
     
     var catalogModel: NFTCatalogModel! {
         didSet {
+            coverImage.kf.indicatorType = .activity
             coverImage.kf.setImage(with: URL(string: catalogModel.coverLink.percentEncoded))
+            
             captionLabel.text = catalogModel.caption
         }
     }

@@ -78,7 +78,7 @@ final class NFTCatalogViewController: UIViewController {
 extension NFTCatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.catalogModels.count
+        return viewModel.catalogModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
