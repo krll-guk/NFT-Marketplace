@@ -36,4 +36,8 @@ extension String {
         static let byName = NSLocalizedString("", value: "По названию", comment: "")
         static let cancel = NSLocalizedString("", value: "Закрыть", comment: "")
     }
+
+    enum ProfileNFT {
+        static let placeholder = NSLocalizedString("", value: "У Вас ещё нет NFT", comment: "")
+    }
 }

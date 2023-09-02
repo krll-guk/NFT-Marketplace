@@ -41,6 +41,15 @@ final class ProfileNFTViewController: UIViewController {
         tableView.delegate = self
         return tableView
     }()
+
+    private lazy var placeholder: UILabel = {
+        let label = UILabel()
+        label.font = .Bold.size17
+        label.textColor = .Themed.black
+        label.text = .ProfileNFT.placeholder
+        label.isHidden = true
+        return label
+    }()
     
     init(_ viewModel: ProfileNFTViewModelProtocol) {
         self.viewModel = viewModel
@@ -54,8 +63,6 @@ final class ProfileNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-
-        showLoader(true)
         viewModel.fetchProfileNFT()
 
         viewModel.profileNFTsObservable.bind { [weak self] _ in
@@ -75,19 +82,18 @@ final class ProfileNFTViewController: UIViewController {
     }
 
     private func setupView() {
-        navigationItem.rightBarButtonItem = sortButton
-        navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
-        navigationItem.titleView = titleView
+        navigationItem.leftBarButtonItem = backButton
 
         view.backgroundColor = .Themed.white
 
-        [tableView].forEach {
+        [tableView, placeholder].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
 
         setConstraints()
+        showPlaceholder()
     }
 
     private func setConstraints() {
@@ -97,7 +103,22 @@ final class ProfileNFTViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            // placeholder
+            placeholder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+
+    private func showPlaceholder() {
+        if viewModel.profile.nfts.isEmpty {
+            tableView.isHidden = true
+            placeholder.isHidden = false
+        } else {
+            showLoader(true)
+            navigationItem.rightBarButtonItem = sortButton
+            navigationItem.titleView = titleView
+        }
     }
 
     private func showLoader(_ isShow: Bool) {
