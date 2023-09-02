@@ -2,6 +2,8 @@ import UIKit
 
 final class NFTCollectionViewController: UIViewController {
     
+    // MARK: Private properties
+    
     private let coverImage: UIImageView = {
         let image = UIImageView()
         
@@ -182,29 +184,22 @@ final class NFTCollectionViewController: UIViewController {
     }
     
     private func assignBindings() {
-        viewModel.$collectionModel.bind { [weak self] _ in
-            DispatchQueue.main.async {
-                guard let self = self else {
-                    return
-                }
-                self.coverImage.kf.setImage(with: URL(string: self.viewModel.collectionModel?.coverLink.percentEncoded ?? ""))
-                self.titleLabel.text = self.viewModel.collectionModel?.name
-                self.descriptionLabel.text = self.viewModel.collectionModel?.description
-            }
-        }
         viewModel.$userModel.bind { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self else {
                     return
                 }
+                self.coverImage.kf.setImage(with: URL(string: self.viewModel.collectionModel.coverLink.percentEncoded))
+                self.titleLabel.text = self.viewModel.collectionModel.title
                 self.authorButton.setTitle(self.viewModel.userModel?.name, for: .normal)
+                self.descriptionLabel.text = self.viewModel.collectionModel.description
             }
         }
-        viewModel.$nftList.bind { [weak self] _ in
-            guard let self = self else {
-                return
-            }
+        viewModel.$nftModels.bind { [weak self] _ in
             DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
                 self.nftCollection.reloadData()
                 let contentHeight = self.nftCollection.collectionViewLayout.collectionViewContentSize.height
                 self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
@@ -218,13 +213,13 @@ final class NFTCollectionViewController: UIViewController {
 extension NFTCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.collectionModel?.nftIDs.count ?? 0
+        return viewModel.collectionModel.nftIDs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         
-        cell.nftModel = viewModel.getNFT(by: viewModel.collectionModel?.nftIDs[indexPath.item] ?? "1")
+        cell.nftModel = viewModel.getNFTModel(by: viewModel.collectionModel.nftIDs[indexPath.item])
         cell.orderModel = viewModel.orderModel
         cell.profileModel = viewModel.profileModel
         

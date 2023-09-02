@@ -2,14 +2,11 @@ import UIKit
 
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
+    // MARK: Internal properties
+    
     var nftModel: NFTModel! {
         didSet {
-            let linkEncoded = nftModel.imageLink.percentEncoded
-            
-            guard let imageURL = URL(string: linkEncoded) else {
-                preconditionFailure("Failed to init URL from string \(linkEncoded)")
-            }
-            nftImage.kf.setImage(with: imageURL)
+            nftImage.kf.setImage(with: URL(string: nftModel.imageLink.percentEncoded))
             fillRatingStack(value: nftModel.rating)
             nameLabel.text = nftModel.name
             priceLabel.text = "\(nftModel.price) ETH"
@@ -30,6 +27,8 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
         }
     }
+    
+    // MARK: Private properties
     
     private let nftImage: UIImageView = {
         let image = UIImageView()

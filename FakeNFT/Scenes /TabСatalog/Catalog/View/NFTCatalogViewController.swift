@@ -2,6 +2,8 @@ import UIKit
 
 final class NFTCatalogViewController: UIViewController {
     
+    // MARK: Private properties
+    
     private let catalogTable: UITableView = {
         let table = UITableView(frame: .zero)
         
@@ -24,13 +26,7 @@ final class NFTCatalogViewController: UIViewController {
         
         setupNavigationBar()
         makeViewLayout()
-        
-        viewModel.$catalogList.bind { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            self.catalogTable.reloadData()
-        }
+        assignBindings()
     }
     
     // MARK: Private functions
@@ -64,6 +60,17 @@ final class NFTCatalogViewController: UIViewController {
             catalogTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    private func assignBindings() {
+        viewModel.$catalogModels.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.catalogTable.reloadData()
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -71,12 +78,12 @@ final class NFTCatalogViewController: UIViewController {
 extension NFTCatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.catalogList.count
+        viewModel.catalogModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NFTCatalogTableViewCell = tableView.dequeueReusableCell()
-        cell.catalogModel = viewModel.catalogList[indexPath.row]
+        cell.catalogModel = viewModel.catalogModels[indexPath.row]
         return cell
     }
 }
@@ -90,7 +97,7 @@ extension NFTCatalogViewController: UITableViewDelegate {
         
         let collectionController = NFTCollectionViewController(
             viewModel: NFTCollectionViewModel(
-                collectionID: viewModel.catalogList[indexPath.row].id
+                collectionModel: NFTCollectionModel(from: viewModel.catalogModels[indexPath.row])
             )
         )
         navigationController?.pushViewController(collectionController, animated: true)

@@ -3,18 +3,18 @@ import Foundation
 struct NFTCollectionModel {
     let id: String
     let coverLink: String
-    let name: String
+    let title: String
     let authorID: String
     let description: String
     let nftIDs: Array<String>
     
-    init(from model: CollectionNetworkModel) {
+    init(from model: NFTCatalogModel) {
         self.id = model.id
-        self.coverLink = model.cover
-        self.name = model.name
-        self.authorID = model.author
+        self.coverLink = model.coverLink
+        self.title = model.title
+        self.authorID = model.authorID
         self.description = model.description
-        self.nftIDs = model.nfts
+        self.nftIDs = model.nftIDs
     }
 }
 

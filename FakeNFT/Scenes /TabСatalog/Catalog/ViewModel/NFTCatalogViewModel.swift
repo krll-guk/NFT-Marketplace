@@ -2,20 +2,22 @@ import Foundation
 
 final class NFTCatalogViewModel {
     
-    private let networkClient = DefaultNetworkClient()
+    // MARK: Private properties
     
     @Observable
-    private(set) var catalogList: Array<NFTCatalogModel> = []
+    private(set) var catalogModels: Array<NFTCatalogModel> = []
+    
+    private let networkClient = DefaultNetworkClient()
     
     // MARK: Initializers
     
     init() {
-        fetchCatalogList()
+        fetchCatalogs()
     }
     
     // MARK: Private functions
     
-    private func fetchCatalogList() {
+    private func fetchCatalogs() {
         networkClient.send(
             request: GetCollectionsNetworkRequest(),
             type: [CollectionNetworkModel].self
@@ -25,7 +27,7 @@ final class NFTCatalogViewModel {
             }
             switch result {
             case .success(let networkModels):
-                self.catalogList = networkModels.map({ NFTCatalogModel(from: $0) })
+                self.catalogModels = networkModels.map({ NFTCatalogModel(from: $0) })
             case .failure(let error):
                 print(error)
             }

@@ -3,17 +3,16 @@ import Kingfisher
 
 final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
     
+    // MARK: Internal properties
+    
     var catalogModel: NFTCatalogModel! {
         didSet {
-            let linkEncoded = catalogModel.coverLink.percentEncoded
-            
-            guard let coverURL = URL(string: linkEncoded) else {
-                preconditionFailure("Failed to init URL from string \(linkEncoded)")
-            }
-            coverImage.kf.setImage(with: coverURL)
+            coverImage.kf.setImage(with: URL(string: catalogModel.coverLink.percentEncoded))
             captionLabel.text = catalogModel.caption
         }
     }
+    
+    // MARK: Private properties
     
     private let coverImage: UIImageView = {
         let image = UIImageView()

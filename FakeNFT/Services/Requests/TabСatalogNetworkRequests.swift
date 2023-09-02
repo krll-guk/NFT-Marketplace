@@ -8,22 +8,11 @@ struct GetCollectionsNetworkRequest: NetworkRequest {
     }
 }
 
-struct GetCollectionNetworkRequest: NetworkRequest {
-    var endpoint: URL? {
-        URL(string: "/collections/\(id)", relativeTo: baseAPIURL)
-    }
-    let id: String
-    
-    init(by id: String) {
-        self.id = id
-    }
-}
-
 struct GetUserNetworkRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "/users/\(id)", relativeTo: baseAPIURL)
     }
-    let id: String
+    private let id: String
     
     init(by id: String) {
         self.id = id
