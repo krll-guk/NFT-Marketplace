@@ -232,9 +232,9 @@ extension ProfileViewController: UITableViewDataSource {
 
         switch indexPath.row {
         case 0:
-            cell.setLabelText(.ProfileTable.myNFTs + "(\(nfts))")
+            cell.setLabelText(.ProfileTable.myNFTs + " (\(nfts))")
         case 1:
-            cell.setLabelText(.ProfileTable.myLikes + "(\(likes))")
+            cell.setLabelText(.ProfileTable.myLikes + " (\(likes))")
         case 2:
             cell.setLabelText(.ProfileTable.about)
         default:

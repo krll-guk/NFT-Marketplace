@@ -55,13 +55,30 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
                 case .success(let nft):
                     self.index += 1
                     self.nft = nft
-                    self.sorted.append(ProfileNFTCellViewModel(from: nft, isLiked: self.isLiked()))
-                    self.sort()
-                    self.profileNFTs = self.sorted
+                    self.fetchAuthorName(with: nft)
                 case .failure(let error):
                     self.fetchProfileNFT()
                     print(error)
                 }
+            }
+        }
+    }
+
+    private func fetchAuthorName(with nft: ProfileNFT) {
+        profileService.getAuthor(with: nft.author) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let author):
+                self.sorted.append(
+                    ProfileNFTCellViewModel(from: nft,
+                                            isLiked: self.isLiked(),
+                                            author: author.name)
+                )
+                self.sort()
+                self.profileNFTs = self.sorted
+            case .failure(let error):
+                self.fetchAuthorName(with: nft)
+                print(error)
             }
         }
     }
