@@ -15,7 +15,7 @@ final class ProfileService: ProfileServiceProtocol {
     }
 
     func getProfile(with request: NetworkRequest, completion: @escaping (Result<Profile, Error>) -> Void) {
-        assert(Thread.isMainThread)
+        guard Thread.isMainThread else { return }
         task?.cancel()
 
         let task = networkClient.send(
@@ -38,7 +38,7 @@ final class ProfileService: ProfileServiceProtocol {
     }
 
     func getProfileNFT(with id: String, completion: @escaping (Result<ProfileNFT, Error>) -> Void) {
-        assert(Thread.isMainThread)
+        guard Thread.isMainThread else { return }
         task?.cancel()
 
         let request = ProfileNFTGetRequest(id: id)
@@ -62,7 +62,7 @@ final class ProfileService: ProfileServiceProtocol {
     }
 
     func getAuthor(with id: String, completion: @escaping (Result<AuthorName, Error>) -> Void) {
-        assert(Thread.isMainThread)
+        guard Thread.isMainThread else { return }
         task?.cancel()
 
         let request = AuthorGetRequest(id: id)

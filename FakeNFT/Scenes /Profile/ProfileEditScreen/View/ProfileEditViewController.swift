@@ -83,7 +83,6 @@ final class ProfileEditViewController: UIViewController {
         setupView()
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
-            self.showLoader(false)
             self.completionHandler?(profile)
             self.dismiss(animated: true)
         }
@@ -203,19 +202,9 @@ final class ProfileEditViewController: UIViewController {
                                     description: profileDescription.text,
                                     website: profileWebsite.text)
         if profile != viewModel.profileEdited {
-            showLoader(true)
             viewModel.setProfileEdited(profile)
         } else {
             dismiss(animated: true)
-        }
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
         }
     }
 }

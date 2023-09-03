@@ -11,5 +11,4 @@ struct ProfileNFT: Decodable {
 
 struct AuthorName: Decodable {
     let name: String
-    let id: String
 }

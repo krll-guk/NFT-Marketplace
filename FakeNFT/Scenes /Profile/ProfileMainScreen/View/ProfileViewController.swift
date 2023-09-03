@@ -61,6 +61,8 @@ final class ProfileViewController: UIViewController {
         text.textContainer.lineFragmentPadding = 0
         text.textContainerInset = .zero
         text.dataDetectorTypes = .link
+        text.textContainer.maximumNumberOfLines = 1
+        text.textContainer.lineBreakMode = .byTruncatingTail
         text.delegate = self
         return text
     }()
@@ -90,14 +92,12 @@ final class ProfileViewController: UIViewController {
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
             self.setProfile(profile)
-            self.showLoader(false)
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         profileDescriptionExpand(false)
-        showLoader(true)
         viewModel.fetchProfile()
     }
 
@@ -153,15 +153,6 @@ final class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 162)
         ])
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 
     private func setProfile(_ profile: Profile) {

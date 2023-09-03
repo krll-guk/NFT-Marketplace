@@ -37,6 +37,7 @@ final class ProfileNFTViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         tableView.register(ProfileNFTTableViewCell.self)
+        tableView.isHidden = true
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
@@ -47,7 +48,6 @@ final class ProfileNFTViewController: UIViewController {
         label.font = .Bold.size17
         label.textColor = .Themed.black
         label.text = .ProfileNFT.placeholder
-        label.isHidden = true
         return label
     }()
     
@@ -63,21 +63,15 @@ final class ProfileNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        viewModel.fetchProfileNFT()
 
         viewModel.profileNFTsObservable.bind { [weak self] _ in
             guard let self = self else { return }
             self.updateTable()
-            self.viewModel.fetchProfileNFT()
-            if self.viewModel.profile.nfts.count == self.viewModel.sorted.count {
-                self.showLoader(false)
-            }
         }
 
         viewModel.pickedSortTypeObservable.bind { [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
-            self.showLoader(false)
         }
     }
 
@@ -93,7 +87,7 @@ final class ProfileNFTViewController: UIViewController {
         }
 
         setConstraints()
-        showPlaceholder()
+        hidePlaceholder(viewModel.hidePlaceholder)
     }
 
     private func setConstraints() {
@@ -110,24 +104,12 @@ final class ProfileNFTViewController: UIViewController {
         ])
     }
 
-    private func showPlaceholder() {
-        if viewModel.profile.nfts.isEmpty {
-            tableView.isHidden = true
-            placeholder.isHidden = false
-        } else {
-            showLoader(true)
-            navigationItem.rightBarButtonItem = sortButton
-            navigationItem.titleView = titleView
-        }
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
+    private func hidePlaceholder(_ isHide: Bool) {
+        guard isHide else { return }
+        tableView.isHidden = false
+        placeholder.isHidden = true
+        navigationItem.rightBarButtonItem = sortButton
+        navigationItem.titleView = titleView
     }
 
     private func updateTable() {
@@ -145,19 +127,16 @@ final class ProfileNFTViewController: UIViewController {
 
         let byPrice = UIAlertAction(title: .ProfileNFTSortAlert.byPrice, style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.showLoader(true)
             self.viewModel.changeType(.byPrice)
         }
 
         let byRating = UIAlertAction(title: .ProfileNFTSortAlert.byRating, style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.showLoader(true)
             self.viewModel.changeType(.byRating)
         }
 
         let byName = UIAlertAction(title: .ProfileNFTSortAlert.byName, style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.showLoader(true)
             self.viewModel.changeType(.byName)
         }
 

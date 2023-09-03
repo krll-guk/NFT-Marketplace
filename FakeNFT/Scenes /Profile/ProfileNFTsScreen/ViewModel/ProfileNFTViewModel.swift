@@ -3,9 +3,8 @@ import Foundation
 protocol ProfileNFTViewModelProtocol {
     var profileNFTsObservable: Observable<ProfileNFTCellViewModels> { get }
     var pickedSortTypeObservable: Observable<ProfileNFTsSortType?> { get }
+    var hidePlaceholder: Bool { get }
     var sorted: ProfileNFTCellViewModels { get }
-    var profile: Profile { get }
-    func fetchProfileNFT()
     func insertIndex() -> Int
     func changeType(_ type: ProfileNFTsSortType)
     func getCellViewModel(at indexPath: IndexPath) -> ProfileNFTCellViewModel
@@ -14,9 +13,11 @@ protocol ProfileNFTViewModelProtocol {
 final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     private let profileService: ProfileServiceProtocol
 
-    private(set) var profile: Profile
-    private var nft: ProfileNFT?
+    private(set) var hidePlaceholder: Bool = false
     private(set) var sorted = ProfileNFTCellViewModels()
+    
+    private var profile: Profile
+    private var nft: ProfileNFT?
     private var index = 0
 
     @StoredProperty("ProfileNFTsSortType", defaultValue: ProfileNFTsSortType.byRating)
@@ -27,12 +28,17 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     var pickedSortTypeObservable: Observable<ProfileNFTsSortType?> { $pickedSortType }
 
     @Observable
-    private(set) var profileNFTs = ProfileNFTCellViewModels()
+    private var profileNFTs = ProfileNFTCellViewModels()
     var profileNFTsObservable: Observable<ProfileNFTCellViewModels> { $profileNFTs }
 
     init(_ profile: Profile, profileService: ProfileServiceProtocol = ProfileService()) {
         self.profileService = profileService
         self.profile = profile
+        if !profile.nfts.isEmpty {
+            showLoader(true)
+            fetchProfileNFT()
+            hidePlaceholder = true
+        }
     }
 
     func insertIndex() -> Int {
@@ -41,12 +47,14 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     }
 
     func changeType(_ type: ProfileNFTsSortType) {
+        showLoader(true)
         pickedSortType = type
         storedSortType = type
         sort()
+        showLoader(false)
     }
 
-    func fetchProfileNFT() {
+    private func fetchProfileNFT() {
         if profileNFTs.count < profile.nfts.count {
             let id = profile.nfts[index]
             profileService.getProfileNFT(with: id) { [weak self] result in
@@ -54,13 +62,13 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
                 switch result {
                 case .success(let nft):
                     self.index += 1
-                    self.nft = nft
                     self.fetchAuthorName(with: nft)
-                case .failure(let error):
+                case .failure:
                     self.fetchProfileNFT()
-                    print(error)
                 }
             }
+        } else {
+            showLoader(false)
         }
     }
 
@@ -69,6 +77,7 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let author):
+                self.nft = nft
                 self.sorted.append(
                     ProfileNFTCellViewModel(from: nft,
                                             isLiked: self.isLiked(),
@@ -76,9 +85,9 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
                 )
                 self.sort()
                 self.profileNFTs = self.sorted
-            case .failure(let error):
+                self.fetchProfileNFT()
+            case .failure:
                 self.fetchAuthorName(with: nft)
-                print(error)
             }
         }
     }
@@ -87,12 +96,12 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
         return profile.likes.contains { $0 == nft?.id }
     }
 
-    func sort() {
+    private func sort() {
         switch storedSortType {
         case .byPrice:
-            sorted.sort { $0.price < $1.price }
+            sorted.sort { $0.price > $1.price }
         case .byRating:
-            sorted.sort { $0.rating < $1.rating }
+            sorted.sort { ($0.rating, $0.price) > ($1.rating, $1.price) }
         case .byName:
             sorted.sort { $0.name < $1.name }
         }
@@ -100,6 +109,15 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
 
     func getCellViewModel(at indexPath: IndexPath) -> ProfileNFTCellViewModel {
         return sorted[indexPath.row]
+    }
+
+    private func showLoader(_ isShow: Bool) {
+        switch isShow {
+        case true:
+            UIBlockingProgressHUD.show()
+        case false:
+            UIBlockingProgressHUD.dismiss()
+        }
     }
 }
 
