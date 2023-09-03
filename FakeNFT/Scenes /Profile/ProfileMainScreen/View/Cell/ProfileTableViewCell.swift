@@ -40,7 +40,7 @@ final class ProfileTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            // stackView
+            // label
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: chevronImage.leadingAnchor, constant: -16),

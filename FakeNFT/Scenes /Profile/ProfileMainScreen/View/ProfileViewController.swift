@@ -61,6 +61,8 @@ final class ProfileViewController: UIViewController {
         text.textContainer.lineFragmentPadding = 0
         text.textContainerInset = .zero
         text.dataDetectorTypes = .link
+        text.textContainer.maximumNumberOfLines = 1
+        text.textContainer.lineBreakMode = .byTruncatingTail
         text.delegate = self
         return text
     }()
@@ -90,14 +92,12 @@ final class ProfileViewController: UIViewController {
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
             self.setProfile(profile)
-            self.showLoader(false)
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         profileDescriptionExpand(false)
-        showLoader(true)
         viewModel.fetchProfile()
     }
 
@@ -153,15 +153,6 @@ final class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 162)
         ])
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 
     private func setProfile(_ profile: Profile) {
@@ -232,9 +223,9 @@ extension ProfileViewController: UITableViewDataSource {
 
         switch indexPath.row {
         case 0:
-            cell.setLabelText(.ProfileTable.myNFTs + "(\(nfts))")
+            cell.setLabelText(.ProfileTable.myNFTs + " (\(nfts))")
         case 1:
-            cell.setLabelText(.ProfileTable.myLikes + "(\(likes))")
+            cell.setLabelText(.ProfileTable.myLikes + " (\(likes))")
         case 2:
             cell.setLabelText(.ProfileTable.about)
         default:
@@ -253,7 +244,10 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            break
+            let vm = ProfileNFTViewModel(viewModel.profile)
+            let vc = ProfileNFTViewController(vm)
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         case 1:
             break
         case 2:
