@@ -1,6 +1,37 @@
 import UIKit
+import Kingfisher
 
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+    
+    // MARK: Internal properties
+    
+    var nftModel: NFTModel! {
+        didSet {
+            nftImage.kf.indicatorType = .activity
+            nftImage.kf.setImage(with: URL(string: nftModel.imageLink.percentEncoded))
+            
+            fillRatingStack(value: nftModel.rating)
+            nameLabel.text = nftModel.name
+            priceLabel.text = "\(nftModel.price) ETH"
+        }
+    }
+    
+    var orderModel: OrderModel? {
+        didSet {
+            let isInCart = orderModel?.inCartNFTIDs.contains(nftModel.id) ?? false
+            cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
+        }
+    }
+    
+    var profileModel: ProfileModel? {
+        didSet {
+            let isLiked = profileModel?.likedNFTIDs.contains(nftModel.id) ?? false
+            favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
+            favoriteButton.setImage(.NFTCard.heart, for: .normal)
+        }
+    }
+    
+    // MARK: Private properties
     
     private let nftImage: UIImageView = {
         let image = UIImageView()
@@ -71,17 +102,12 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Internal functions
+    // MARK: Override functions
     
-    func configure(image: UIImage?, rating: Int, name: String, price: Int, isInCart: Bool, isFavorite: Bool) {
-        nftImage.image = image
-        fillRatingStack(value: rating)
-        nameLabel.text = name
-        priceLabel.text = "\(price) ETH"
-        cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        favoriteButton.setImage(.NFTCard.heart, for: .normal)
-        favoriteButton.tintColor = isFavorite ? .Universal.red : .Universal.white
+        nftImage.kf.cancelDownloadTask()
     }
     
     // MARK: Private functions

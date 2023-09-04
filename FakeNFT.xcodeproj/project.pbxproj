@@ -39,6 +39,12 @@
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
 		8E46236D2A9B53390080C67F /* NFTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E46236C2A9B53390080C67F /* NFTCollectionViewCell.swift */; };
 		8E46236F2A9B54170080C67F /* CollectionWidthParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E46236E2A9B54170080C67F /* CollectionWidthParameters.swift */; };
+		8E4623712A9DE8B50080C67F /* TabCatalogNetworkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4623702A9DE8B50080C67F /* TabCatalogNetworkModels.swift */; };
+		8E4623742A9DEA540080C67F /* NFTCatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4623732A9DEA540080C67F /* NFTCatalogViewModel.swift */; };
+		8E4623762A9DED8B0080C67F /* TabСatalogNetworkRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4623752A9DED8B0080C67F /* TabСatalogNetworkRequests.swift */; };
+		8E4623792A9DF03B0080C67F /* NFTCatalogModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4623782A9DF03B0080C67F /* NFTCatalogModel.swift */; };
+		8E46237C2A9F83750080C67F /* NFTCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E46237B2A9F83750080C67F /* NFTCollectionViewModel.swift */; };
+		8E46237F2A9F89900080C67F /* NFTCollectionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E46237E2A9F89900080C67F /* NFTCollectionModels.swift */; };
 		8E9CE4102A9909530083B285 /* NFTCatalogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9CE40F2A9909530083B285 /* NFTCatalogTableViewCell.swift */; };
 		8E9CE4142A9A0A210083B285 /* NFTCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9CE4132A9A0A210083B285 /* NFTCollectionViewController.swift */; };
 /* End PBXBuildFile section */
@@ -95,6 +101,12 @@
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		8E46236C2A9B53390080C67F /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
 		8E46236E2A9B54170080C67F /* CollectionWidthParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionWidthParameters.swift; sourceTree = "<group>"; };
+		8E4623702A9DE8B50080C67F /* TabCatalogNetworkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCatalogNetworkModels.swift; sourceTree = "<group>"; };
+		8E4623732A9DEA540080C67F /* NFTCatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCatalogViewModel.swift; sourceTree = "<group>"; };
+		8E4623752A9DED8B0080C67F /* TabСatalogNetworkRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabСatalogNetworkRequests.swift"; sourceTree = "<group>"; };
+		8E4623782A9DF03B0080C67F /* NFTCatalogModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCatalogModel.swift; sourceTree = "<group>"; };
+		8E46237B2A9F83750080C67F /* NFTCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewModel.swift; sourceTree = "<group>"; };
+		8E46237E2A9F89900080C67F /* NFTCollectionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionModels.swift; sourceTree = "<group>"; };
 		8E9CE40F2A9909530083B285 /* NFTCatalogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCatalogTableViewCell.swift; sourceTree = "<group>"; };
 		8E9CE4132A9A0A210083B285 /* NFTCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -305,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				3F6806CA29CBBCC700B4F915 /* ExampleNetworkModel.swift */,
+				8E4623702A9DE8B50080C67F /* TabCatalogNetworkModels.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -313,14 +326,49 @@
 			isa = PBXGroup;
 			children = (
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
+				8E4623752A9DED8B0080C67F /* TabСatalogNetworkRequests.swift */,
 			);
 			path = Requests;
+			sourceTree = "<group>";
+		};
+		8E4623722A9DE9F60080C67F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8E4623732A9DEA540080C67F /* NFTCatalogViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8E4623772A9DEFCF0080C67F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8E4623782A9DF03B0080C67F /* NFTCatalogModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8E46237A2A9F81F40080C67F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8E46237B2A9F83750080C67F /* NFTCollectionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8E46237D2A9F88E40080C67F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8E46237E2A9F89900080C67F /* NFTCollectionModels.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		8E9CE40B2A99076C0083B285 /* Catalog */ = {
 			isa = PBXGroup;
 			children = (
+				8E4623772A9DEFCF0080C67F /* Model */,
 				8E9CE40D2A99082F0083B285 /* View */,
+				8E4623722A9DE9F60080C67F /* ViewModel */,
 			);
 			path = Catalog;
 			sourceTree = "<group>";
@@ -337,7 +385,9 @@
 		8E9CE4112A9A094B0083B285 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				8E46237D2A9F88E40080C67F /* Model */,
 				8E9CE4122A9A096A0083B285 /* View */,
+				8E46237A2A9F81F40080C67F /* ViewModel */,
 				8E46236E2A9B54170080C67F /* CollectionWidthParameters.swift */,
 			);
 			path = Collection;
@@ -518,10 +568,13 @@
 			files = (
 				8E9CE4142A9A0A210083B285 /* NFTCollectionViewController.swift in Sources */,
 				2967C4962A98A8050074D074 /* NFTCatalogViewController.swift in Sources */,
+				8E4623762A9DED8B0080C67F /* TabСatalogNetworkRequests.swift in Sources */,
 				8E46236D2A9B53390080C67F /* NFTCollectionViewCell.swift in Sources */,
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
+				8E4623712A9DE8B50080C67F /* TabCatalogNetworkModels.swift in Sources */,
 				8E46236F2A9B54170080C67F /* CollectionWidthParameters.swift in Sources */,
+				8E4623742A9DEA540080C67F /* NFTCatalogViewModel.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
@@ -534,10 +587,13 @@
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				2967C49C2A98AE2E0074D074 /* Images.swift in Sources */,
+				8E46237C2A9F83750080C67F /* NFTCollectionViewModel.swift in Sources */,
+				8E4623792A9DF03B0080C67F /* NFTCatalogModel.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				2967C48E2A989E740074D074 /* TabBarController.swift in Sources */,
 				2967C4982A98A8140074D074 /* CartViewController.swift in Sources */,
 				2967C4942A98A7C30074D074 /* ProfileViewController.swift in Sources */,
+				8E46237F2A9F89900080C67F /* NFTCollectionModels.swift in Sources */,
 				2967C49A2A98A8310074D074 /* StatisticsViewController.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,

@@ -1,10 +1,12 @@
 import UIKit
+import Kingfisher
 
 final class NFTCollectionViewController: UIViewController {
     
+    // MARK: Private properties
+    
     private let coverImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "TestCoverFull")
         
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 12
@@ -17,7 +19,6 @@ final class NFTCollectionViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Test title"
         label.textColor = .Themed.black
         label.font = .Bold.size22
         
@@ -27,7 +28,6 @@ final class NFTCollectionViewController: UIViewController {
     private let authorButton: UIButton = {
         let button = UIButton(type: .custom)
         
-        button.setTitle("Test author", for: .normal)
         button.setTitleColor(.Universal.blue, for: .normal)
         button.titleLabel?.font = .Regular.size15
         
@@ -37,7 +37,6 @@ final class NFTCollectionViewController: UIViewController {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Test description of NFT collection"
         label.textColor = .Themed.black
         label.font = .Regular.size13
         label.numberOfLines = 0
@@ -56,6 +55,18 @@ final class NFTCollectionViewController: UIViewController {
     
     private let widthParameters = CollectionWidthParameters(cellsNumber: 3, leftInset: 16, rightInset: 16, interCellSpacing: 10)
     private let scrollView = UIScrollView()
+    private let viewModel: NFTCollectionViewModel
+    
+    // MARK: Initializers
+    
+    init(viewModel: NFTCollectionViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: Override functions
     
@@ -67,6 +78,7 @@ final class NFTCollectionViewController: UIViewController {
         
         setupNavigationBar()
         makeViewLayout()
+        assignBindings()
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -118,10 +130,6 @@ final class NFTCollectionViewController: UIViewController {
             mainStack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
         ])
-        
-        view.layoutIfNeeded()
-        let contentHeight = nftCollection.collectionViewLayout.collectionViewContentSize.height
-        nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
     private func makeMainStack() -> UIStackView {
@@ -175,6 +183,32 @@ final class NFTCollectionViewController: UIViewController {
         
         return stack
     }
+    
+    private func assignBindings() {
+        viewModel.$userModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.coverImage.kf.indicatorType = .activity
+                self.coverImage.kf.setImage(with: URL(string: self.viewModel.collectionModel.coverLink.percentEncoded))
+                
+                self.titleLabel.text = self.viewModel.collectionModel.title
+                self.authorButton.setTitle(self.viewModel.userModel?.name, for: .normal)
+                self.descriptionLabel.text = self.viewModel.collectionModel.description
+            }
+        }
+        viewModel.$nftModels.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.nftCollection.reloadData()
+                let contentHeight = self.nftCollection.collectionViewLayout.collectionViewContentSize.height
+                self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -182,20 +216,16 @@ final class NFTCollectionViewController: UIViewController {
 extension NFTCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return viewModel.collectionModel.nftIDs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         
-        cell.configure(
-            image: UIImage(named: "TestImageNFT"),
-            rating: indexPath.item % 5 + 1,
-            name: "Test \(indexPath.item)",
-            price: indexPath.item,
-            isInCart: indexPath.item % 2 == 0,
-            isFavorite: indexPath.item % 2 == 0
-        )
+        cell.nftModel = viewModel.getNFTModel(by: viewModel.collectionModel.nftIDs[indexPath.item])
+        cell.orderModel = viewModel.orderModel
+        cell.profileModel = viewModel.profileModel
+        
         return cell
     }
 }

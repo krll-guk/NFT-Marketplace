@@ -2,6 +2,8 @@ import UIKit
 
 final class NFTCatalogViewController: UIViewController {
     
+    // MARK: Private properties
+    
     private let catalogTable: UITableView = {
         let table = UITableView(frame: .zero)
         
@@ -11,6 +13,8 @@ final class NFTCatalogViewController: UIViewController {
         table.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         return table
     }()
+    
+    private let viewModel = NFTCatalogViewModel()
     
     // MARK: Override functions
     
@@ -22,6 +26,7 @@ final class NFTCatalogViewController: UIViewController {
         
         setupNavigationBar()
         makeViewLayout()
+        assignBindings()
     }
     
     // MARK: Private functions
@@ -55,6 +60,17 @@ final class NFTCatalogViewController: UIViewController {
             catalogTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    private func assignBindings() {
+        viewModel.$catalogModels.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.catalogTable.reloadData()
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -62,12 +78,12 @@ final class NFTCatalogViewController: UIViewController {
 extension NFTCatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return viewModel.catalogModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: NFTCatalogTableViewCell = tableView.dequeueReusableCell()
-        cell.configure(cover: UIImage(named: "TestCoverCell"), caption: "Test (\(indexPath.row))")
+        cell.catalogModel = viewModel.catalogModels[indexPath.row]
         return cell
     }
 }
@@ -78,6 +94,12 @@ extension NFTCatalogViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(NFTCollectionViewController(), animated: true)
+        
+        let collectionController = NFTCollectionViewController(
+            viewModel: NFTCollectionViewModel(
+                collectionModel: NFTCollectionModel(from: viewModel.catalogModels[indexPath.row])
+            )
+        )
+        navigationController?.pushViewController(collectionController, animated: true)
     }
 }
