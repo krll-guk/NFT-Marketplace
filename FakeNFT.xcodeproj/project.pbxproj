@@ -59,6 +59,11 @@
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
 		3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExampleRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
+		9A055C5C2AA112AF007AE526 /* NFTCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A055C5B2AA112AF007AE526 /* NFTCollectionCell.swift */; };
+		9A055C5E2AA112F1007AE526 /* NFTCollectionViewScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A055C5D2AA112F1007AE526 /* NFTCollectionViewScreenModel.swift */; };
+		9A055C602AA11332007AE526 /* NFTCollectionViewScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A055C5F2AA11332007AE526 /* NFTCollectionViewScreenViewController.swift */; };
+		9A055C632AA1135C007AE526 /* NFTCollectionViewScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A055C622AA1135C007AE526 /* NFTCollectionViewScreenViewModel.swift */; };
+		9A1610CB2AADC7AB00AD2B06 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1610CA2AADC7AB00AD2B06 /* RatingView.swift */; };
 		9A44DB992A99F21D005A0219 /* StatisticsListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DB982A99F21D005A0219 /* StatisticsListModel.swift */; };
 		9A44DB9B2A99F247005A0219 /* StatisticsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DB9A2A99F247005A0219 /* StatisticsListViewController.swift */; };
 		9A44DB9D2A99F263005A0219 /* StatisticsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A44DB9C2A99F263005A0219 /* StatisticsListViewModel.swift */; };
@@ -147,6 +152,11 @@
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
+		9A055C5B2AA112AF007AE526 /* NFTCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionCell.swift; sourceTree = "<group>"; };
+		9A055C5D2AA112F1007AE526 /* NFTCollectionViewScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewScreenModel.swift; sourceTree = "<group>"; };
+		9A055C5F2AA11332007AE526 /* NFTCollectionViewScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewScreenViewController.swift; sourceTree = "<group>"; };
+		9A055C622AA1135C007AE526 /* NFTCollectionViewScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewScreenViewModel.swift; sourceTree = "<group>"; };
+		9A1610CA2AADC7AB00AD2B06 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		9A44DB982A99F21D005A0219 /* StatisticsListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsListModel.swift; sourceTree = "<group>"; };
 		9A44DB9A2A99F247005A0219 /* StatisticsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsListViewController.swift; sourceTree = "<group>"; };
 		9A44DB9C2A99F263005A0219 /* StatisticsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsListViewModel.swift; sourceTree = "<group>"; };
@@ -351,6 +361,7 @@
 		2967C4912A98A70A0074D074 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				9A055C5A2AA1127B007AE526 /* NFTCollectionViewScreen */,
 				9A563EC12A9D05E20009A987 /* UserViewScreen */,
 				9A44DB972A99F1EA005A0219 /* UsersList */,
 			);
@@ -585,6 +596,18 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
+		9A055C5A2AA1127B007AE526 /* NFTCollectionViewScreen */ = {
+			isa = PBXGroup;
+			children = (
+				9A055C5B2AA112AF007AE526 /* NFTCollectionCell.swift */,
+				9A055C5D2AA112F1007AE526 /* NFTCollectionViewScreenModel.swift */,
+				9A055C5F2AA11332007AE526 /* NFTCollectionViewScreenViewController.swift */,
+				9A055C622AA1135C007AE526 /* NFTCollectionViewScreenViewModel.swift */,
+				9A1610CA2AADC7AB00AD2B06 /* RatingView.swift */,
+			);
+			path = NFTCollectionViewScreen;
+			sourceTree = "<group>";
+		};
 		9A44DB972A99F1EA005A0219 /* UsersList */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,9 +800,11 @@
 				2967C4962A98A8050074D074 /* CatalogViewController.swift in Sources */,
 				292B28702AA11BAC002824B5 /* ProfileNFTViewModel.swift in Sources */,
 				9A44DBAA2A99F50B005A0219 /* Statistics.swift in Sources */,
+				9A055C632AA1135C007AE526 /* NFTCollectionViewScreenViewModel.swift in Sources */,
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				2957E8CE2AA64A1600AAF17B /* ProfileFavoriteNFTViewController.swift in Sources */,
 				2957E8C82AA6320300AAF17B /* ProfileFavoriteNFTCellViewModel.swift in Sources */,
+				9A055C5C2AA112AF007AE526 /* NFTCollectionCell.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				299A148C2A9E0D6E0061A745 /* ProfileTableViewCell.swift in Sources */,
 				293264292AA0FC10000EC052 /* ProfileNFT.swift in Sources */,
@@ -802,6 +827,7 @@
 				299A14942A9E37C30061A745 /* ProfileEdited.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				2932BC072A9CF305007FD4CE /* ProfileViewModel.swift in Sources */,
+				9A055C5E2AA112F1007AE526 /* NFTCollectionViewScreenModel.swift in Sources */,
 				2967C49C2A98AE2E0074D074 /* Images.swift in Sources */,
 				2957E8CC2AA638E100AAF17B /* ProfileLikes.swift in Sources */,
 				2932BC052A9CBEA7007FD4CE /* Profile.swift in Sources */,
@@ -814,6 +840,7 @@
 				9A44DBA12A99F2E3005A0219 /* Config.swift in Sources */,
 				2967C4982A98A8140074D074 /* CartViewController.swift in Sources */,
 				9A44DBB02A99F832005A0219 /* UserViewCell.swift in Sources */,
+				9A055C602AA11332007AE526 /* NFTCollectionViewScreenViewController.swift in Sources */,
 				2967C4942A98A7C30074D074 /* ProfileViewController.swift in Sources */,
 				2932BC092A9D074D007FD4CE /* UIBlockingProgressHUD.swift in Sources */,
 				299A14962A9E37ED0061A745 /* ProfileEditViewController.swift in Sources */,
@@ -825,6 +852,7 @@
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				9A44DB992A99F21D005A0219 /* StatisticsListModel.swift in Sources */,
 				9A563EC72A9D06180009A987 /* UserViewScreenViewModel.swift in Sources */,
+				9A1610CB2AADC7AB00AD2B06 /* RatingView.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				2932642B2AA118BE000EC052 /* ProfileNFTViewController.swift in Sources */,
 				2932BBFD2A9CBB74007FD4CE /* ProfileService.swift in Sources */,
