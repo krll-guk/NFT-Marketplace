@@ -196,7 +196,18 @@ final class UserViewScreenViewController: UIViewController {
 
     @objc
     private func openNFTCollection() {
-
+        let collectionModel = NFTCollectionViewScreenModel()
+        let collectionViewModel = NFTCollectionViewScreenViewModel(model: collectionModel, ids: viewModel.user?.nfts.compactMap({ Int($0) }))
+        let viewController = NFTCollectionViewScreenViewController(viewModel: collectionViewModel)
+        viewController.title = "Коллекция NFT"
+        
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        backButton.tintColor = UIColor.Themed.black
+        navigationItem.backBarButtonItem = backButton
+        navigationItem.titleView?.backgroundColor = UIColor.Themed.black
+        navigationController?.navigationBar.tintColor = UIColor.Themed.black
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func setupAppearance() {
