@@ -1,7 +1,12 @@
 import UIKit
 import Kingfisher
 
-final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
+protocol ProfileFavoriteNFTCollectionViewCellDelegate: ProfileFavoriteNFTViewController {
+    func heartTapped(_ cell: ProfileFavoriteNFTCollectionViewCell)
+}
+
+final class ProfileFavoriteNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+    weak var delegate: ProfileFavoriteNFTCollectionViewCellDelegate?
 
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -12,10 +17,13 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         return image
     }()
 
-    private lazy var heart: UIImageView = {
-        let image = UIImageView()
-        image.image = .NFTCard.heart
-        return image
+    private lazy var heart: UIButton = {
+        let button = UIButton()
+        button.setImage(.NFTCard.heart, for: .normal)
+        button.imageView?.contentMode = .center
+        button.tintColor = .Universal.red
+        button.addTarget(self, action: #selector(heartTapped), for: .touchUpInside)
+        return button
     }()
 
     private let nameStack: UIStackView = {
@@ -30,7 +38,7 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .Bold.size17
         label.textColor = .Themed.black
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
@@ -42,71 +50,28 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         return stack
     }()
 
-    private let autorStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 4
-        stack.alignment = .firstBaseline
-        return stack
-    }()
-
-    private lazy var from: UILabel = {
+    private lazy var priceNFT: UILabel = {
         let label = UILabel()
         label.font = .Regular.size15
         label.textColor = .Themed.black
-        label.text = .ProfileNFTTableViewCell.from
-        return label
-    }()
-
-    private lazy var author: UILabel = {
-        let label = UILabel()
-        label.font = .Regular.size13
-        label.textColor = .Themed.black
-        label.numberOfLines = 2
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
-
-    private let priceStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 2
-        stack.alignment = .leading
-        return stack
-    }()
-
-    private lazy var price: UILabel = {
-        let label = UILabel()
-        label.font = .Regular.size13
-        label.textColor = .Themed.black
-        label.text = .ProfileNFTTableViewCell.price
-        return label
-    }()
-
-    private lazy var priceNFT: UILabel = {
-        let label = UILabel()
-        label.font = .Bold.size17
-        label.textColor = .Themed.black
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
-    
-    var cellViewModel: ProfileNFTCellViewModel? {
+
+    var cellViewModel: ProfileFavoriteNFTCellViewModel? {
         didSet {
             guard let cellViewModel = cellViewModel else { return }
             image.kf.indicatorType = .activity
             image.kf.setImage(with: cellViewModel.url)
-            heart.tintColor = cellViewModel.isLiked ? .Universal.red : .Universal.white
             name.text = cellViewModel.name
             addRating(cellViewModel.rating)
-            author.text = cellViewModel.author
             priceNFT.text = cellViewModel.price + .ProfileNFTTableViewCell.currency
         }
     }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupContentView()
     }
 
@@ -120,31 +85,22 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         image.image = nil
         name.text = ""
         ratingStack.arrangedSubviews.forEach { $0.tintColor = .Themed.lightGray }
-        author.text = ""
         priceNFT.text = ""
     }
 
     private func setupContentView() {
-        selectionStyle = .none
         backgroundColor = .Themed.white
 
-        [image, heart, nameStack, priceStack].forEach {
+        [image, heart, nameStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
 
-        [name, ratingStack, autorStack].forEach {
+        [name, ratingStack, priceNFT].forEach {
             nameStack.addArrangedSubview($0)
         }
 
-        [from, author].forEach {
-            autorStack.addArrangedSubview($0)
-        }
-
-        [price, priceNFT].forEach {
-            priceStack.addArrangedSubview($0)
-        }
-
+        nameStack.setCustomSpacing(8, after: ratingStack)
         setConstraints()
         fillStack()
     }
@@ -152,26 +108,23 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             // image
-            image.heightAnchor.constraint(equalToConstant: 108),
-            image.widthAnchor.constraint(equalToConstant: 108),
+            image.heightAnchor.constraint(equalToConstant: 80),
+            image.widthAnchor.constraint(equalToConstant: 80),
             image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 
             // heart
             heart.topAnchor.constraint(equalTo: image.topAnchor),
             heart.trailingAnchor.constraint(equalTo: image.trailingAnchor),
+            heart.heightAnchor.constraint(equalToConstant: 29.63),
+            heart.widthAnchor.constraint(equalToConstant: 29.63),
 
             // nameStack
-            nameStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
-            nameStack.trailingAnchor.constraint(lessThanOrEqualTo: priceStack.leadingAnchor, constant: -20),
+            nameStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 12),
+            nameStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
             // ratingStack
             ratingStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-
-            // priceStack
-            priceStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 137),
-            priceStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            priceStack.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16)
         ])
     }
 
@@ -190,5 +143,10 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
                 self.ratingStack.arrangedSubviews[index].tintColor = .Universal.yellow
             }
         }
+    }
+
+    @objc
+    private func heartTapped() {
+        delegate?.heartTapped(self)
     }
 }

@@ -22,7 +22,3 @@ extension Profile {
         self.id = ""
     }
 }
-
-struct ProfileLikes: Encodable {
-    let likes: [String]
-}

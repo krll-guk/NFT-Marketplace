@@ -45,7 +45,7 @@ struct AuthorGetRequest: NetworkRequest {
 struct ProfileLikesPutRequest: NetworkRequest {
     private let profile: ProfileLikes
 
-    init(profile: ProfileLikes) {
+    init(_ profile: ProfileLikes) {
         self.profile = profile
     }
 

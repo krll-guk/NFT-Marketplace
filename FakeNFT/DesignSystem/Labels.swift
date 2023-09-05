@@ -1,7 +1,9 @@
 import Foundation
 
 extension String {
-    // TabBar
+
+    // MARK: - TabBar
+
     enum TabBar {
         static let profile = NSLocalizedString("", value: "Профиль", comment: "")
         static let catalog = NSLocalizedString("", value: "Каталог", comment: "")
@@ -9,7 +11,8 @@ extension String {
         static let statistics = NSLocalizedString("", value: "Статистика", comment: "")
     }
 
-    // Profile
+    // MARK: - Profile
+
     enum ProfileTable {
         static let myNFTs = NSLocalizedString("", value: "Мои NFT", comment: "")
         static let myLikes = NSLocalizedString("", value: "Избранные NFT", comment: "")
@@ -39,5 +42,9 @@ extension String {
 
     enum ProfileNFT {
         static let placeholder = NSLocalizedString("", value: "У Вас ещё нет NFT", comment: "")
+    }
+
+    enum ProfileFavoriteNFT {
+        static let placeholder = NSLocalizedString("", value: "У Вас ещё нет избранных NFT", comment: "")
     }
 }

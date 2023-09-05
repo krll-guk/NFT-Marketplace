@@ -1,6 +1,7 @@
 import Foundation
 
 protocol ProfileNFTViewModelProtocol {
+    var profile: Profile { get }
     var profileNFTsObservable: Observable<ProfileNFTCellViewModels> { get }
     var pickedSortTypeObservable: Observable<ProfileNFTsSortType?> { get }
     var hidePlaceholder: Bool { get }
@@ -16,7 +17,7 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     private(set) var hidePlaceholder: Bool = false
     private(set) var sorted = ProfileNFTCellViewModels()
     
-    private var profile: Profile
+    let profile: Profile
     private var nft: ProfileNFT?
     private var index = 0
 
@@ -42,7 +43,7 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     }
 
     func insertIndex() -> Int {
-        guard let index = sorted.firstIndex(where: { $0.name == nft?.name }) else { return 0 }
+        guard let index = sorted.firstIndex(where: { $0.id == nft?.id }) else { return 0 }
         return index
     }
 

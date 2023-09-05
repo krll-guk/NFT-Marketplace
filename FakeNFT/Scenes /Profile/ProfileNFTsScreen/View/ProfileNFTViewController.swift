@@ -1,6 +1,8 @@
 import UIKit
 
 final class ProfileNFTViewController: UIViewController {
+    var completionHandler: ((Profile) -> Void)?
+
     private var viewModel: ProfileNFTViewModelProtocol
 
     private lazy var sortButton: UIBarButtonItem = {
@@ -157,6 +159,7 @@ final class ProfileNFTViewController: UIViewController {
 
     @objc
     private func backButtonTapped() {
+        completionHandler?(viewModel.profile)
         navigationController?.popToRootViewController(animated: true)
     }
 }
