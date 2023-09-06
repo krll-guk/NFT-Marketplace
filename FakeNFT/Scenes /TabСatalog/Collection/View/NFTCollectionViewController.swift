@@ -25,12 +25,13 @@ final class NFTCollectionViewController: UIViewController {
         return label
     }()
     
-    private let authorButton: UIButton = {
+    private lazy var authorButton: UIButton = {
         let button = UIButton(type: .custom)
         
         button.setTitleColor(.Universal.blue, for: .normal)
         button.titleLabel?.font = .Regular.size15
         
+        button.addTarget(self, action: #selector(didTapAuthorButton), for: .touchUpInside)
         return button
     }()
     
@@ -90,6 +91,16 @@ final class NFTCollectionViewController: UIViewController {
     }
     
     // MARK: Private functions
+    
+    @objc
+    private func didTapAuthorButton() {
+        guard let userModel = viewModel.userModel else {
+            return
+        }
+        let authorController = AuthorDetailsViewController()
+        authorController.websiteURL = URL(string: userModel.website)
+        navigationController?.pushViewController(authorController, animated: true)
+    }
     
     private func setupNavigationBar() {
         guard let bar = navigationController?.navigationBar else {

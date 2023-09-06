@@ -50,6 +50,8 @@ final class NFTCatalogViewController: UIViewController {
     }
     
     private func makeViewLayout() {
+        view.backgroundColor = .Themed.white
+        
         view.addSubview(catalogTable)
         catalogTable.translatesAutoresizingMaskIntoConstraints = false
         
