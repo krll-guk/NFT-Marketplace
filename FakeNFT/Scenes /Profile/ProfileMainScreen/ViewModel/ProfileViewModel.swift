@@ -10,6 +10,7 @@ protocol ProfileViewModelProtocol {
 
 final class ProfileViewModel: ProfileViewModelProtocol {
     private let profileService: ProfileServiceProtocol
+    private let loader: UIBlockingProgressHUDProtocol
 
     @Observable
     private(set) var profile: Profile
@@ -19,13 +20,14 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     init(profileService: ProfileServiceProtocol = ProfileService()) {
         self.profileService = profileService
+        self.loader = UIBlockingProgressHUD()
         self.profile = Profile()
         self.newProfile = Profile()
         self.fetchProfile()
     }
 
     private func fetchProfile() {
-        showLoader(true)
+        loader.show()
         let request = ProfileGetRequest()
         profileService.getProfile(with: request) { [weak self] result in
             guard let self = self else { return }
@@ -33,7 +35,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
             case .success(let profile):
                 self.profile = profile
                 self.newProfile = profile
-                self.showLoader(false)
+                self.loader.dismiss()
             case .failure:
                 self.fetchProfile()
             }
@@ -52,14 +54,5 @@ final class ProfileViewModel: ProfileViewModelProtocol {
 
     func setProfile(with value: Profile) {
         profile = value
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 }

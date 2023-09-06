@@ -9,6 +9,7 @@ protocol ProfileEditViewModelProtocol {
 
 final class ProfileEditViewModel: ProfileEditViewModelProtocol {
     private let profileService: ProfileServiceProtocol
+    private let loader: UIBlockingProgressHUDProtocol
 
     private(set) var profileEdited: ProfileEdited
 
@@ -18,6 +19,7 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
 
     init(_ profileEdited: ProfileEdited, profileService: ProfileServiceProtocol = ProfileService()) {
         self.profileService = profileService
+        self.loader = UIBlockingProgressHUD()
         self.profileEdited = profileEdited
         self.profile = Profile()
     }
@@ -29,7 +31,7 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
             switch result {
             case .success(let profile):
                 self.profile = profile
-                self.showLoader(false)
+                self.loader.dismiss()
             case .failure:
                 self.changeProfile()
             }
@@ -37,17 +39,8 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
     }
 
     func setProfileEdited(_ value: ProfileEdited) {
-        showLoader(true)
+        loader.show()
         profileEdited = value
         changeProfile()
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 }

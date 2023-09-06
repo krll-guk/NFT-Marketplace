@@ -15,6 +15,7 @@ protocol ProfileFavoriteNFTViewModelProtocol {
 
 final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
     private let profileService: ProfileServiceProtocol
+    private let loader: UIBlockingProgressHUDProtocol
 
     private(set) var newProfileFavoriteNFTs = ProfileFavoriteNFTCellViewModels()
     private var newLikes: ProfileLikes
@@ -34,10 +35,11 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
 
     init(_ profile: Profile, profileService: ProfileServiceProtocol = ProfileService()) {
         self.profileService = profileService
+        self.loader = UIBlockingProgressHUD()
         self.profile = profile
         self.newLikes = ProfileLikes(likes: profile.likes)
         if !profile.likes.isEmpty {
-            showLoader(true)
+            loader.show()
             fetchProfileNFT()
             hidePlaceholder = true
         }
@@ -65,7 +67,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
                 }
             }
         } else {
-            showLoader(false)
+            loader.dismiss()
         }
     }
 
@@ -76,7 +78,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
             switch result {
             case .success(let profile):
                 self.profile = profile
-                self.showLoader(false)
+                self.loader.dismiss()
             case .failure:
                 self.updateProfileLikes()
             }
@@ -105,7 +107,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
         if profile.likes == newLikes.likes {
             return true
         } else {
-            showLoader(true)
+            loader.show()
             updateProfileLikes()
             return false
         }
@@ -113,14 +115,5 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
 
     func getCellViewModel(at indexPath: IndexPath) -> ProfileFavoriteNFTCellViewModel {
         return newProfileFavoriteNFTs[indexPath.row]
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 }

@@ -1,26 +1,31 @@
 import UIKit
 import ProgressHUD
 
-final class UIBlockingProgressHUD {
-    private static var window: UIWindow? {
+protocol UIBlockingProgressHUDProtocol {
+    func show()
+    func dismiss()
+}
+
+final class UIBlockingProgressHUD: UIBlockingProgressHUDProtocol {
+    private var window: UIWindow? {
         return UIApplication.shared.windows.first
     }
 
-    private static var isShown: Bool = false
+    private var isShown: Bool = false
 
-    static func show() {
+    func show() {
         guard !isShown else { return }
         window?.isUserInteractionEnabled = false
         ProgressHUD.show()
         isShown = true
     }
 
-    static func dismiss() {
+    func dismiss() {
         guard isShown else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            window?.isUserInteractionEnabled = true
+            self.window?.isUserInteractionEnabled = true
             ProgressHUD.dismiss()
-            isShown = false
+            self.isShown = false
         }
     }
 }
