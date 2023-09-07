@@ -33,6 +33,42 @@ final class NFTCatalogViewController: UIViewController {
     
     @objc
     private func didTapSortButton() {
+        let controller = UIAlertController(
+            title: NSLocalizedString("", value: "Сортировка", comment: ""),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        controller.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("", value: "По названию", comment: ""),
+                style: .default,
+                handler: { [weak self] _ in
+                    guard let self = self else {
+                        return
+                    }
+                    self.viewModel.sortCatalogs(by: .title)
+                }
+            )
+        )
+        controller.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("", value: "По количеству NFT", comment: ""),
+                style: .default,
+                handler: { [weak self] _ in
+                    guard let self = self else {
+                        return
+                    }
+                    self.viewModel.sortCatalogs(by: .count)
+                }
+            )
+        )
+        controller.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("", value: "Закрыть", comment: ""),
+                style: .cancel
+            )
+        )
+        present(controller, animated: true)
     }
     
     private func setupNavigationBar() {

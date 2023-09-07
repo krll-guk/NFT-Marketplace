@@ -15,6 +15,18 @@ final class NFTCatalogViewModel {
         fetchCatalogs()
     }
     
+    // MARK: Internal functions
+    
+    func sortCatalogs(by type: SortType) {
+        switch type {
+        case .title:
+            catalogModels.sort(by: { $0.title < $1.title })
+        case .count:
+            catalogModels.sort(by: { $0.nftIDs.count > $1.nftIDs.count })
+        }
+        SortTypeStorage.shared.sortType = type
+    }
+    
     // MARK: Private functions
     
     private func fetchCatalogs() {
@@ -28,6 +40,7 @@ final class NFTCatalogViewModel {
             switch result {
             case .success(let networkModels):
                 self.catalogModels = networkModels.map({ NFTCatalogModel(from: $0) })
+                self.sortCatalogs(by: SortTypeStorage.shared.sortType)
             case .failure(let error):
                 print(error)
             }
