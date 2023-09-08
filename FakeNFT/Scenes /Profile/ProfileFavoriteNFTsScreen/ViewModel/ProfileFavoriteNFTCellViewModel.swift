@@ -1,23 +1,19 @@
 import Foundation
 
-typealias ProfileNFTCellViewModels = [ProfileNFTCellViewModel]
+typealias ProfileFavoriteNFTCellViewModels = [ProfileFavoriteNFTCellViewModel]
 
-struct ProfileNFTCellViewModel {
+struct ProfileFavoriteNFTCellViewModel {
     let url: URL?
     let name: String
     let rating: Int
-    let author: String
     let price: String
-    let isLiked: Bool
     let id: String
 
-    init(from: ProfileNFT, isLiked: Bool, author: String) {
+    init(from: ProfileNFT) {
         self.url = URL(string: from.images[0])
         self.name = from.name
         self.rating = from.rating
-        self.author = author
         self.price = String(from.price)
-        self.isLiked = isLiked
         self.id = from.id
     }
 }

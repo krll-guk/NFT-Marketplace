@@ -98,7 +98,12 @@ final class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         profileDescriptionExpand(false)
-        viewModel.fetchProfile()
+        viewModel.syncProfile()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.setNewProfile(with: Profile())
     }
 
     private func setupView() {
@@ -175,19 +180,18 @@ final class ProfileViewController: UIViewController {
 
     @objc
     private func editButtonTapped() {
-        let profile = ProfileEdited(name: profileName.text ?? "",
-                                    description: profileDescription.text ?? "",
-                                    website: profileWebsite.text ?? "")
+        let profile = ProfileEdited(from: viewModel.profile)
         let vc = ProfileEditViewController(ProfileEditViewModel(profile), profileImage.image)
         vc.completionHandler = { [weak self] profile in
             guard let self = self else { return }
-            self.setProfile(profile)
+            self.viewModel.setNewProfile(with: profile)
+            self.viewModel.setProfile(with: profile)
         }
         present(vc, animated: true)
     }
 
     @objc
-    func textTapped() {
+    private func textTapped() {
         if profileDescription.numberOfLines == 0 {
             profileDescriptionExpand(false)
         } else {
@@ -246,10 +250,22 @@ extension ProfileViewController: UITableViewDelegate {
         case 0:
             let vm = ProfileNFTViewModel(viewModel.profile)
             let vc = ProfileNFTViewController(vm)
+            vc.completionHandler = { [weak self] profile in
+                guard let self = self else { return }
+                self.viewModel.setNewProfile(with: profile)
+            }
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
         case 1:
-            break
+            let vm = ProfileFavoriteNFTViewModel(viewModel.profile)
+            let vc = ProfileFavoriteNFTViewController(vm)
+            vc.completionHandler = { [weak self] profile in
+                guard let self = self else { return }
+                self.viewModel.setNewProfile(with: profile)
+                self.viewModel.setProfile(with: profile)
+            }
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         case 2:
             guard let url = URL(string: viewModel.profile.website) else { return }
             openWebView(with: url)

@@ -1,6 +1,7 @@
 import Foundation
 
 protocol ProfileNFTViewModelProtocol {
+    var profile: Profile { get }
     var profileNFTsObservable: Observable<ProfileNFTCellViewModels> { get }
     var pickedSortTypeObservable: Observable<ProfileNFTsSortType?> { get }
     var hidePlaceholder: Bool { get }
@@ -12,11 +13,12 @@ protocol ProfileNFTViewModelProtocol {
 
 final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     private let profileService: ProfileServiceProtocol
+    private let loader: UIBlockingProgressHUDProtocol
 
     private(set) var hidePlaceholder: Bool = false
     private(set) var sorted = ProfileNFTCellViewModels()
     
-    private var profile: Profile
+    let profile: Profile
     private var nft: ProfileNFT?
     private var index = 0
 
@@ -33,25 +35,26 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
 
     init(_ profile: Profile, profileService: ProfileServiceProtocol = ProfileService()) {
         self.profileService = profileService
+        self.loader = UIBlockingProgressHUD()
         self.profile = profile
         if !profile.nfts.isEmpty {
-            showLoader(true)
+            loader.show()
             fetchProfileNFT()
             hidePlaceholder = true
         }
     }
 
     func insertIndex() -> Int {
-        guard let index = sorted.firstIndex(where: { $0.name == nft?.name }) else { return 0 }
+        guard let index = sorted.firstIndex(where: { $0.id == nft?.id }) else { return 0 }
         return index
     }
 
     func changeType(_ type: ProfileNFTsSortType) {
-        showLoader(true)
+        loader.show()
         pickedSortType = type
         storedSortType = type
         sort()
-        showLoader(false)
+        loader.dismiss()
     }
 
     private func fetchProfileNFT() {
@@ -68,7 +71,7 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
                 }
             }
         } else {
-            showLoader(false)
+            loader.dismiss()
         }
     }
 
@@ -109,15 +112,6 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
 
     func getCellViewModel(at indexPath: IndexPath) -> ProfileNFTCellViewModel {
         return sorted[indexPath.row]
-    }
-
-    private func showLoader(_ isShow: Bool) {
-        switch isShow {
-        case true:
-            UIBlockingProgressHUD.show()
-        case false:
-            UIBlockingProgressHUD.dismiss()
-        }
     }
 }
 
