@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		290FCBA72AAB479800EC3B20 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290FCBA62AAB479800EC3B20 /* Cache.swift */; };
 		292B28702AA11BAC002824B5 /* ProfileNFTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292B286F2AA11BAC002824B5 /* ProfileNFTViewModel.swift */; };
 		292B28732AA1220C002824B5 /* ProfileNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292B28722AA1220C002824B5 /* ProfileNFTTableViewCell.swift */; };
 		292B28752AA2094F002824B5 /* UserDefaults+Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292B28742AA2094F002824B5 /* UserDefaults+Enum.swift */; };
@@ -78,6 +79,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		290FCBA62AAB479800EC3B20 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		292B286F2AA11BAC002824B5 /* ProfileNFTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNFTViewModel.swift; sourceTree = "<group>"; };
 		292B28722AA1220C002824B5 /* ProfileNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNFTTableViewCell.swift; sourceTree = "<group>"; };
 		292B28742AA2094F002824B5 /* UserDefaults+Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Enum.swift"; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				2932BBFC2A9CBB74007FD4CE /* ProfileService.swift */,
+				290FCBA62AAB479800EC3B20 /* Cache.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -723,6 +726,7 @@
 				293264292AA0FC10000EC052 /* ProfileNFT.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
+				290FCBA72AAB479800EC3B20 /* Cache.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				292B28752AA2094F002824B5 /* UserDefaults+Enum.swift in Sources */,
 				2967C49E2A98BBCA0074D074 /* Labels.swift in Sources */,

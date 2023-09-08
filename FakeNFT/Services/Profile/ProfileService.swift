@@ -41,6 +41,10 @@ final class ProfileService: ProfileServiceProtocol {
         guard Thread.isMainThread else { return }
         task?.cancel()
 
+        if let cached = NFTCache.cacheNFT["NFT" + id] {
+            return completion(.success(cached))
+        }
+
         let request = ProfileNFTGetRequest(id: id)
         let task = networkClient.send(
             request: request,
@@ -50,6 +54,7 @@ final class ProfileService: ProfileServiceProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profileNFT):
+                    NFTCache.cacheNFT["NFT" + id] = profileNFT
                     completion(.success(profileNFT))
                 case .failure(let error):
                     print(error)
@@ -65,6 +70,10 @@ final class ProfileService: ProfileServiceProtocol {
         guard Thread.isMainThread else { return }
         task?.cancel()
 
+        if let cached = NFTCache.cacheAuthor["Author" + id] {
+            return completion(.success(cached))
+        }
+
         let request = AuthorGetRequest(id: id)
         let task = networkClient.send(
             request: request,
@@ -73,8 +82,9 @@ final class ProfileService: ProfileServiceProtocol {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success(let profileNFT):
-                    completion(.success(profileNFT))
+                case .success(let author):
+                    NFTCache.cacheAuthor["Author" + id] = author
+                    completion(.success(author))
                 case .failure(let error):
                     print(error)
                     completion(.failure(error))
