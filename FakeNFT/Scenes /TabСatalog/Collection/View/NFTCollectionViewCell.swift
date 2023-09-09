@@ -2,6 +2,7 @@ import UIKit
 import Kingfisher
 
 protocol NFTCollectionViewCellDelegate: AnyObject {
+    func didTapCart(in cell: NFTCollectionViewCell)
     func didTapLike(in cell: NFTCollectionViewCell)
 }
 
@@ -121,6 +122,7 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     @objc
     private func didTapCartButton() {
+        delegate?.didTapCart(in: self)
     }
     
     @objc

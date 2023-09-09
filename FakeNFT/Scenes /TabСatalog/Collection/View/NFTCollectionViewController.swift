@@ -219,6 +219,14 @@ final class NFTCollectionViewController: UIViewController {
                 self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
             }
         }
+        viewModel.$orderModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.nftCollection.reloadData()
+            }
+        }
         viewModel.$profileModel.bind { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self else {
@@ -272,6 +280,13 @@ extension NFTCollectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - NFTCollectionViewCellDelegate
 
 extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
+    
+    func didTapCart(in cell: NFTCollectionViewCell) {
+        guard let indexPath = nftCollection.indexPath(for: cell) else {
+            return
+        }
+        viewModel.toggleCartForNFT(at: indexPath)
+    }
     
     func didTapLike(in cell: NFTCollectionViewCell) {
         guard let indexPath = nftCollection.indexPath(for: cell) else {

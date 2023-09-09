@@ -12,7 +12,7 @@ final class NFTCollectionViewModel {
     private(set) var userModel: UserModel?
     @Observable
     private(set) var nftModels: Array<NFTModel> = []
-    
+    @Observable
     private(set) var orderModel: OrderModel?
     @Observable
     private(set) var profileModel: ProfileModel?
@@ -35,6 +35,20 @@ final class NFTCollectionViewModel {
     func nftModelForCell(at indexPath: IndexPath) -> NFTModel? {
         let id = getNFTID(by: indexPath)
         return nftModels.first(where: { $0.id == id })
+    }
+    
+    func toggleCartForNFT(at indexPath: IndexPath) {
+        guard var inCartIDs = orderModel?.inCartNFTIDs else {
+            return
+        }
+        let id = getNFTID(by: indexPath)
+        
+        if let index = inCartIDs.firstIndex(of: id) {
+            inCartIDs.remove(at: index)
+        } else {
+            inCartIDs.append(id)
+        }
+        updateOrder(using: PutOrderDTO(nfts: inCartIDs))
     }
     
     func toggleLikeForNFT(at indexPath: IndexPath) {
@@ -119,6 +133,23 @@ final class NFTCollectionViewModel {
             switch result {
             case .success(let networkModel):
                 self.profileModel = ProfileModel(from: networkModel)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func updateOrder(using dto: PutOrderDTO) {
+        networkClient.send(
+            request: PutOrderNetworkRequest(with: dto),
+            type: OrderNetworkModel.self
+        ) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            switch result {
+            case .success(let networkModel):
+                self.orderModel = OrderModel(from: networkModel)
             case .failure(let error):
                 print(error)
             }
