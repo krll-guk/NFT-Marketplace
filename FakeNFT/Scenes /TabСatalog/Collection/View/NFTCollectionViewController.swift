@@ -219,6 +219,14 @@ final class NFTCollectionViewController: UIViewController {
                 self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
             }
         }
+        viewModel.$profileModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.nftCollection.reloadData()
+            }
+        }
     }
 }
 
@@ -233,7 +241,8 @@ extension NFTCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         
-        cell.nftModel = viewModel.getNFTModel(by: viewModel.collectionModel.nftIDs[indexPath.item])
+        cell.delegate = self
+        cell.nftModel = viewModel.nftModelForCell(at: indexPath)
         cell.orderModel = viewModel.orderModel
         cell.profileModel = viewModel.profileModel
         
@@ -257,5 +266,17 @@ extension NFTCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+}
+
+// MARK: - NFTCollectionViewCellDelegate
+
+extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
+    
+    func didTapLike(in cell: NFTCollectionViewCell) {
+        guard let indexPath = nftCollection.indexPath(for: cell) else {
+            return
+        }
+        viewModel.toggleLikeForNFT(at: indexPath)
     }
 }

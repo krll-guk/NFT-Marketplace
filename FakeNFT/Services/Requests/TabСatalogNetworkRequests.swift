@@ -37,6 +37,27 @@ struct GetProfileNetworkRequest: NetworkRequest {
     }
 }
 
+struct PutProfileNetworkRequest: NetworkRequest {
+    var endpoint: URL? {
+        URL(string: "/profile/1", relativeTo: baseAPIURL)
+    }
+    var httpMethod: HttpMethod {
+        .put
+    }
+    var dto: Encodable? {
+        putProfileDTO
+    }
+    private let putProfileDTO: PutProfileDTO
+    
+    init(with dto: PutProfileDTO) {
+        self.putProfileDTO = dto
+    }
+}
+
+struct PutProfileDTO: Encodable {
+    let likes: Array<String>
+}
+
 extension String {
     
     var percentEncoded: String {

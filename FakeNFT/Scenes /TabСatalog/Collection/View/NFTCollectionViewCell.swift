@@ -1,9 +1,15 @@
 import UIKit
 import Kingfisher
 
+protocol NFTCollectionViewCellDelegate: AnyObject {
+    func didTapLike(in cell: NFTCollectionViewCell)
+}
+
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     // MARK: Internal properties
+    
+    weak var delegate: NFTCollectionViewCellDelegate?
     
     var nftModel: NFTModel! {
         didSet {
@@ -108,6 +114,7 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         super.prepareForReuse()
         
         nftImage.kf.cancelDownloadTask()
+        ratingStack.arrangedSubviews.forEach({ $0.removeFromSuperview() })
     }
     
     // MARK: Private functions
@@ -118,6 +125,7 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     @objc
     private func didTapFavoriteButton() {
+        delegate?.didTapLike(in: self)
     }
     
     private func fillRatingStack(value: Int) {
