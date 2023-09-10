@@ -84,7 +84,7 @@ final class ProfileEditViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.showErrorAlert()
+            self.present(Alert.error, animated: true)
         }
 
         viewModel.profileObservable.bind { [weak self] profile in
@@ -196,16 +196,6 @@ final class ProfileEditViewController: UIViewController {
             profileWebsite.topAnchor.constraint(equalTo: profileWebsiteTitle.bottomAnchor, constant: 8),
             profileWebsite.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ])
-    }
-
-    private func showErrorAlert() {
-        let alert = UIAlertController(title: .ProfileErrorAlert.title, message: nil, preferredStyle: .alert)
-
-        let action = UIAlertAction(title: .ProfileErrorAlert.button, style: .cancel)
-
-        alert.addAction(action)
-
-        present(alert, animated: true)
     }
 
     @objc

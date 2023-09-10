@@ -92,7 +92,7 @@ final class ProfileViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.showErrorAlert()
+            self.present(Alert.error, animated: true)
         }
 
         viewModel.profileObservable.bind { [weak self] profile in
@@ -164,16 +164,6 @@ final class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 162)
         ])
-    }
-
-    private func showErrorAlert() {
-        let alert = UIAlertController(title: .ProfileErrorAlert.title, message: nil, preferredStyle: .alert)
-
-        let action = UIAlertAction(title: .ProfileErrorAlert.button, style: .cancel)
-
-        alert.addAction(action)
-
-        present(alert, animated: true)
     }
 
     private func setProfile(_ profile: Profile) {

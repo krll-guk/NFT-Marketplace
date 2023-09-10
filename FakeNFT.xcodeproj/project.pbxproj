@@ -35,6 +35,7 @@
 		2967C4A32A98C8E70074D074 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2967C4A22A98C8E70074D074 /* SF-Pro-Text-Bold.otf */; };
 		2967C4A52A98C91E0074D074 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2967C4A42A98C91E0074D074 /* SF-Pro-Text-Medium.otf */; };
 		2967C4A72A98EA230074D074 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2967C4A62A98EA230074D074 /* Observable.swift */; };
+		298D74772AAE5769003A0992 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298D74762AAE5769003A0992 /* Alert.swift */; };
 		299A148C2A9E0D6E0061A745 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A148B2A9E0D6E0061A745 /* ProfileTableViewCell.swift */; };
 		299A14942A9E37C30061A745 /* ProfileEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14932A9E37C30061A745 /* ProfileEdited.swift */; };
 		299A14962A9E37ED0061A745 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299A14952A9E37ED0061A745 /* ProfileEditViewController.swift */; };
@@ -107,6 +108,7 @@
 		2967C4A22A98C8E70074D074 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		2967C4A42A98C91E0074D074 /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
 		2967C4A62A98EA230074D074 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		298D74762AAE5769003A0992 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		299A148B2A9E0D6E0061A745 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		299A148D2A9E2AE70061A745 /* Profile_decomposition.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Profile_decomposition.md; sourceTree = "<group>"; };
 		299A14932A9E37C30061A745 /* ProfileEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEdited.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				299A14992A9E52B50061A745 /* UIViewController+hideKeyboard.swift */,
 				2932BC082A9D074D007FD4CE /* UIBlockingProgressHUD.swift */,
 				292B28742AA2094F002824B5 /* UserDefaults+Enum.swift */,
+				298D74762AAE5769003A0992 /* Alert.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				292B28772AA21E6B002824B5 /* ProfileNFTCellViewModel.swift in Sources */,
 				299A14982A9E38050061A745 /* ProfileEditViewModel.swift in Sources */,
 				2967C48E2A989E740074D074 /* TabBarController.swift in Sources */,
+				298D74772AAE5769003A0992 /* Alert.swift in Sources */,
 				2967C4982A98A8140074D074 /* CartViewController.swift in Sources */,
 				2967C4942A98A7C30074D074 /* ProfileViewController.swift in Sources */,
 				2932BC092A9D074D007FD4CE /* UIBlockingProgressHUD.swift in Sources */,

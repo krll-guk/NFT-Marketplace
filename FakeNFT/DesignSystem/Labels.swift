@@ -49,7 +49,8 @@ extension String {
     }
 
     enum ProfileErrorAlert {
-        static let title = NSLocalizedString("", value: "Что-то пошло не так(", comment: "")
+        static let title = NSLocalizedString("", value: "Ошибка", comment: "")
+        static let message = NSLocalizedString("", value: "Что-то пошло не так(", comment: "")
         static let button = NSLocalizedString("", value: "ОК", comment: "")
     }
 }
