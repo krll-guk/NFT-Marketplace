@@ -81,6 +81,12 @@ final class ProfileEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+        viewModel.showAlertObservable.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.showErrorAlert()
+        }
+
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
             self.completionHandler?(profile)
@@ -190,6 +196,16 @@ final class ProfileEditViewController: UIViewController {
             profileWebsite.topAnchor.constraint(equalTo: profileWebsiteTitle.bottomAnchor, constant: 8),
             profileWebsite.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ])
+    }
+
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: .ProfileErrorAlert.title, message: nil, preferredStyle: .alert)
+
+        let action = UIAlertAction(title: .ProfileErrorAlert.button, style: .cancel)
+
+        alert.addAction(action)
+
+        present(alert, animated: true)
     }
 
     @objc

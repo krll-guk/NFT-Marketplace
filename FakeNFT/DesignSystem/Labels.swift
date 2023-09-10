@@ -47,4 +47,9 @@ extension String {
     enum ProfileFavoriteNFT {
         static let placeholder = NSLocalizedString("", value: "У Вас ещё нет избранных NFT", comment: "")
     }
+
+    enum ProfileErrorAlert {
+        static let title = NSLocalizedString("", value: "Что-то пошло не так(", comment: "")
+        static let button = NSLocalizedString("", value: "ОК", comment: "")
+    }
 }

@@ -89,6 +89,12 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+        viewModel.showAlertObservable.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.showErrorAlert()
+        }
+
         viewModel.profileObservable.bind { [weak self] profile in
             guard let self = self else { return }
             self.setProfile(profile)
@@ -158,6 +164,16 @@ final class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 162)
         ])
+    }
+
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: .ProfileErrorAlert.title, message: nil, preferredStyle: .alert)
+
+        let action = UIAlertAction(title: .ProfileErrorAlert.button, style: .cancel)
+
+        alert.addAction(action)
+
+        present(alert, animated: true)
     }
 
     private func setProfile(_ profile: Profile) {

@@ -55,6 +55,11 @@ final class ProfileFavoriteNFTViewController: UIViewController {
         super.viewDidLoad()
         setupView()
 
+        viewModel.showAlertObservable.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.showErrorAlert()
+        }
+
         viewModel.hidePlaceholderObservable.bind { [weak self] _ in
             guard let self = self else { return }
             self.hidePlaceholder(self.viewModel.hidePlaceholder)
@@ -100,6 +105,16 @@ final class ProfileFavoriteNFTViewController: UIViewController {
             placeholder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             placeholder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: .ProfileErrorAlert.title, message: nil, preferredStyle: .alert)
+
+        let action = UIAlertAction(title: .ProfileErrorAlert.button, style: .cancel)
+
+        alert.addAction(action)
+
+        present(alert, animated: true)
     }
 
     private func hidePlaceholder(_ isHide: Bool) {

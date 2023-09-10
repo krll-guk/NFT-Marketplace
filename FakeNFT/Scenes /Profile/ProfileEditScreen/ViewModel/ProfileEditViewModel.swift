@@ -1,6 +1,7 @@
 import Foundation
 
 protocol ProfileEditViewModelProtocol {
+    var showAlertObservable: Observable<Bool> { get }
     func setProfileEdited(_ value: ProfileEdited)
     var profileEdited: ProfileEdited { get }
     var profile: Profile { get }
@@ -12,6 +13,10 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
     private let loader: UIBlockingProgressHUDProtocol
 
     private(set) var profileEdited: ProfileEdited
+
+    @Observable
+    private var showAlert = false
+    var showAlertObservable: Observable<Bool> { $showAlert }
 
     @Observable
     private(set) var profile: Profile
@@ -33,7 +38,17 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
                 self.profile = profile
                 self.loader.dismiss()
             case .failure:
-                self.changeProfile()
+                switch self.profileService.checkErrors() {
+                case true:
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 4) {
+                        self.changeProfile()
+                    }
+                case false:
+                    DispatchQueue.main.async {
+                        self.loader.dismiss()
+                        self.showAlert.toggle()
+                    }
+                }
             }
         }
     }

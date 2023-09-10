@@ -1,6 +1,7 @@
 import Foundation
 
 protocol ProfileNFTViewModelProtocol {
+    var showAlertObservable: Observable<Bool> { get }
     var profile: Profile { get }
     var profileNFTsObservable: Observable<ProfileNFTCellViewModels> { get }
     var pickedSortTypeObservable: Observable<ProfileNFTsSortType?> { get }
@@ -20,7 +21,11 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     
     let profile: Profile
     private var nft: ProfileNFT?
-    private var index = 0
+    private var nfts: [String]
+
+    @Observable
+    private var showAlert = false
+    var showAlertObservable: Observable<Bool> { $showAlert }
 
     @StoredProperty("ProfileNFTsSortType", defaultValue: ProfileNFTsSortType.byRating)
     private var storedSortType: ProfileNFTsSortType
@@ -37,9 +42,10 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
         self.profileService = profileService
         self.loader = UIBlockingProgressHUD()
         self.profile = profile
+        self.nfts = profile.nfts
         if !profile.nfts.isEmpty {
             loader.show()
-            fetchProfileNFT()
+            fetch()
             hidePlaceholder = true
         }
     }
@@ -57,41 +63,66 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
         loader.dismiss()
     }
 
-    private func fetchProfileNFT() {
-        if profileNFTs.count < profile.nfts.count {
-            let id = profile.nfts[index]
-            profileService.getProfileNFT(with: id) { [weak self] result in
+    private func fetch() {
+        let group = DispatchGroup()
+
+        nfts.forEach {
+            group.enter()
+            profileService.getProfileNFT(with: $0) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let nft):
-                    self.index += 1
-                    self.fetchAuthorName(with: nft)
+                    group.enter()
+                    self.fetchAuthorName(with: nft) {
+                        group.leave()
+                    }
                 case .failure:
-                    self.fetchProfileNFT()
+                    break
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            guard let self else { return }
+            if self.profile.nfts.count == self.profileNFTs.count {
+                self.loader.dismiss()
+            } else {
+                switch self.profileService.checkErrors() {
+                case true:
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 8) {
+                        self.fetch()
+                    }
+                case false:
+                    DispatchQueue.main.async {
+                        self.loader.dismiss()
+                        self.showAlert.toggle()
+                    }
                 }
             }
-        } else {
-            loader.dismiss()
         }
     }
 
-    private func fetchAuthorName(with nft: ProfileNFT) {
+    private func fetchAuthorName(with nft: ProfileNFT, completion: @escaping () -> Void) {
         profileService.getAuthor(with: nft.author) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let author):
-                self.nft = nft
-                self.sorted.append(
-                    ProfileNFTCellViewModel(from: nft,
-                                            isLiked: self.isLiked(),
-                                            author: author.name)
-                )
-                self.sort()
-                self.profileNFTs = self.sorted
-                self.fetchProfileNFT()
+                self.nfts = self.nfts.filter { $0 != nft.id }
+                DispatchQueue.main.async {
+                    self.nft = nft
+                    self.sorted.append(
+                        ProfileNFTCellViewModel(from: nft,
+                                                isLiked: self.isLiked(),
+                                                author: author.name)
+                    )
+                    self.sort()
+                    self.profileNFTs = self.sorted
+                }
             case .failure:
-                self.fetchAuthorName(with: nft)
+                break
             }
+            completion()
         }
     }
 

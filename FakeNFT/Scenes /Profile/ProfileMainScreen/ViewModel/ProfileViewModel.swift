@@ -1,6 +1,7 @@
 import Foundation
 
 protocol ProfileViewModelProtocol {
+    var showAlertObservable: Observable<Bool> { get }
     var profileObservable: Observable<Profile> { get }
     var profile: Profile { get }
     func syncProfile()
@@ -11,6 +12,10 @@ protocol ProfileViewModelProtocol {
 final class ProfileViewModel: ProfileViewModelProtocol {
     private let profileService: ProfileServiceProtocol
     private let loader: UIBlockingProgressHUDProtocol
+
+    @Observable
+    private var showAlert = false
+    var showAlertObservable: Observable<Bool> { $showAlert }
 
     @Observable
     private(set) var profile: Profile
@@ -37,7 +42,17 @@ final class ProfileViewModel: ProfileViewModelProtocol {
                 self.newProfile = profile
                 self.loader.dismiss()
             case .failure:
-                self.fetchProfile()
+                switch self.profileService.checkErrors() {
+                case true:
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 4) {
+                        self.fetchProfile()
+                    }
+                case false:
+                    DispatchQueue.main.async {
+                        self.loader.dismiss()
+                        self.showAlert.toggle()
+                    }
+                }
             }
         }
     }
