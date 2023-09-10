@@ -161,9 +161,9 @@
 		2967C4902A98A55C0074D074 /* TabСatalog */ = {
 			isa = PBXGroup;
 			children = (
-				8E4623822AA76C020080C67F /* Author */,
-				8E9CE40B2A99076C0083B285 /* Catalog */,
-				8E9CE4112A9A094B0083B285 /* Collection */,
+				8E4623822AA76C020080C67F /* AuthorDetails */,
+				8E9CE40B2A99076C0083B285 /* NFTCatalog */,
+				8E9CE4112A9A094B0083B285 /* NFTCollection */,
 			);
 			path = "TabСatalog";
 			sourceTree = "<group>";
@@ -368,15 +368,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		8E4623822AA76C020080C67F /* Author */ = {
+		8E4623822AA76C020080C67F /* AuthorDetails */ = {
 			isa = PBXGroup;
 			children = (
 				8E4623832AA76C6C0080C67F /* AuthorDetailsViewController.swift */,
 			);
-			path = Author;
+			path = AuthorDetails;
 			sourceTree = "<group>";
 		};
-		8E9CE40B2A99076C0083B285 /* Catalog */ = {
+		8E9CE40B2A99076C0083B285 /* NFTCatalog */ = {
 			isa = PBXGroup;
 			children = (
 				8E4623772A9DEFCF0080C67F /* Model */,
@@ -384,7 +384,7 @@
 				8E4623722A9DE9F60080C67F /* ViewModel */,
 				8E4623852AA9BA8A0080C67F /* SortTypeStorage.swift */,
 			);
-			path = Catalog;
+			path = NFTCatalog;
 			sourceTree = "<group>";
 		};
 		8E9CE40D2A99082F0083B285 /* View */ = {
@@ -396,7 +396,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		8E9CE4112A9A094B0083B285 /* Collection */ = {
+		8E9CE4112A9A094B0083B285 /* NFTCollection */ = {
 			isa = PBXGroup;
 			children = (
 				8E46237D2A9F88E40080C67F /* Model */,
@@ -404,7 +404,7 @@
 				8E46237A2A9F81F40080C67F /* ViewModel */,
 				8E46236E2A9B54170080C67F /* CollectionWidthParameters.swift */,
 			);
-			path = Collection;
+			path = NFTCollection;
 			sourceTree = "<group>";
 		};
 		8E9CE4122A9A096A0083B285 /* View */ = {
