@@ -1,5 +1,6 @@
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class NFTCollectionViewController: UIViewController {
     
@@ -225,6 +226,7 @@ final class NFTCollectionViewController: UIViewController {
                     return
                 }
                 self.nftCollection.reloadData()
+                ProgressHUD.dismiss()
             }
         }
         viewModel.$profileModel.bind { [weak self] _ in
@@ -233,6 +235,12 @@ final class NFTCollectionViewController: UIViewController {
                     return
                 }
                 self.nftCollection.reloadData()
+                ProgressHUD.dismiss()
+            }
+        }
+        viewModel.$isNetworkError.bind { _ in
+            DispatchQueue.main.async {
+                ProgressHUD.dismiss()
             }
         }
     }
@@ -285,6 +293,7 @@ extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
         guard let indexPath = nftCollection.indexPath(for: cell) else {
             return
         }
+        ProgressHUD.show(interaction: false)
         viewModel.toggleCartForNFT(at: indexPath)
     }
     
@@ -292,6 +301,7 @@ extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
         guard let indexPath = nftCollection.indexPath(for: cell) else {
             return
         }
+        ProgressHUD.show(interaction: false)
         viewModel.toggleLikeForNFT(at: indexPath)
     }
 }

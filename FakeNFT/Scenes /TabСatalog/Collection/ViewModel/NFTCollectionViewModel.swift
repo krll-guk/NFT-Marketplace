@@ -16,6 +16,8 @@ final class NFTCollectionViewModel {
     private(set) var orderModel: OrderModel?
     @Observable
     private(set) var profileModel: ProfileModel?
+    @Observable
+    private(set) var isNetworkError: Bool = false
     
     private let networkClient = DefaultNetworkClient()
     
@@ -151,6 +153,7 @@ final class NFTCollectionViewModel {
             case .success(let networkModel):
                 self.orderModel = OrderModel(from: networkModel)
             case .failure(let error):
+                self.isNetworkError = true
                 print(error)
             }
         }
@@ -168,6 +171,7 @@ final class NFTCollectionViewModel {
             case .success(let networkModel):
                 self.profileModel = ProfileModel(from: networkModel)
             case .failure(let error):
+                self.isNetworkError = true
                 print(error)
             }
         }
