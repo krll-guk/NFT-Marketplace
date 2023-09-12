@@ -67,10 +67,10 @@ final class CartPurchaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.viewDidLoad {
-            self.configureCollection()
-            self.setupView()
-            self.confirmView.delegate = self
+        viewModel.viewDidLoad { [weak self] in 
+            self?.configureCollection()
+            self?.setupView()
+            self?.confirmView.delegate = self
         }
     }
 

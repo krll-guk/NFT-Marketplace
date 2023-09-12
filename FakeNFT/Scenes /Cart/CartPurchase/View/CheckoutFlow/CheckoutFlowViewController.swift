@@ -87,7 +87,10 @@ final class CheckoutFlowViewController: UIViewController {
     }
                          
     @objc func successButtonTapped() {
-        // TODO: Make a transition into Catalog
+        let tabBarController = TabBarController()
+        tabBarController.modalPresentationStyle = .fullScreen
+        tabBarController.selectedIndex = 1
+        present(tabBarController, animated: true)
     }
     
     private func configureFlow() {
