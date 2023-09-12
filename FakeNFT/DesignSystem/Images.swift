@@ -14,7 +14,6 @@ extension UIImage {
         static let add_cart = UIImage(named: "Add-to-card")
         static let remove_cart = UIImage(named: "Remove-from-cart")
         static let star = UIImage(named: "Star")
-        static let star_filled = UIImage(named: "Star-filled")
     }
 
     enum NavigationBar {
