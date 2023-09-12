@@ -5,8 +5,11 @@ final class NFTCatalogTableViewCell: UITableViewCell, ReuseIdentifying {
     
     // MARK: Internal properties
     
-    var catalogModel: NFTCatalogModel! {
+    var catalogModel: NFTCatalogModel? {
         didSet {
+            guard let catalogModel = catalogModel else {
+                return
+            }
             coverImage.kf.indicatorType = .activity
             coverImage.kf.setImage(with: URL(string: catalogModel.coverLink.percentEncoded))
             

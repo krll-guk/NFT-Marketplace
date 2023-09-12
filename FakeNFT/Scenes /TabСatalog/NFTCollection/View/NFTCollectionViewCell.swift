@@ -12,8 +12,11 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     weak var delegate: NFTCollectionViewCellDelegate?
     
-    var nftModel: NFTModel! {
+    var nftModel: NFTModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             nftImage.kf.indicatorType = .activity
             nftImage.kf.setImage(with: URL(string: nftModel.imageLink.percentEncoded))
             
@@ -25,6 +28,9 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     var orderModel: OrderModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             let isInCart = orderModel?.inCartNFTIDs.contains(nftModel.id) ?? false
             cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
         }
@@ -32,6 +38,9 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     var profileModel: ProfileModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             let isLiked = profileModel?.likedNFTIDs.contains(nftModel.id) ?? false
             favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
             favoriteButton.setImage(.NFTCard.heart, for: .normal)

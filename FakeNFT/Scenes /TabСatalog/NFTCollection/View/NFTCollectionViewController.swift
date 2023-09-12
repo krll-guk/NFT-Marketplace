@@ -81,6 +81,10 @@ final class NFTCollectionViewController: UIViewController {
         setupNavigationBar()
         makeViewLayout()
         assignBindings()
+        
+        if viewModel.nftModels.isEmpty {
+            ProgressHUD.show()
+        }
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -218,6 +222,7 @@ final class NFTCollectionViewController: UIViewController {
                 self.nftCollection.reloadData()
                 let contentHeight = self.nftCollection.collectionViewLayout.collectionViewContentSize.height
                 self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
+                ProgressHUD.dismiss()
             }
         }
         viewModel.$orderModel.bind { [weak self] _ in

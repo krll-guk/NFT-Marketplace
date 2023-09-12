@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 final class NFTCatalogViewController: UIViewController {
     
@@ -27,6 +28,10 @@ final class NFTCatalogViewController: UIViewController {
         setupNavigationBar()
         makeViewLayout()
         assignBindings()
+        
+        if viewModel.catalogModels.isEmpty {
+            ProgressHUD.show()
+        }
     }
     
     // MARK: Private functions
@@ -106,6 +111,7 @@ final class NFTCatalogViewController: UIViewController {
                     return
                 }
                 self.catalogTable.reloadData()
+                ProgressHUD.dismiss()
             }
         }
     }
