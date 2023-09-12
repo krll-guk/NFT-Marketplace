@@ -39,7 +39,6 @@ final class ProfileService: ProfileServiceProtocol {
                     }
                 case .failure(let error):
                     self.errors.append(error.localizedDescription)
-                    print(error)
                     completion(.failure(error))
                 }
             }
@@ -64,7 +63,6 @@ final class ProfileService: ProfileServiceProtocol {
                     completion(.success(profileNFT))
                 case .failure(let error):
                     self.errors.append(error.localizedDescription)
-                    print(error)
                     completion(.failure(error))
                 }
             }
@@ -90,7 +88,6 @@ final class ProfileService: ProfileServiceProtocol {
                     completion(.success(author))
                 case .failure(let error):
                     self.errors.append(error.localizedDescription)
-                    print(error)
                     completion(.failure(error))
                 }
 
