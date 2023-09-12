@@ -89,7 +89,7 @@ final class ProfileFavoriteNFTCollectionViewCell: UICollectionViewCell, ReuseIde
     }
 
     private func setupContentView() {
-        backgroundColor = .Themed.white
+        backgroundColor = .clear
 
         [image, heart, nameStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false

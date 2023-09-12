@@ -126,7 +126,7 @@ final class ProfileNFTTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private func setupContentView() {
         selectionStyle = .none
-        backgroundColor = .Themed.white
+        backgroundColor = .clear
 
         [image, heart, nameStack, priceStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false

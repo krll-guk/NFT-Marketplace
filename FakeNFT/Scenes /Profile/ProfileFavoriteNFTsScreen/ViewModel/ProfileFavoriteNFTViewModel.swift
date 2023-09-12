@@ -21,6 +21,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
     private(set) var newProfileFavoriteNFTs = ProfileFavoriteNFTCellViewModels()
     private var newLikes: ProfileLikes
     private var likes: [String]
+    private var nft: ProfileNFT?
 
     @Observable
     private var showAlert = false
@@ -52,7 +53,8 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
     }
 
     func insertIndex() -> Int {
-        return newProfileFavoriteNFTs.count - 1
+        guard let index = newProfileFavoriteNFTs.firstIndex(where: { $0.id == nft?.id }) else { return 0 }
+        return index
     }
 
     private func fetch() {
@@ -92,7 +94,11 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
             case .success(let nft):
                 self.likes = self.likes.filter { $0 != id }
                 DispatchQueue.main.async {
+                    self.nft = nft
                     self.newProfileFavoriteNFTs.append(ProfileFavoriteNFTCellViewModel(from: nft))
+                    self.newProfileFavoriteNFTs = self.profile.likes.reversed().compactMap { id in
+                        self.newProfileFavoriteNFTs.first(where: { id == $0.id })
+                    }
                     self.profileFavoriteNFTs = self.newProfileFavoriteNFTs
                 }
             case .failure:
@@ -127,17 +133,10 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
     }
 
     func checkLikes(at indexPath: IndexPath) {
-        var likes = [String]()
-        newLikes.likes.forEach {
-            if $0 != newProfileFavoriteNFTs[indexPath.row].id {
-                likes.append($0)
-            }
-        }
+        let likes = profile.likes.filter { $0 != newProfileFavoriteNFTs[indexPath.row].id }
         newLikes = ProfileLikes(likes: likes)
 
-        newProfileFavoriteNFTs = newProfileFavoriteNFTs.filter {
-            $0.id != newProfileFavoriteNFTs[indexPath.row].id
-        }
+        newProfileFavoriteNFTs.remove(at: indexPath.row)
 
         if newLikes.likes.isEmpty {
             hidePlaceholder = false

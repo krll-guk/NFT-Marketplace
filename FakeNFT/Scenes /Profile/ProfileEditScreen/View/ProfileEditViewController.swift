@@ -3,7 +3,7 @@ import UIKit
 final class ProfileEditViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
-    private var viewModel: ProfileEditViewModelProtocol
+    private let viewModel: ProfileEditViewModelProtocol
 
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)

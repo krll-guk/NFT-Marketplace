@@ -8,7 +8,6 @@ protocol ProfileServiceProtocol {
 }
 
 final class ProfileService: ProfileServiceProtocol {
-    private var task: NetworkTask?
     private let networkClient: NetworkClient
     private var errors = [String]()
 
@@ -48,7 +47,6 @@ final class ProfileService: ProfileServiceProtocol {
     }
 
     func getProfileNFT(with id: String, completion: @escaping (Result<ProfileNFT, Error>) -> Void) {
-
         if let cached = NFTCache.cacheNFT[Constants.NFT.rawValue + id] {
             return completion(.success(cached))
         }
@@ -75,7 +73,6 @@ final class ProfileService: ProfileServiceProtocol {
     }
 
     func getAuthor(with id: String, completion: @escaping (Result<AuthorName, Error>) -> Void) {
-
         if let cached = NFTCache.cacheAuthor[Constants.author.rawValue + id] {
             return completion(.success(cached))
         }
@@ -103,7 +100,7 @@ final class ProfileService: ProfileServiceProtocol {
 }
 
 extension ProfileService {
-    enum Constants: String {
+    private enum Constants: String {
         case author, NFT
     }
 }

@@ -3,7 +3,7 @@ import UIKit
 final class ProfileNFTViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
-    private var viewModel: ProfileNFTViewModelProtocol
+    private let viewModel: ProfileNFTViewModelProtocol
 
     private lazy var sortButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -35,7 +35,7 @@ final class ProfileNFTViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .Themed.white
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         tableView.register(ProfileNFTTableViewCell.self)
@@ -121,7 +121,7 @@ final class ProfileNFTViewController: UIViewController {
 
     private func updateTable() {
         tableView.performBatchUpdates {
-            tableView.insertRows(at: [IndexPath(row: viewModel.insertIndex(), section: 0)], with: .middle)
+            tableView.insertRows(at: [IndexPath(row: viewModel.insertIndex(), section: 0)], with: .fade)
         }
     }
 

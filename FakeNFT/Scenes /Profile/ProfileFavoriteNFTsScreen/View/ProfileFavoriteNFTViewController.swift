@@ -3,7 +3,7 @@ import UIKit
 final class ProfileFavoriteNFTViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
-    private var viewModel: ProfileFavoriteNFTViewModelProtocol
+    private let viewModel: ProfileFavoriteNFTViewModelProtocol
 
     private lazy var backButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -28,7 +28,7 @@ final class ProfileFavoriteNFTViewController: UIViewController {
             collectionViewLayout: UICollectionViewFlowLayout()
         )
         collectionView.register(ProfileFavoriteNFTCollectionViewCell.self)
-        collectionView.backgroundColor = .Themed.white
+        collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
