@@ -55,6 +55,18 @@ final class CartViewModel: CartViewModelProtocol {
             }
         }
     }
+    func didAddNFT(nft: NFTCartModel, at index: Int) {
+        cartModels.insert(nft, at: index)
+        model.addNFTFromStatistics(id: "1",
+                                   nfts: cartModels.map{ $0.id }) { result in
+            switch result {
+            case .success(let order):
+                print("\(order.id) successfully added")
+            case .failure(let error):
+                print("\(error.localizedDescription) couldn't add NFT")
+            }
+        }
+    }
     
     func didSortByPrice() {
         cartModels.sort { $0.price > $1.price}
