@@ -8,8 +8,7 @@
 import UIKit
 
 final class RatingStackView: UIStackView {
-    private let fillStarImage: UIImage? = UIImage.NFTCard.star_filled
-    private let emptyStarImage: UIImage? = UIImage.NFTCard.star
+    private let starImage: UIImage? = UIImage.NFTCard.star
     
     init(rating: Int = 5) {
         super.init(frame: .zero)
@@ -19,8 +18,8 @@ final class RatingStackView: UIStackView {
         
         (1...rating).forEach {
             let imageView = UIImageView()
-            imageView.image = emptyStarImage
-            imageView.tintColor = UIColor.Universal.gray
+            imageView.image = starImage
+            imageView.tintColor = UIColor.Universal.yellow
             imageView.tag = $0
             addArrangedSubview(imageView)
         }
@@ -33,7 +32,8 @@ final class RatingStackView: UIStackView {
     func setupRating(rating: Int) {
         subviews.forEach {
             if let imageView = $0 as? UIImageView {
-                imageView.image = imageView.tag > rating ? emptyStarImage : fillStarImage
+                imageView.image = starImage
+                imageView.tintColor = imageView.tag > rating ? UIColor.Themed.lightGray : UIColor.Universal.yellow
             }
         }
     }
