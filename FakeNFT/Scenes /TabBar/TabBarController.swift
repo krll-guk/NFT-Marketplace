@@ -26,14 +26,14 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
 
-        let catalogVC = UINavigationController(rootViewController: CatalogViewController())
+        let catalogVC = UINavigationController(rootViewController: NFTCatalogViewController())
         catalogVC.tabBarItem = UITabBarItem(
             title: .TabBar.catalog,
             image: .TabBar.catalog,
             selectedImage: nil
         )
-
-        let cartVC = UINavigationController(rootViewController: CartViewController())
+        let viewModel = CartViewModel(model: NFTCartManager(networkClient: DefaultNetworkClient()))
+        let cartVC = UINavigationController(rootViewController: CartViewController(viewModel: viewModel))
         cartVC.tabBarItem = UITabBarItem(
             title: .TabBar.cart,
             image: .TabBar.cart,
