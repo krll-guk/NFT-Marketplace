@@ -10,6 +10,10 @@ import Kingfisher
 import SwiftUI
 
 final class NFTCollectionCell: UICollectionViewCell {
+    private var currentNFT: Nft?
+    private var inCart: Bool = false
+    weak var delegate: CollectionCellDelegate?
+    
     private lazy var likeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage.NFTCard.heart, for: .normal)
@@ -21,9 +25,9 @@ final class NFTCollectionCell: UICollectionViewCell {
     
     private lazy var cartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.NFTCard.add_cart, for: .normal)
+
+        button.addTarget(self, action: #selector(cartButtonPressed), for: .touchUpInside)
         button.tintColor = UIColor.Themed.black
-        button.addTarget(self, action: #selector(cartPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -58,6 +62,7 @@ final class NFTCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         setupAppearance()
     }
     
@@ -67,18 +72,23 @@ final class NFTCollectionCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        configure(with: nil)
+        configure(with: nil, inCart: false)
     }
     
     let ratingView = RatingStackView()
 }
 
 extension NFTCollectionCell {
-    func configure(with nft: Nft?) {
+    func configure(with nft: Nft?, inCart: Bool) {
+        self.currentNFT = nft
+        self.inCart = inCart
+
+        cartButton.setImage(inCart ? UIImage.NFTCard.remove_cart : UIImage.NFTCard.add_cart, for: .normal)
+        
         nameLabel.text = nft?.name
         nameLabel.font = UIFont.Bold.size17
         ratingView.setupRating(rating: nft?.rating ?? 0)
-        
+
         if let price = nft?.price {
             priceLabel.text = String(price) + " ETH"
         } else {
@@ -103,8 +113,14 @@ private extension NFTCollectionCell {
         likeButton.setImage(UIImage.NFTCard.heart_filled, for: .normal)
     }
     
-    @objc func cartPressed() {
-   
+    @objc func cartButtonPressed() {
+        guard let id = self.currentNFT?.id else { return }
+        
+        if inCart {
+            self.delegate?.removeFromCart(id: id)
+        } else {
+            self.delegate?.addToCart(id: id)
+        }
     }
 }
 

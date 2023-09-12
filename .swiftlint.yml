@@ -24,7 +24,6 @@ opt_in_rules:
   - prohibited_super_call
   - empty_count
   - explicit_init
-  - force_unwrapping
   - operator_usage_whitespace
   - array_init
   - block_based_kvo

@@ -8,8 +8,14 @@
 import UIKit
 import ProgressHUD
 
+protocol CollectionCellDelegate: AnyObject {
+    func addToCart(id: String)
+    func removeFromCart(id: String)
+}
+
 final class NFTCollectionViewScreenViewController: UIViewController {
     private var viewModel: NFTCollectionViewScreenViewModel!
+    private var cartManager: NFTCartManager = NFTCartManager(networkClient: DefaultNetworkClient())
     
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -26,7 +32,7 @@ final class NFTCollectionViewScreenViewController: UIViewController {
         button.contentMode = .scaleAspectFit // Set content mode
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30) // Set the desired size
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-
+        
         return button
     }()
     
@@ -49,6 +55,9 @@ final class NFTCollectionViewScreenViewController: UIViewController {
         viewModel.getUserNfts { [weak self] active in
             self?.showLoader(isShow: active)
         }
+        viewModel.fetchCart { [weak self] active in
+            self?.showLoader(isShow: active)
+        }
         view.backgroundColor = UIColor.Themed.white
         setupCollectionView()
     }
@@ -65,7 +74,7 @@ final class NFTCollectionViewScreenViewController: UIViewController {
     private func change() {
         collectionView.reloadData()
     }
-  
+    
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor.Themed.white
@@ -103,11 +112,11 @@ final class NFTCollectionViewScreenViewController: UIViewController {
     }
     
     func showLoader(isShow: Bool) {
-            if isShow {
-                ProgressHUD.show()
-            } else {
-                ProgressHUD.dismiss()
-            }
+        if isShow {
+            ProgressHUD.show()
+        } else {
+            ProgressHUD.dismiss()
+        }
     }
 }
 
@@ -125,7 +134,11 @@ extension NFTCollectionViewScreenViewController: UICollectionViewDataSource {
         }
         
         let nft = viewModel.nfts[indexPath.row]
-        cell.configure(with: nft)
+        let inCart = viewModel.cartItemsIds.contains(nft.id)
+
+        cell.configure(with: nft, inCart: inCart )
+        cell.delegate = self
+
         return cell
     }
     
@@ -163,5 +176,51 @@ extension NFTCollectionViewScreenViewController: UICollectionViewDelegateFlowLay
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         return 20
+    }
+}
+
+extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
+    func addToCart(id: String) {
+        UIBlockingProgressHUD.show()
+        
+        let ids = viewModel.cartItemsIds + [id]
+        
+        cartManager.addNFTFromStatistics(id: "1", nfts: ids) { result in
+            switch result {
+            case .success(let order):
+                UIBlockingProgressHUD.dismiss()
+                self.viewModel.fetchCart { [weak self] active in
+                    self?.showLoader(isShow: active)
+                }
+                print("\(order.id) successfully added")
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("\(error.localizedDescription) couldn't add NFT")
+            }
+        }
+        
+    }
+    
+    func removeFromCart(id: String) {
+        UIBlockingProgressHUD.show()
+        
+        let ids = viewModel.cartItemsIds.filter { $0 != id }
+
+        cartManager.removeNFTFromCart(id: "1", nfts: ids) { result in
+            switch result {
+            case .success(let order):
+                UIBlockingProgressHUD.dismiss()
+                
+                self.viewModel.fetchCart { [weak self] active in
+                    self?.showLoader(isShow: active)
+                }
+                
+                print("\(order.id) successfully removed")
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("\(error.localizedDescription) couldn't add NFT")
+            }
+        }
+        
     }
 }

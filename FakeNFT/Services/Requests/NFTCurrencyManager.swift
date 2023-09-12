@@ -38,7 +38,7 @@ struct CurrencyManager {
         fetchCurrencies { result in
             switch result {
             case .success(let currencies):
-                if let currency = currencies.first(where: {$0.id == currencyId}) {
+                if let currency = currencies.first(where: { $0.id == currencyId }) {
                     completion(.success(currency))
                 }
             case .failure(let failure):
