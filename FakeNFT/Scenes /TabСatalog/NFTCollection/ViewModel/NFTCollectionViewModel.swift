@@ -78,14 +78,16 @@ final class NFTCollectionViewModel {
             request: GetUserNetworkRequest(by: id),
             type: UserNetworkModel.self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModel):
-                self.userModel = UserModel(from: networkModel)
-            case .failure(let error):
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModel):
+                    self.userModel = UserModel(from: networkModel)
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
     }
@@ -95,14 +97,16 @@ final class NFTCollectionViewModel {
             request: GetNFTsNetworkRequest(),
             type: [NFTNetworkModel].self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModels):
-                self.nftModels = networkModels.map({ NFTModel(from: $0) })
-            case .failure(let error):
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModels):
+                    self.nftModels = networkModels.map({ NFTModel(from: $0) })
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
     }
@@ -112,14 +116,16 @@ final class NFTCollectionViewModel {
             request: GetOrderNetworkRequest(),
             type: OrderNetworkModel.self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModel):
-                self.orderModel = OrderModel(from: networkModel)
-            case .failure(let error):
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModel):
+                    self.orderModel = OrderModel(from: networkModel)
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
     }
@@ -129,14 +135,16 @@ final class NFTCollectionViewModel {
             request: GetProfileNetworkRequest(),
             type: ProfileNetworkModel.self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModel):
-                self.profileModel = ProfileModel(from: networkModel)
-            case .failure(let error):
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModel):
+                    self.profileModel = ProfileModel(from: networkModel)
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
     }
@@ -146,15 +154,17 @@ final class NFTCollectionViewModel {
             request: PutOrderNetworkRequest(with: dto),
             type: OrderNetworkModel.self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModel):
-                self.orderModel = OrderModel(from: networkModel)
-            case .failure(let error):
-                self.isNetworkError = true
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModel):
+                    self.orderModel = OrderModel(from: networkModel)
+                case .failure(let error):
+                    self.isNetworkError = true
+                    print(error)
+                }
             }
         }
     }
@@ -164,15 +174,17 @@ final class NFTCollectionViewModel {
             request: PutProfileNetworkRequest(with: dto),
             type: ProfileNetworkModel.self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModel):
-                self.profileModel = ProfileModel(from: networkModel)
-            case .failure(let error):
-                self.isNetworkError = true
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModel):
+                    self.profileModel = ProfileModel(from: networkModel)
+                case .failure(let error):
+                    self.isNetworkError = true
+                    print(error)
+                }
             }
         }
     }

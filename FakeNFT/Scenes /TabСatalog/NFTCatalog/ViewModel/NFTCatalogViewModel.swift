@@ -34,15 +34,17 @@ final class NFTCatalogViewModel {
             request: GetCollectionsNetworkRequest(),
             type: [CollectionNetworkModel].self
         ) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let networkModels):
-                self.catalogModels = networkModels.map({ NFTCatalogModel(from: $0) })
-                self.sortCatalogs(by: SortTypeStorage.shared.sortType)
-            case .failure(let error):
-                print(error)
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let networkModels):
+                    self.catalogModels = networkModels.map({ NFTCatalogModel(from: $0) })
+                    self.sortCatalogs(by: SortTypeStorage.shared.sortType)
+                case .failure(let error):
+                    print(error)
+                }
             }
         }
     }
