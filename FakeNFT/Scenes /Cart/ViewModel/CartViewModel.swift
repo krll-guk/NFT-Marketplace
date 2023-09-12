@@ -3,6 +3,7 @@ protocol CartViewModelProtocol: AnyObject {
     var cartModels: [NFTCartModel] { get }
     var isPlaceholderHidden: Bool { get }
     var isTableViewHidden: Bool { get }
+    var showAlert: ((String) -> Void)? { get set }
     func viewDidLoad(completion: @escaping () -> Void)
     func didDeleteNFT(at index: Int)
     func didSortByPrice()
@@ -12,6 +13,8 @@ protocol CartViewModelProtocol: AnyObject {
 }
 
 final class CartViewModel: CartViewModelProtocol {
+    var showAlert: ((String) -> Void)?
+    
     @Observable
     var cartModels: [NFTCartModel] = []
     
@@ -38,6 +41,7 @@ final class CartViewModel: CartViewModelProtocol {
                     completion()
                 case .failure(let error):
                     print(error.localizedDescription)
+                    self?.showAlert?("Не удалось загрузить данные. Повторите попытку.")
                 }
             }
         }
@@ -58,7 +62,7 @@ final class CartViewModel: CartViewModelProtocol {
     func didAddNFT(nft: NFTCartModel, at index: Int) {
         cartModels.insert(nft, at: index)
         model.addNFTFromStatistics(id: "1",
-                                   nfts: cartModels.map{ $0.id }) { result in
+                                   nfts: cartModels.map { $0.id }) { result in
             switch result {
             case .success(let order):
                 print("\(order.id) successfully added")

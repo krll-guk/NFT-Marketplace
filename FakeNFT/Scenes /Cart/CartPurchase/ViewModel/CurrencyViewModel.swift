@@ -1,6 +1,15 @@
 import Foundation
 
-final class CurrencyViewModel {
+protocol CurrencyViewModelProtocol: AnyObject {
+    var currencies: [CurrencyModel] { get }
+    var isPaymentSuccesful: Bool { get }
+    
+    func viewDidLoad(completion: @escaping () -> Void)
+    func sendGetPayment(selectedId: String, completion: @escaping (Bool) -> Void)
+    
+}
+
+final class CurrencyViewModel: CurrencyViewModelProtocol {
     
     @Observable
     var currencies: [CurrencyModel] = []

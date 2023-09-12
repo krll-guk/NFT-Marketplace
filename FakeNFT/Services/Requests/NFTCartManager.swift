@@ -59,7 +59,7 @@ struct NFTCartManager {
     
     func addNFTFromStatistics(id: String, nfts: [String], completion: @escaping (Result<Order, Error>) -> Void) {
         let request = NFTNetworkRequest(
-            endpoint: URL(string:Constants.ordersAPI.rawValue),
+            endpoint: URL(string: Constants.ordersAPI.rawValue),
             httpMethod: .put,
             dto: Order(id: id, nfts: nfts))
         networkClient.send(request: request, type: Order.self, onResponse: completion)

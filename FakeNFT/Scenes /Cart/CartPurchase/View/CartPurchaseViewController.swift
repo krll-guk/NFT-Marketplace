@@ -6,7 +6,7 @@ protocol CartPurchaseDelegate: AnyObject {
 
 final class CartPurchaseViewController: UIViewController {
     
-    private let viewModel: CurrencyViewModel
+    private let viewModel: CurrencyViewModelProtocol
     private var selectedCurrencyIndexPath: IndexPath?
     private var selectedCurrencyID: String?
     

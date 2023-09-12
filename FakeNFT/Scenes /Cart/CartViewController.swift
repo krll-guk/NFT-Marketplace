@@ -62,6 +62,16 @@ final class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
+        viewModel.showAlert = { [weak self] message in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+                    self?.bindViewModel()
+                }
+                alert.addAction(alertAction)
+                self?.present(alert, animated: true)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
