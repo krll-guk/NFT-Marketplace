@@ -94,7 +94,7 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         
         self.imageURL = nft.images.first
         self.nftNameLabel.text = nft.name
-        self.starView.rating =  nft.rating
+        self.starView.rating = nft.rating
         self.nftPriceLabel.text = "\(nft.price) ETH"
     }
     
