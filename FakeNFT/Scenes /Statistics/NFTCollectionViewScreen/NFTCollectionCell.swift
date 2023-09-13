@@ -12,11 +12,11 @@ import SwiftUI
 final class NFTCollectionCell: UICollectionViewCell {
     private var currentNFT: Nft?
     private var inCart: Bool = false
+    private var isFavorite: Bool = false
     weak var delegate: CollectionCellDelegate?
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.NFTCard.heart, for: .normal)
         button.tintColor = UIColor.Themed.lightGray
         button.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -72,19 +72,21 @@ final class NFTCollectionCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        configure(with: nil, inCart: false)
+        configure(with: nil, inCart: false, isFavorite: false)
     }
     
     let ratingView = RatingStackView()
 }
 
 extension NFTCollectionCell {
-    func configure(with nft: Nft?, inCart: Bool) {
+    func configure(with nft: Nft?, inCart: Bool, isFavorite: Bool) {
         self.currentNFT = nft
         self.inCart = inCart
+        self.isFavorite = isFavorite
 
         cartButton.setImage(inCart ? UIImage.NFTCard.remove_cart : UIImage.NFTCard.add_cart, for: .normal)
-        
+        likeButton.setImage(isFavorite ? UIImage.NFTCard.heart_filled : UIImage.NFTCard.heart, for: .normal)
+
         nameLabel.text = nft?.name
         nameLabel.font = UIFont.Bold.size17
         ratingView.setupRating(rating: nft?.rating ?? 0)
@@ -110,7 +112,9 @@ extension NFTCollectionCell {
 private extension NFTCollectionCell {
     @objc
     func likeTapped() {
-        likeButton.setImage(UIImage.NFTCard.heart_filled, for: .normal)
+        guard let id = self.currentNFT?.id else { return }
+        
+        delegate?.toggleLike(id: id)
     }
     
     @objc func cartButtonPressed() {

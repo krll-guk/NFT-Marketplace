@@ -15,8 +15,10 @@ final class NFTCollectionViewScreenViewModel {
     var onError: ((_ error: Error, _ retryAction: @escaping () -> Void) -> Void)?
     
     private(set) var nftsIds: [Int]?
-    public var cartItemsIds: [String] = [] { didSet { onChange?() }}
     private(set) var nfts: [Nft] = [] { didSet { onChange?() }}
+    
+    public var cartItemsIds: [String] = [] { didSet { onChange?() }}
+    public var likes: [String] = [] { didSet { onChange?() }}
 
     init(model: NFTCollectionViewScreenModel, ids: [Int]? ) {
         self.model = model
@@ -52,6 +54,38 @@ final class NFTCollectionViewScreenViewModel {
                 switch result {
                 case .success(let nfts):
                     self.cartItemsIds = nfts.map { $0.id }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                showLoader(false)
+            }
+        }
+    }
+    
+    func fetchProfile(showLoader: @escaping (_ active: Bool) -> Void ) {
+        showLoader(true)
+        
+        model.getProfile { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self.likes = user.likes
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                showLoader(false)
+            }
+        }
+    }
+    
+    func toggleLikes(likes: [String], showLoader: @escaping (_ active: Bool) -> Void ) {
+        showLoader(true)
+
+        model.toggleLikes(likes: likes) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profile):
+                    self.likes = profile.likes
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

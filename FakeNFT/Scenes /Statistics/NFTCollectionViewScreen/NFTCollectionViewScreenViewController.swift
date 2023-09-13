@@ -11,6 +11,7 @@ import ProgressHUD
 protocol CollectionCellDelegate: AnyObject {
     func addToCart(id: String)
     func removeFromCart(id: String)
+    func toggleLike(id: String)
 }
 
 final class NFTCollectionViewScreenViewController: UIViewController {
@@ -57,6 +58,11 @@ final class NFTCollectionViewScreenViewController: UIViewController {
         }
         viewModel.fetchCart { [weak self] active in
             self?.showLoader(isShow: active)
+        }
+        if viewModel.likes.isEmpty {
+            viewModel.fetchProfile { [weak self] active in
+                self?.showLoader(isShow: active)
+            }
         }
         view.backgroundColor = UIColor.Themed.white
         setupCollectionView()
@@ -135,8 +141,9 @@ extension NFTCollectionViewScreenViewController: UICollectionViewDataSource {
         
         let nft = viewModel.nfts[indexPath.row]
         let inCart = viewModel.cartItemsIds.contains(nft.id)
+        let isFavorite = viewModel.likes.contains(nft.id)
 
-        cell.configure(with: nft, inCart: inCart )
+        cell.configure(with: nft, inCart: inCart, isFavorite: isFavorite)
         cell.delegate = self
 
         return cell
@@ -220,6 +227,23 @@ extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
                 UIBlockingProgressHUD.dismiss()
                 print("\(error.localizedDescription) couldn't add NFT")
             }
+        }
+        
+    }
+    
+    func toggleLike(id: String) {
+        UIBlockingProgressHUD.show()
+
+        var likes: [String] = []
+        
+        if viewModel.likes.contains(id) {
+            likes = viewModel.likes.filter { $0 != id }
+        } else {
+            likes = viewModel.likes + [id]
+        }
+        
+        viewModel.toggleLikes(likes: likes) { _ in
+            UIBlockingProgressHUD.dismiss()
         }
         
     }

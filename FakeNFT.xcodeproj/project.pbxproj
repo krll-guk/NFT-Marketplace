@@ -720,7 +720,7 @@
 				37AF0CEE2AA5C5E300A7D47E /* AgreementViewController.swift in Sources */,
 				2967C4A72A98EA230074D074 /* Observable.swift in Sources */,
 				9A44DBB22A99F849005A0219 /* UserViewCellViewModel.swift in Sources */,
-				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
+				3FC8C39129D2453B0081F015 /* NFTNetworkRequest.swift in Sources */,
 				37AF0CD62AA5C06400A7D47E /* DeleteView.swift in Sources */,
 				37AF0CE82AA5C52300A7D47E /* CurrencyModel.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* NFTNetworkRequest.swift in Sources */,
