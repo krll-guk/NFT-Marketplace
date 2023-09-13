@@ -20,3 +20,17 @@ struct Nft: Codable {
     let price: Double
     let id: String
 }
+
+struct Favorites: Codable {
+    let likes: [String]
+}
+
+struct Profile: Codable {
+    let avatar: String
+    let name: String
+    let description: String
+    let website: String
+    let nfts: [String]
+    let likes: [String]
+    let id: String
+}
