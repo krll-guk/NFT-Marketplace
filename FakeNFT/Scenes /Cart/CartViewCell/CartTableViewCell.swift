@@ -8,29 +8,30 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
     var imageURL: URL? {
         didSet {
             guard let imageURL = imageURL else {
-              return nftImageView.kf.cancelDownloadTask()
+                return nftImageView.kf.cancelDownloadTask()
             }
             nftImageView.kf.setImage(with: imageURL)
         }
     }
+    
     private let nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: "AppIcon")
         imageView.backgroundColor = UIColor.lightGray
         imageView.layer.cornerRadius = 12
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
     private let nftNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Bold.size17
-        label.text = "April"
         label.backgroundColor = .systemBackground
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     private let nftPriceTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Regular.size13
@@ -40,12 +41,14 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     private let starView: StarView = {
         let view = StarView()
         view.rating = .zero
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     private let nftPriceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Bold.size17
@@ -55,6 +58,7 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "delete"), for: .normal)
@@ -63,21 +67,28 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
     @objc func deleteButtonTapped() {
         delegate?.didTapDeleteButton(at: indexCell ?? 0)
     }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setConstraints()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-        // TODO: prepare cell for reuse
+        imageURL = nil
+        nftNameLabel.text = ""
+        nftPriceLabel.text = ""
     }
+    
     func configureCell(with nft: NFTCartModel) {
         contentView.backgroundColor = .systemBackground
         
@@ -86,8 +97,8 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         self.starView.rating =  nft.rating
         self.nftPriceLabel.text = "\(nft.price) ETH"
     }
+    
     func addSubviews() {
-
         addSubview(contentView)
         addSubview(nftImageView)
         addSubview(nftNameLabel)
@@ -96,6 +107,7 @@ final class CartTableViewCell: UITableViewCell, ReuseIdentifying {
         addSubview(nftPriceLabel)
         addSubview(deleteButton)
     }
+    
     func setConstraints() {
         NSLayoutConstraint.activate([
             nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),

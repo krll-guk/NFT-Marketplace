@@ -62,6 +62,16 @@ final class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
+        viewModel.showAlert = { [weak self] message in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+                    self?.bindViewModel()
+                }
+                alert.addAction(alertAction)
+                self?.present(alert, animated: true)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,6 +140,15 @@ final class CartViewController: UIViewController {
         } else {
             setupFilledView()
         }
+    }
+    private func presentPurachaseVC() {
+        let manager = CurrencyManager(networkClient: DefaultNetworkClient())
+        let viewModel = CurrencyViewModel(model: manager)
+        let purchaseVC = CartPurchaseViewController(viewModel: viewModel)
+        purchaseVC.hidesBottomBarWhenPushed = true
+        let navigationController = UINavigationController(rootViewController: purchaseVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
     
    private func updatePurchaseView() {
@@ -202,11 +221,7 @@ extension CartViewController: UITableViewDataSource {
 
 extension CartViewController: CartViewDelegate {
     func didTapPurchaseButton() {
-        let purchaseVC = CartPurchaseViewController()
-        purchaseVC.hidesBottomBarWhenPushed = true
-        let navigationController = UINavigationController(rootViewController: purchaseVC)
-        navigationController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true)
+        presentPurachaseVC()
     }
 }
 extension CartViewController: CartCellDelegate {
