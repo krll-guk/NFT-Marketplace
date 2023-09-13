@@ -16,6 +16,7 @@ final class NFTCatalogViewController: UIViewController {
     }()
     
     private let viewModel = NFTCatalogViewModel()
+    private lazy var alertHelper = AlertHelper(delegate: self)
     
     // MARK: Override functions
     
@@ -28,8 +29,13 @@ final class NFTCatalogViewController: UIViewController {
         setupNavigationBar()
         makeViewLayout()
         assignBindings()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         if viewModel.catalogModels.isEmpty {
+            viewModel.loadData()
             ProgressHUD.show()
         }
     }
@@ -114,6 +120,25 @@ final class NFTCatalogViewController: UIViewController {
                 ProgressHUD.dismiss()
             }
         }
+        viewModel.$isNetworkError.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.makeRetryAlertController()
+                ProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    private func makeRetryAlertController() {
+        let retryAlertModel = alertHelper.makeRetryAlertModel { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.viewModel.loadData()
+        }
+        alertHelper.makeAlertController(from: retryAlertModel)
     }
 }
 
@@ -145,5 +170,14 @@ extension NFTCatalogViewController: UITableViewDelegate {
             )
         )
         navigationController?.pushViewController(collectionController, animated: true)
+    }
+}
+
+// MARK: - AlertHelperDelegate
+
+extension NFTCatalogViewController: AlertHelperDelegate {
+    
+    func didMakeAlert(controller: UIAlertController) {
+        present(controller, animated: true)
     }
 }

@@ -26,13 +26,17 @@ final class NFTCollectionViewModel {
     init(collectionModel: NFTCollectionModel) {
         self.collectionModel = collectionModel
         
+        loadData()
+    }
+    
+    // MARK: Internal functions
+    
+    func loadData() {
         fetchUser(by: collectionModel.authorID)
         fetchNFTs()
         fetchOrder()
         fetchProfile()
     }
-    
-    // MARK: Internal functions
     
     func nftModelForCell(at indexPath: IndexPath) -> NFTModel? {
         let id = getNFTID(by: indexPath)
@@ -85,8 +89,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModel):
                     self.userModel = UserModel(from: networkModel)
-                case .failure(let error):
-                    print(error)
+                case .failure(_):
+                    self.isNetworkError = true
                 }
             }
         }
@@ -104,8 +108,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModels):
                     self.nftModels = networkModels.map({ NFTModel(from: $0) })
-                case .failure(let error):
-                    print(error)
+                case .failure(_):
+                    self.isNetworkError = true
                 }
             }
         }
@@ -123,8 +127,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModel):
                     self.orderModel = OrderModel(from: networkModel)
-                case .failure(let error):
-                    print(error)
+                case .failure(_):
+                    self.isNetworkError = true
                 }
             }
         }
@@ -142,8 +146,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModel):
                     self.profileModel = ProfileModel(from: networkModel)
-                case .failure(let error):
-                    print(error)
+                case .failure(_):
+                    self.isNetworkError = true
                 }
             }
         }
@@ -161,9 +165,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModel):
                     self.orderModel = OrderModel(from: networkModel)
-                case .failure(let error):
+                case .failure(_):
                     self.isNetworkError = true
-                    print(error)
                 }
             }
         }
@@ -181,9 +184,8 @@ final class NFTCollectionViewModel {
                 switch result {
                 case .success(let networkModel):
                     self.profileModel = ProfileModel(from: networkModel)
-                case .failure(let error):
+                case .failure(_):
                     self.isNetworkError = true
-                    print(error)
                 }
             }
         }

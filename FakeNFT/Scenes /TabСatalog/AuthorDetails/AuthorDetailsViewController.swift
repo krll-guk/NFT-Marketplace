@@ -11,6 +11,7 @@ final class AuthorDetailsViewController: UIViewController {
     // MARK: Private properties
     
     private let webView = WKWebView()
+    private lazy var alertHelper = AlertHelper(delegate: self)
     
     // MARK: Override functions
     
@@ -61,6 +62,16 @@ final class AuthorDetailsViewController: UIViewController {
         webView.load(URLRequest(url: url))
         ProgressHUD.show()
     }
+    
+    private func makeRetryAlertController() {
+        let retryAlertModel = alertHelper.makeRetryAlertModel { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.loadAuthorDetails()
+        }
+        alertHelper.makeAlertController(from: retryAlertModel)
+    }
 }
 
 // MARK: - WKNavigationDelegate
@@ -69,5 +80,19 @@ extension AuthorDetailsViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         ProgressHUD.dismiss()
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        makeRetryAlertController()
+        ProgressHUD.dismiss()
+    }
+}
+
+// MARK: - AlertHelperDelegate
+
+extension AuthorDetailsViewController: AlertHelperDelegate {
+    
+    func didMakeAlert(controller: UIAlertController) {
+        present(controller, animated: true)
     }
 }

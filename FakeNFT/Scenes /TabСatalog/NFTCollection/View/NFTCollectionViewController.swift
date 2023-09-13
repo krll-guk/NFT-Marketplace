@@ -59,6 +59,8 @@ final class NFTCollectionViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let viewModel: NFTCollectionViewModel
     
+    private lazy var alertHelper = AlertHelper(delegate: self)
+    
     // MARK: Initializers
     
     init(viewModel: NFTCollectionViewModel) {
@@ -81,8 +83,13 @@ final class NFTCollectionViewController: UIViewController {
         setupNavigationBar()
         makeViewLayout()
         assignBindings()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         if viewModel.nftModels.isEmpty {
+            viewModel.loadData()
             ProgressHUD.show()
         }
     }
@@ -243,11 +250,25 @@ final class NFTCollectionViewController: UIViewController {
                 ProgressHUD.dismiss()
             }
         }
-        viewModel.$isNetworkError.bind { _ in
+        viewModel.$isNetworkError.bind { [weak self] _ in
             DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.makeRetryAlertController()
                 ProgressHUD.dismiss()
             }
         }
+    }
+    
+    private func makeRetryAlertController() {
+        let retryAlertModel = alertHelper.makeRetryAlertModel { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.viewModel.loadData()
+        }
+        alertHelper.makeAlertController(from: retryAlertModel)
     }
 }
 
@@ -308,5 +329,14 @@ extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
         }
         ProgressHUD.show(interaction: false)
         viewModel.toggleLikeForNFT(at: indexPath)
+    }
+}
+
+// MARK: - AlertHelperDelegate
+
+extension NFTCollectionViewController: AlertHelperDelegate {
+    
+    func didMakeAlert(controller: UIAlertController) {
+        present(controller, animated: true)
     }
 }

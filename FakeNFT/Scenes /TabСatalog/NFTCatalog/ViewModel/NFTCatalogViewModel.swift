@@ -6,16 +6,16 @@ final class NFTCatalogViewModel {
     
     @Observable
     private(set) var catalogModels: Array<NFTCatalogModel> = []
+    @Observable
+    private(set) var isNetworkError: Bool = false
     
     private let networkClient = DefaultNetworkClient()
     
-    // MARK: Initializers
+    // MARK: Internal functions
     
-    init() {
+    func loadData() {
         fetchCatalogs()
     }
-    
-    // MARK: Internal functions
     
     func sortCatalogs(by type: SortType) {
         switch type {
@@ -42,8 +42,8 @@ final class NFTCatalogViewModel {
                 case .success(let networkModels):
                     self.catalogModels = networkModels.map({ NFTCatalogModel(from: $0) })
                     self.sortCatalogs(by: SortTypeStorage.shared.sortType)
-                case .failure(let error):
-                    print(error)
+                case .failure(_):
+                    self.isNetworkError = true
                 }
             }
         }
