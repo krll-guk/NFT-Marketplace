@@ -10,6 +10,7 @@ protocol ProfileNFTViewModelProtocol {
     func insertIndex() -> Int
     func changeType(_ type: ProfileNFTsSortType)
     func getCellViewModel(at indexPath: IndexPath) -> ProfileNFTCellViewModel
+    func fetch()
 }
 
 final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
@@ -21,7 +22,7 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
     
     let profile: Profile
     private var nft: ProfileNFT?
-    private var nfts: [String]
+    private var nfts = [String]()
 
     @Observable
     private var showAlert = false
@@ -42,9 +43,12 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
         self.profileService = profileService
         self.loader = UIBlockingProgressHUD()
         self.profile = profile
-        self.nfts = profile.nfts
         if !profile.nfts.isEmpty {
-            loader.show()
+            var secondIndex = 4
+            if secondIndex > profile.nfts.count - 1 {
+                secondIndex = profile.nfts.count - 1
+            }
+            self.nfts = Array(profile.nfts[0...secondIndex])
             fetch()
             hidePlaceholder = true
         }
@@ -63,7 +67,8 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
         loader.dismiss()
     }
 
-    private func fetch() {
+    func fetch() {
+        loader.show()
         let group = DispatchGroup()
 
         nfts.forEach {
@@ -87,8 +92,11 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
             guard let self else { return }
             if self.profile.nfts.count == self.profileNFTs.count {
                 self.loader.dismiss()
-            } else {
-                switch self.profileService.checkErrors() {
+                return
+            }
+
+            if self.profileService.error != nil {
+                switch self.profileService.checkError() {
                 case true:
                     DispatchQueue.global().asyncAfter(deadline: .now() + 8) {
                         self.fetch()
@@ -99,6 +107,17 @@ final class ProfileNFTViewModel: ProfileNFTViewModelProtocol {
                         self.showAlert.toggle()
                     }
                 }
+                return
+            }
+
+            if self.profileNFTs.count < self.profile.nfts.count {
+                let firstIndex = self.profileNFTs.count
+                var secondIndex = self.profileNFTs.count + 4
+                if secondIndex > self.profile.nfts.count - 1 {
+                    secondIndex = self.profile.nfts.count - 1
+                }
+                self.nfts = Array(self.profile.nfts[firstIndex...secondIndex])
+                self.fetch()
             }
         }
     }

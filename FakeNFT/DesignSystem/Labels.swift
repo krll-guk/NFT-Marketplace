@@ -50,7 +50,9 @@ extension String {
 
     enum ProfileErrorAlert {
         static let title = NSLocalizedString("", value: "Ошибка", comment: "")
-        static let message = NSLocalizedString("", value: "Что-то пошло не так(", comment: "")
-        static let button = NSLocalizedString("", value: "ОК", comment: "")
+        static let loadMessage = NSLocalizedString("", value: "Не удалось загрузить данные(", comment: "")
+        static let updateMessage = NSLocalizedString("", value: "Не удалось обновить данные(", comment: "")
+        static let retry = NSLocalizedString("", value: "Повторить", comment: "")
+        static let cancel = NSLocalizedString("", value: "Отменить", comment: "")
     }
 }

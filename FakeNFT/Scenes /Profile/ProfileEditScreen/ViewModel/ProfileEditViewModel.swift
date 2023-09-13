@@ -6,6 +6,7 @@ protocol ProfileEditViewModelProtocol {
     var profileEdited: ProfileEdited { get }
     var profile: Profile { get }
     var profileObservable: Observable<Profile> { get }
+    func changeProfile()
 }
 
 final class ProfileEditViewModel: ProfileEditViewModelProtocol {
@@ -29,7 +30,8 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
         self.profile = Profile()
     }
 
-    private func changeProfile() {
+    func changeProfile() {
+        loader.show()
         let request = ProfilePutRequest(profileEdited)
         profileService.getProfile(with: request) { [weak self] result in
             guard let self = self else { return }
@@ -38,7 +40,7 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
                 self.profile = profile
                 self.loader.dismiss()
             case .failure:
-                switch self.profileService.checkErrors() {
+                switch self.profileService.checkError() {
                 case true:
                     DispatchQueue.global().asyncAfter(deadline: .now() + 4) {
                         self.changeProfile()
@@ -54,7 +56,6 @@ final class ProfileEditViewModel: ProfileEditViewModelProtocol {
     }
 
     func setProfileEdited(_ value: ProfileEdited) {
-        loader.show()
         profileEdited = value
         changeProfile()
     }

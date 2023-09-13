@@ -4,6 +4,7 @@ final class ProfileNFTViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
     private let viewModel: ProfileNFTViewModelProtocol
+    private let alert: AlertProtocol
 
     private lazy var sortButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -55,6 +56,7 @@ final class ProfileNFTViewController: UIViewController {
     
     init(_ viewModel: ProfileNFTViewModelProtocol) {
         self.viewModel = viewModel
+        self.alert = Alert()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -68,7 +70,17 @@ final class ProfileNFTViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.present(Alert.error, animated: true)
+            self.alert.present(
+                title: .ProfileErrorAlert.title,
+                message: .ProfileErrorAlert.loadMessage,
+                actions: .cancel(handler: {
+                    self.backButtonTapped()
+                }),
+                .retry(handler: {
+                    self.viewModel.fetch()
+                }),
+                from: self
+            )
         }
 
         viewModel.profileNFTsObservable.bind { [weak self] _ in

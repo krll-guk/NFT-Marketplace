@@ -1,7 +1,8 @@
 import Foundation
 
 protocol ProfileFavoriteNFTViewModelProtocol {
-    var showAlertObservable: Observable<Bool> { get }
+    var alertType: AlertType { get }
+    var showAlertObservable: Observable<AlertType> { get }
     var hidePlaceholderObservable: Observable<Bool> { get }
     var profileNFTsObservable: Observable<ProfileFavoriteNFTCellViewModels> { get }
     var profileObservable: Observable<Profile> { get }
@@ -12,6 +13,8 @@ protocol ProfileFavoriteNFTViewModelProtocol {
     func syncLikes() -> Bool
     func insertIndex() -> Int
     func getCellViewModel(at indexPath: IndexPath) -> ProfileFavoriteNFTCellViewModel
+    func fetch()
+    func updateProfileLikes()
 }
 
 final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
@@ -20,12 +23,12 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
 
     private(set) var newProfileFavoriteNFTs = ProfileFavoriteNFTCellViewModels()
     private var newLikes: ProfileLikes
-    private var likes: [String]
+    private var likes = [String]()
     private var nft: ProfileNFT?
 
     @Observable
-    private var showAlert = false
-    var showAlertObservable: Observable<Bool> { $showAlert }
+    private(set) var alertType: AlertType = .loadError
+    var showAlertObservable: Observable<AlertType> { $alertType }
 
     @Observable
     private(set) var hidePlaceholder: Bool = false
@@ -44,9 +47,12 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
         self.loader = UIBlockingProgressHUD()
         self.profile = profile
         self.newLikes = ProfileLikes(likes: profile.likes)
-        self.likes = profile.likes
         if !profile.likes.isEmpty {
-            loader.show()
+            var secondIndex = 4
+            if secondIndex > profile.likes.count - 1 {
+                secondIndex = profile.likes.count - 1
+            }
+            self.likes = Array(profile.likes[0...secondIndex])
             fetch()
             hidePlaceholder = true
         }
@@ -57,7 +63,8 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
         return index
     }
 
-    private func fetch() {
+    func fetch() {
+        loader.show()
         let group = DispatchGroup()
 
         likes.forEach {
@@ -71,8 +78,11 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
             guard let self else { return }
             if self.profile.likes.count == self.profileFavoriteNFTs.count {
                 self.loader.dismiss()
-            } else {
-                switch self.profileService.checkErrors() {
+                return
+            }
+
+            if self.profileService.error != nil {
+                switch self.profileService.checkError() {
                 case true:
                     DispatchQueue.global().asyncAfter(deadline: .now() + 8) {
                         self.fetch()
@@ -80,9 +90,20 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
                 case false:
                     DispatchQueue.main.async {
                         self.loader.dismiss()
-                        self.showAlert.toggle()
+                        self.alertType = .loadError
                     }
                 }
+                return
+            }
+
+            if self.profileFavoriteNFTs.count < self.profile.likes.count {
+                let firstIndex = self.profileFavoriteNFTs.count
+                var secondIndex = self.profileFavoriteNFTs.count + 4
+                if secondIndex > self.profile.likes.count - 1 {
+                    secondIndex = self.profile.likes.count - 1
+                }
+                self.likes = Array(self.profile.likes[firstIndex...secondIndex])
+                self.fetch()
             }
         }
     }
@@ -108,7 +129,8 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
         }
     }
 
-    private func updateProfileLikes() {
+    func updateProfileLikes() {
+        loader.show()
         let request = ProfileLikesPutRequest(newLikes)
         profileService.getProfile(with: request) { [weak self] result in
             guard let self = self else { return }
@@ -117,7 +139,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
                 self.profile = profile
                 self.loader.dismiss()
             case .failure:
-                switch self.profileService.checkErrors() {
+                switch self.profileService.checkError() {
                 case true:
                     DispatchQueue.global().asyncAfter(deadline: .now() + 4) {
                         self.updateProfileLikes()
@@ -125,7 +147,7 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
                 case false:
                     DispatchQueue.main.async {
                         self.loader.dismiss()
-                        self.showAlert.toggle()
+                        self.alertType = .updateError
                     }
                 }
             }
@@ -133,7 +155,12 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
     }
 
     func checkLikes(at indexPath: IndexPath) {
-        let likes = profile.likes.filter { $0 != newProfileFavoriteNFTs[indexPath.row].id }
+        var likes = [String]()
+        newLikes.likes.forEach{
+            if $0 != newProfileFavoriteNFTs[indexPath.row].id {
+                likes.append($0)
+            }
+        }
         newLikes = ProfileLikes(likes: likes)
 
         newProfileFavoriteNFTs.remove(at: indexPath.row)
@@ -147,7 +174,6 @@ final class ProfileFavoriteNFTViewModel: ProfileFavoriteNFTViewModelProtocol {
         if profile.likes == newLikes.likes {
             return true
         } else {
-            loader.show()
             updateProfileLikes()
             return false
         }

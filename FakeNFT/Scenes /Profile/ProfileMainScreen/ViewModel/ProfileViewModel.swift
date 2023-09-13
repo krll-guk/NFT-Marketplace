@@ -7,6 +7,7 @@ protocol ProfileViewModelProtocol {
     func syncProfile()
     func setNewProfile(with value: Profile)
     func setProfile(with value: Profile)
+    func fetchProfile()
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
@@ -28,10 +29,9 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.loader = UIBlockingProgressHUD()
         self.profile = Profile()
         self.newProfile = Profile()
-        self.fetchProfile()
     }
 
-    private func fetchProfile() {
+    func fetchProfile() {
         loader.show()
         let request = ProfileGetRequest()
         profileService.getProfile(with: request) { [weak self] result in
@@ -42,7 +42,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
                 self.newProfile = profile
                 self.loader.dismiss()
             case .failure:
-                switch self.profileService.checkErrors() {
+                switch self.profileService.checkError() {
                 case true:
                     DispatchQueue.global().asyncAfter(deadline: .now() + 4) {
                         self.fetchProfile()
@@ -58,7 +58,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     }
 
     func syncProfile() {
-        if newProfile != profile {
+        if newProfile != profile || profile == Profile() {
             fetchProfile()
         }
     }

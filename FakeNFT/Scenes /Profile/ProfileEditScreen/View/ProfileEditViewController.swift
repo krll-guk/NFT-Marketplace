@@ -4,6 +4,7 @@ final class ProfileEditViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
     private let viewModel: ProfileEditViewModelProtocol
+    private let alert: AlertProtocol
 
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -70,6 +71,7 @@ final class ProfileEditViewController: UIViewController {
 
     init(_ viewModel: ProfileEditViewModelProtocol, _ image: UIImage?) {
         self.viewModel = viewModel
+        self.alert = Alert()
         super.init(nibName: nil, bundle: nil)
         self.profileImage.image = image
     }
@@ -84,7 +86,16 @@ final class ProfileEditViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.present(Alert.error, animated: true)
+            self.alert.present(
+                title: .ProfileErrorAlert.title,
+                message: .ProfileErrorAlert.updateMessage,
+                actions: .cancel(handler: {
+                    self.dismiss(animated: true)
+                }), .retry(handler: {
+                    self.viewModel.changeProfile()
+                }),
+                from: self
+            )
         }
 
         viewModel.profileObservable.bind { [weak self] profile in

@@ -4,23 +4,24 @@ protocol ProfileServiceProtocol {
     func getProfile(with request: NetworkRequest, completion: @escaping (Result<Profile, Error>) -> Void)
     func getProfileNFT(with id: String, completion: @escaping (Result<ProfileNFT, Error>) -> Void)
     func getAuthor(with id: String, completion: @escaping (Result<AuthorName, Error>) -> Void)
-    func checkErrors() -> Bool
+    func checkError() -> Bool
+    var error: Error? { get }
 }
 
 final class ProfileService: ProfileServiceProtocol {
     private let networkClient: NetworkClient
-    private var errors = [String]()
+    private(set) var error: Error?
 
     init(networkClient: NetworkClient = DefaultNetworkClient()) {
         self.networkClient = networkClient
     }
 
-    func checkErrors() -> Bool {
-        if errors.contains(where: { $0 == NetworkClientError.httpStatusCode(429).localizedDescription }) {
-            errors = []
+    func checkError() -> Bool {
+        if error?.localizedDescription == NetworkClientError.httpStatusCode(429).localizedDescription {
+            error = nil
             return true
         } else {
-            errors = []
+            error = nil
             return false
         }
     }
@@ -38,7 +39,7 @@ final class ProfileService: ProfileServiceProtocol {
                         completion(.success(profile))
                     }
                 case .failure(let error):
-                    self.errors.append(error.localizedDescription)
+                    self.error = error
                     completion(.failure(error))
                 }
             }
@@ -62,7 +63,7 @@ final class ProfileService: ProfileServiceProtocol {
                     NFTCache.cacheNFT[Constants.NFT.rawValue + id] = profileNFT
                     completion(.success(profileNFT))
                 case .failure(let error):
-                    self.errors.append(error.localizedDescription)
+                    self.error = error
                     completion(.failure(error))
                 }
             }
@@ -73,6 +74,10 @@ final class ProfileService: ProfileServiceProtocol {
     func getAuthor(with id: String, completion: @escaping (Result<AuthorName, Error>) -> Void) {
         if let cached = NFTCache.cacheAuthor[Constants.author.rawValue + id] {
             return completion(.success(cached))
+        }
+
+        if let error = error {
+            return completion(.failure(error))
         }
 
         DispatchQueue.global().async { [weak self] in
@@ -87,10 +92,9 @@ final class ProfileService: ProfileServiceProtocol {
                     NFTCache.cacheAuthor[Constants.author.rawValue + id] = author
                     completion(.success(author))
                 case .failure(let error):
-                    self.errors.append(error.localizedDescription)
+                    self.error = error
                     completion(.failure(error))
                 }
-
             }
         }
     }

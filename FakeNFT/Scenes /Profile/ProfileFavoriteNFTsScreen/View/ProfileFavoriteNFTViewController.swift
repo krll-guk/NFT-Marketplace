@@ -4,6 +4,7 @@ final class ProfileFavoriteNFTViewController: UIViewController {
     var completionHandler: ((Profile) -> Void)?
 
     private let viewModel: ProfileFavoriteNFTViewModelProtocol
+    private let alert: AlertProtocol
 
     private lazy var backButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -44,6 +45,7 @@ final class ProfileFavoriteNFTViewController: UIViewController {
 
     init(_ viewModel: ProfileFavoriteNFTViewModelProtocol) {
         self.viewModel = viewModel
+        self.alert = Alert()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -57,7 +59,31 @@ final class ProfileFavoriteNFTViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.present(Alert.error, animated: true)
+            switch self.viewModel.alertType {
+            case .updateError:
+                self.alert.present(
+                    title: .ProfileErrorAlert.title,
+                    message: .ProfileErrorAlert.updateMessage,
+                    actions: .cancel(handler: {
+                        self.returnWithoutChanges()
+                    }), .retry(handler: {
+                        self.viewModel.updateProfileLikes()
+                    }),
+                    from: self
+                )
+            case .loadError:
+                self.alert.present(
+                    title: .ProfileErrorAlert.title,
+                    message: .ProfileErrorAlert.loadMessage,
+                    actions: .cancel(handler: {
+                        self.returnWithoutChanges()
+                    }),
+                    .retry(handler: {
+                        self.viewModel.fetch()
+                    }),
+                    from: self
+                )
+            }
         }
 
         viewModel.hidePlaceholderObservable.bind { [weak self] _ in
@@ -128,9 +154,13 @@ final class ProfileFavoriteNFTViewController: UIViewController {
     @objc
     private func backButtonTapped() {
         if viewModel.syncLikes() {
-            completionHandler?(viewModel.profile)
-            navigationController?.popToRootViewController(animated: true)
+            returnWithoutChanges()
         }
+    }
+
+    private func returnWithoutChanges() {
+        completionHandler?(viewModel.profile)
+        navigationController?.popToRootViewController(animated: true)
     }
 }
 

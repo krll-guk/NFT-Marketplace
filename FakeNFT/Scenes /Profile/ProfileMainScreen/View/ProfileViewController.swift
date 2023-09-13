@@ -4,6 +4,7 @@ import SafariServices
 
 final class ProfileViewController: UIViewController {
     private let viewModel: ProfileViewModelProtocol
+    private let alert: AlertProtocol
 
     private lazy var editButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -79,6 +80,7 @@ final class ProfileViewController: UIViewController {
 
     init(viewModel: ProfileViewModelProtocol = ProfileViewModel()) {
         self.viewModel = viewModel
+        self.alert = Alert()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -92,7 +94,16 @@ final class ProfileViewController: UIViewController {
 
         viewModel.showAlertObservable.bind { [weak self] _ in
             guard let self = self else { return }
-            self.present(Alert.error, animated: true)
+            self.alert.present(
+                title: .ProfileErrorAlert.title,
+                message: .ProfileErrorAlert.loadMessage,
+                actions: .cancel(handler: {
+                }),
+                .retry(handler: {
+                    self.viewModel.fetchProfile()
+                }),
+                from: self
+            )
         }
 
         viewModel.profileObservable.bind { [weak self] profile in
