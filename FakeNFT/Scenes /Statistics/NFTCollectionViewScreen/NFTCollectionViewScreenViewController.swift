@@ -188,20 +188,20 @@ extension NFTCollectionViewScreenViewController: UICollectionViewDelegateFlowLay
 
 extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
     func addToCart(id: String) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
         
         let ids = viewModel.cartItemsIds + [id]
         
         cartManager.addNFTFromStatistics(id: "1", nfts: ids) { result in
             switch result {
             case .success(let order):
-                UIBlockingProgressHUD.dismiss()
+                UIProgressHUD.dismiss()
                 self.viewModel.fetchCart { [weak self] active in
                     self?.showLoader(isShow: active)
                 }
                 print("\(order.id) successfully added")
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
+                UIProgressHUD.dismiss()
                 print("\(error.localizedDescription) couldn't add NFT")
             }
         }
@@ -209,14 +209,14 @@ extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
     }
     
     func removeFromCart(id: String) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
         
         let ids = viewModel.cartItemsIds.filter { $0 != id }
 
         cartManager.removeNFTFromCart(id: "1", nfts: ids) { result in
             switch result {
             case .success(let order):
-                UIBlockingProgressHUD.dismiss()
+                UIProgressHUD.dismiss()
                 
                 self.viewModel.fetchCart { [weak self] active in
                     self?.showLoader(isShow: active)
@@ -224,7 +224,7 @@ extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
                 
                 print("\(order.id) successfully removed")
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
+                UIProgressHUD.dismiss()
                 print("\(error.localizedDescription) couldn't add NFT")
             }
         }
@@ -232,7 +232,7 @@ extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
     }
     
     func toggleLike(id: String) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
 
         var likes: [String] = []
         
@@ -243,7 +243,7 @@ extension NFTCollectionViewScreenViewController: CollectionCellDelegate {
         }
         
         viewModel.toggleLikes(likes: likes) { _ in
-            UIBlockingProgressHUD.dismiss()
+            UIProgressHUD.dismiss()
         }
         
     }

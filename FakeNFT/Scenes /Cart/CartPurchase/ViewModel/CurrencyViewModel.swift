@@ -16,12 +16,12 @@ final class CurrencyViewModel {
     }
     
     func viewDidLoad(completion: @escaping () -> Void) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
         model.fetchCurrencies { currencies in
             DispatchQueue.main.async {
                 switch currencies {
                 case .success(let currencies):
-                    UIBlockingProgressHUD.dismiss()
+                    UIProgressHUD.dismiss()
                     let models = currencies.map(CurrencyModel.init(serverModel:))
                     self.currencies = models
                     completion()
