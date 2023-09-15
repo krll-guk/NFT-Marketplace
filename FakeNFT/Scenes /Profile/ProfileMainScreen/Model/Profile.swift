@@ -1,0 +1,24 @@
+import Foundation
+
+struct Profile: Decodable, Equatable {
+    let name: String
+    let avatar: String
+    let description: String
+    let website: String
+    let nfts: [String]
+    let likes: [String]
+    let id: String
+}
+
+// default value
+extension Profile {
+    init() {
+        self.name = ""
+        self.avatar = ""
+        self.description = ""
+        self.website = ""
+        self.nfts = []
+        self.likes = []
+        self.id = ""
+    }
+}

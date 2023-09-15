@@ -11,6 +11,7 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .Universal.blue
         tabBar.unselectedItemTintColor = .Themed.black
         tabBar.backgroundColor = .Themed.white
+        tabBar.isTranslucent = false
 
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSAttributedString.Key.font: UIFont.Medium.size10], for: .normal
@@ -32,15 +33,15 @@ final class TabBarController: UITabBarController {
             image: .TabBar.catalog,
             selectedImage: nil
         )
-
-        let cartVC = UINavigationController(rootViewController: CartViewController())
+        let viewModel = CartViewModel(model: NFTCartManager(networkClient: DefaultNetworkClient()))
+        let cartVC = UINavigationController(rootViewController: CartViewController(viewModel: viewModel))
         cartVC.tabBarItem = UITabBarItem(
             title: .TabBar.cart,
             image: .TabBar.cart,
             selectedImage: nil
         )
 
-        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController())
+        let statisticsVC = UINavigationController(rootViewController: StatisticsListViewController())
         statisticsVC.tabBarItem = UITabBarItem(
             title: .TabBar.statistics,
             image: .TabBar.statistics,
