@@ -124,8 +124,11 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupView() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        
         navigationItem.rightBarButtonItem = editButton
-        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.standardAppearance = appearance
 
         view.addSubview(scrollView)
 
