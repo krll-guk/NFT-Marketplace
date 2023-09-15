@@ -77,12 +77,13 @@ final class CartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewDidLoad { [weak self] in
-            self?.setupView()
             self?.configureTableView()
             self?.cartTableView.reloadData()
             self?.updatePurchaseView()
         }
+        setupView()
     }
+    
     private func configureSorting() {
         let alertSheet = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
         let sortByPrice = UIAlertAction(title: "По цене", style: .default) { _ in
@@ -141,9 +142,10 @@ final class CartViewController: UIViewController {
             setupFilledView()
         }
     }
+    
     private func presentPurachaseVC() {
         let manager = CurrencyManager(networkClient: DefaultNetworkClient())
-        let viewModel = CurrencyViewModel(model: manager)
+        let viewModel = CurrencyViewModel(model: manager, cartViewModel: viewModel)
         let purchaseVC = CartPurchaseViewController(viewModel: viewModel)
         purchaseVC.hidesBottomBarWhenPushed = true
         let navigationController = UINavigationController(rootViewController: purchaseVC)
@@ -151,7 +153,7 @@ final class CartViewController: UIViewController {
         present(navigationController, animated: true)
     }
     
-   private func updatePurchaseView() {
+    private func updatePurchaseView() {
         let cartCount = viewModel.cartModels.count
         purchaseView.setNftCount(text: "\(cartCount) NFT")
         let sum = viewModel.cartModels.reduce(0.0) { (result, nft) in
@@ -160,6 +162,7 @@ final class CartViewController: UIViewController {
         let formattedPrice = String(format: "%.2f", sum)
         purchaseView.setSumNft(text: "\(formattedPrice) ETH")
     }
+    
     private func setupFilledView() {
         configureTableView()
         purchaseView.delegate = self
@@ -182,6 +185,7 @@ final class CartViewController: UIViewController {
             deleteView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
     private func setupEmptyView() {
         view.addSubview(placeholderLabel)
         NSLayoutConstraint.activate([
@@ -224,6 +228,7 @@ extension CartViewController: CartViewDelegate {
         presentPurachaseVC()
     }
 }
+
 extension CartViewController: CartCellDelegate {
     func didTapDeleteButton(at index: Int) {
         deleteView.isHidden = false

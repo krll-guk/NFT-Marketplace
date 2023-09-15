@@ -6,4 +6,5 @@ enum Constants: String {
     case ordersAPI = "https://64e794d6b0fd9648b79024d3.mockapi.io/api/v1/orders/1"
     case currenciesAPI = "https://64e794d6b0fd9648b79024d3.mockapi.io/api/v1/currencies"
     case paymentAPI = "https://64e794d6b0fd9648b79024d3.mockapi.io/api/v1/orders/1/payment/"
+    case profileAPI = "https://64e794d6b0fd9648b79024d3.mockapi.io/api/v1/profile/1"
 }

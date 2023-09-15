@@ -19,9 +19,11 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
     
     private var selectedCurrency: CurrencyServerModel?
     private let model: CurrencyManager
+    private let cartViewModel: CartViewModelProtocol?
     
-    init(model: CurrencyManager) {
+    init(model: CurrencyManager, cartViewModel: CartViewModelProtocol) {
         self.model = model
+        self.cartViewModel = cartViewModel
     }
     
     func viewDidLoad(completion: @escaping () -> Void) {
@@ -45,19 +47,51 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
         model.fetchCurrencyById(currencyId: selectedId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case.success(let currency):
-                    self?.model.getPayment(with: currency.id,
-                                           completion: { [weak self] result in
-                        switch result {
-                        case .success(let payment):
-                            self?.isPaymentSuccesful = payment.success
-                            completion(payment.success)
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
-                    })
-                case .failure(let error):
-                    print(error.localizedDescription)
+                case .success(let currency):
+                    self?.handleCurrencyFetchSuccess(currency, completion: completion)
+                    self?.cartViewModel?.didClearAfterPurchase()
+                case.failure(let error):
+                    print("couldn't pay \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func handleCurrencyFetchSuccess(_ currency: CurrencyServerModel, completion: @escaping ((Bool) -> Void)) {
+        self.model.getPayment(with: currency.id) { [weak self] result in
+            switch result {
+            case .success(let payment):
+                self?.isPaymentSuccesful = payment.success
+                self?.handlePaymentSuccess(completion: completion)
+            case .failure(let error):
+                print("\(error.localizedDescription) couldn't handle currency")
+            }
+        }
+    }
+    
+    private func handlePaymentSuccess(completion: @escaping ((Bool) -> Void)) {
+        model.getProfileWithNFTs(id: "1") { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.updateProfile(with: profile, completion: completion)
+            case.failure(let error):
+                print("couldn't handle payment \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateProfile(with existingProfile: ProfileNFTsModel,
+                               completion: @escaping ((Bool) -> Void)) {
+        if let nfts = cartViewModel?.cartModels.map({ $0.id }) {
+            let updateNFTs = Array(Set(existingProfile.nfts + nfts))
+            model.updateProfileWithNFTs(id: "1",
+                                        nfts: updateNFTs) { result in
+                switch result {
+                case.success(let profile):
+                    print(profile)
+                    completion(true)
+                case.failure(let error):
+                    print("unable to update profile \(error.localizedDescription)")
                 }
             }
         }

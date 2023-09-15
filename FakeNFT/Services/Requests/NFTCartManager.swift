@@ -54,7 +54,9 @@ struct NFTCartManager {
             endpoint: URL(string: Constants.ordersAPI.rawValue)!,
             httpMethod: .put,
             dto: Order(id: id, nfts: nfts))
-        networkClient.send(request: request, type: Order.self, onResponse: completion)
+        networkClient.send(request: request,
+                           type: Order.self,
+                           onResponse: completion)
     }
     
     func addNFTFromStatistics(id: String, nfts: [String], completion: @escaping (Result<Order, Error>) -> Void) {
@@ -62,6 +64,18 @@ struct NFTCartManager {
             endpoint: URL(string: Constants.ordersAPI.rawValue),
             httpMethod: .put,
             dto: Order(id: id, nfts: nfts))
-        networkClient.send(request: request, type: Order.self, onResponse: completion)
+        networkClient.send(request: request,
+                           type: Order.self,
+                           onResponse: completion)
+    }
+    
+    func clearCartAfterPurchase(id: String, nfts: [String], completion: @escaping (Result<Order, Error>) -> Void) {
+        let request = NFTNetworkRequest(
+            endpoint: URL(string: Constants.ordersAPI.rawValue),
+            httpMethod: .put,
+            dto: Order(id: id, nfts: nfts))
+        networkClient.send(request: request,
+                           type: Order.self,
+                           onResponse: completion)
     }
 }
