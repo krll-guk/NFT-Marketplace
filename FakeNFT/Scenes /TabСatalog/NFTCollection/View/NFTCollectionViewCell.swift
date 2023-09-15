@@ -1,12 +1,22 @@
 import UIKit
 import Kingfisher
 
+protocol NFTCollectionViewCellDelegate: AnyObject {
+    func didTapCart(in cell: NFTCollectionViewCell)
+    func didTapLike(in cell: NFTCollectionViewCell)
+}
+
 final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     // MARK: Internal properties
     
-    var nftModel: NFTModel! {
+    weak var delegate: NFTCollectionViewCellDelegate?
+    
+    var nftModel: NFTModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             nftImage.kf.indicatorType = .activity
             nftImage.kf.setImage(with: URL(string: nftModel.imageLink.percentEncoded))
             
@@ -18,6 +28,9 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     var orderModel: OrderModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             let isInCart = orderModel?.inCartNFTIDs.contains(nftModel.id) ?? false
             cartButton.setImage(isInCart ? .NFTCard.inCart : .NFTCard.notInCart, for: .normal)
         }
@@ -25,6 +38,9 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     var profileModel: ProfileModel? {
         didSet {
+            guard let nftModel = nftModel else {
+                return
+            }
             let isLiked = profileModel?.likedNFTIDs.contains(nftModel.id) ?? false
             favoriteButton.tintColor = isLiked ? .Universal.red : .Universal.white
             favoriteButton.setImage(.NFTCard.heart, for: .normal)
@@ -108,16 +124,19 @@ final class NFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         super.prepareForReuse()
         
         nftImage.kf.cancelDownloadTask()
+        ratingStack.arrangedSubviews.forEach({ $0.removeFromSuperview() })
     }
     
     // MARK: Private functions
     
     @objc
     private func didTapCartButton() {
+        delegate?.didTapCart(in: self)
     }
     
     @objc
     private func didTapFavoriteButton() {
+        delegate?.didTapLike(in: self)
     }
     
     private func fillRatingStack(value: Int) {

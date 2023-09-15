@@ -1,5 +1,6 @@
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class NFTCollectionViewController: UIViewController {
     
@@ -25,12 +26,13 @@ final class NFTCollectionViewController: UIViewController {
         return label
     }()
     
-    private let authorButton: UIButton = {
+    private lazy var authorButton: UIButton = {
         let button = UIButton(type: .custom)
         
         button.setTitleColor(.Universal.blue, for: .normal)
         button.titleLabel?.font = .Regular.size15
         
+        button.addTarget(self, action: #selector(didTapAuthorButton), for: .touchUpInside)
         return button
     }()
     
@@ -57,6 +59,8 @@ final class NFTCollectionViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let viewModel: NFTCollectionViewModel
     
+    private lazy var alertHelper = AlertHelper(delegate: self)
+    
     // MARK: Initializers
     
     init(viewModel: NFTCollectionViewModel) {
@@ -81,6 +85,15 @@ final class NFTCollectionViewController: UIViewController {
         assignBindings()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if viewModel.nftModels.isEmpty {
+            viewModel.loadData()
+            ProgressHUD.show()
+        }
+    }
+    
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         
@@ -90,6 +103,16 @@ final class NFTCollectionViewController: UIViewController {
     }
     
     // MARK: Private functions
+    
+    @objc
+    private func didTapAuthorButton() {
+        guard let userModel = viewModel.userModel else {
+            return
+        }
+        let authorController = AuthorDetailsViewController()
+        authorController.websiteURL = URL(string: userModel.website)
+        navigationController?.pushViewController(authorController, animated: true)
+    }
     
     private func setupNavigationBar() {
         guard let bar = navigationController?.navigationBar else {
@@ -206,8 +229,46 @@ final class NFTCollectionViewController: UIViewController {
                 self.nftCollection.reloadData()
                 let contentHeight = self.nftCollection.collectionViewLayout.collectionViewContentSize.height
                 self.nftCollection.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
+                ProgressHUD.dismiss()
             }
         }
+        viewModel.$orderModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.nftCollection.reloadData()
+                ProgressHUD.dismiss()
+            }
+        }
+        viewModel.$profileModel.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.nftCollection.reloadData()
+                ProgressHUD.dismiss()
+            }
+        }
+        viewModel.$isNetworkError.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                self.makeRetryAlertController()
+                ProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    private func makeRetryAlertController() {
+        let retryAlertModel = alertHelper.makeRetryAlertModel { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.viewModel.loadData()
+        }
+        alertHelper.makeAlertController(from: retryAlertModel)
     }
 }
 
@@ -222,7 +283,8 @@ extension NFTCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         
-        cell.nftModel = viewModel.getNFTModel(by: viewModel.collectionModel.nftIDs[indexPath.item])
+        cell.delegate = self
+        cell.nftModel = viewModel.nftModelForCell(at: indexPath)
         cell.orderModel = viewModel.orderModel
         cell.profileModel = viewModel.profileModel
         
@@ -246,5 +308,35 @@ extension NFTCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+}
+
+// MARK: - NFTCollectionViewCellDelegate
+
+extension NFTCollectionViewController: NFTCollectionViewCellDelegate {
+    
+    func didTapCart(in cell: NFTCollectionViewCell) {
+        guard let indexPath = nftCollection.indexPath(for: cell) else {
+            return
+        }
+        ProgressHUD.show(interaction: false)
+        viewModel.toggleCartForNFT(at: indexPath)
+    }
+    
+    func didTapLike(in cell: NFTCollectionViewCell) {
+        guard let indexPath = nftCollection.indexPath(for: cell) else {
+            return
+        }
+        ProgressHUD.show(interaction: false)
+        viewModel.toggleLikeForNFT(at: indexPath)
+    }
+}
+
+// MARK: - AlertHelperDelegate
+
+extension NFTCollectionViewController: AlertHelperDelegate {
+    
+    func didMakeAlert(controller: UIAlertController) {
+        present(controller, animated: true)
     }
 }
