@@ -18,6 +18,7 @@
 		2967C4A32A98C8E70074D074 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2967C4A22A98C8E70074D074 /* SF-Pro-Text-Bold.otf */; };
 		2967C4A52A98C91E0074D074 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2967C4A42A98C91E0074D074 /* SF-Pro-Text-Medium.otf */; };
 		2967C4A72A98EA230074D074 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2967C4A62A98EA230074D074 /* Observable.swift */; };
+
 		3729F58B2AA7FE3E005DB278 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729F58A2AA7FE3E005DB278 /* CurrencyViewModel.swift */; };
 		3729F58D2AA8E6B7005DB278 /* PaymentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729F58C2AA8E6B7005DB278 /* PaymentModel.swift */; };
 		37916E3D2AAC44CC00775A98 /* CheckoutFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37916E3C2AAC44CC00775A98 /* CheckoutFlowViewController.swift */; };
@@ -38,6 +39,7 @@
 		37AF0CEE2AA5C5E300A7D47E /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF0CED2AA5C5E300A7D47E /* AgreementViewController.swift */; };
 		37B9251F2AB43B9800AD9275 /* ProfileNFTsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B9251E2AB43B9800AD9275 /* ProfileNFTsModel.swift */; };
 		37BB72722AA7C11400DF1D45 /* NFTCurrencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB72712AA7C11400DF1D45 /* NFTCurrencyManager.swift */; };
+
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -88,6 +90,7 @@
 		2967C4A22A98C8E70074D074 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		2967C4A42A98C91E0074D074 /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
 		2967C4A62A98EA230074D074 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+
 		3729F58A2AA7FE3E005DB278 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
 		3729F58C2AA8E6B7005DB278 /* PaymentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentModel.swift; sourceTree = "<group>"; };
 		37916E3C2AAC44CC00775A98 /* CheckoutFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		37AF0CED2AA5C5E300A7D47E /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		37B9251E2AB43B9800AD9275 /* ProfileNFTsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNFTsModel.swift; sourceTree = "<group>"; };
 		37BB72712AA7C11400DF1D45 /* NFTCurrencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCurrencyManager.swift; sourceTree = "<group>"; };
+
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +217,7 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+
 		3729F5892AA7FE26005DB278 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +317,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
