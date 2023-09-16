@@ -2,6 +2,7 @@
 - Архитектура **MVVM**
 - Верстка **в коде**
 - Трекер задач https://github.com/users/igor-ignatov/projects/1/views/1
+- Запись экрана https://disk.yandex.ru/i/tpEhkKBmWYmu7w
 
 #### Декомпозиция
 1. Экран **Каталог NFT**. Вёрстка таблицы. ETA - 2
