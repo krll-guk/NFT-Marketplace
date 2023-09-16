@@ -17,7 +17,7 @@ final class CartPurchaseCell: UICollectionViewCell {
             bitcoinView.layer.borderColor = isSelectedCurrency ? UIColor.black.cgColor : nil
         }
     }
-
+    
     private let bitcoinView: UIView = {
         let view = UIView()
         view.layer.masksToBounds = true
@@ -29,7 +29,7 @@ final class CartPurchaseCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Regular.size13
@@ -39,7 +39,7 @@ final class CartPurchaseCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     private let currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Regular.size13
@@ -49,7 +49,7 @@ final class CartPurchaseCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     private let currencyImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "AppIcon")
@@ -58,23 +58,23 @@ final class CartPurchaseCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
         setCostraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func configureCell(with model: CurrencyModel) {
         self.titleLabel.text = model.title
         self.currencyLabel.text = model.name
         self.imageURL = model.image
     }
-
+    
     private func addSubviews() {
         backgroundColor = .clear
         addSubview(bitcoinView)
@@ -82,7 +82,7 @@ final class CartPurchaseCell: UICollectionViewCell {
         bitcoinView.addSubview(currencyLabel)
         bitcoinView.addSubview(currencyImageView)
     }
-
+    
     private func setCostraints() {
         NSLayoutConstraint.activate([
             bitcoinView.topAnchor.constraint(equalTo: topAnchor),

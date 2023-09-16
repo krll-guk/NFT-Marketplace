@@ -18,7 +18,7 @@ final class CartPurchaseViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private let purchaseTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Bold.size17
@@ -29,7 +29,7 @@ final class CartPurchaseViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     private let confirmView: ConfirmView = {
         let view = ConfirmView()
         view.layer.masksToBounds = true
@@ -38,7 +38,7 @@ final class CartPurchaseViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     private let currencyCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero,
@@ -48,7 +48,7 @@ final class CartPurchaseViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-
+    
     private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Backward"), for: .normal)
@@ -60,11 +60,11 @@ final class CartPurchaseViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     @objc func backButtonDidTapped() {
         dismiss(animated: true)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad { [weak self] in 
@@ -73,12 +73,12 @@ final class CartPurchaseViewController: UIViewController {
             self?.confirmView.delegate = self
         }
     }
-
+    
     private func configureCollection() {
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
     }
-
+    
     func setupView() {
         let backButtonItem = UIBarButtonItem(customView: backButton)
         let emptySpaceView = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: 1))
@@ -95,7 +95,7 @@ final class CartPurchaseViewController: UIViewController {
             currencyCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             currencyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             currencyCollectionView.heightAnchor.constraint(equalToConstant: 205),
-
+            
             confirmView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             confirmView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             confirmView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -108,7 +108,7 @@ final class CartPurchaseViewController: UIViewController {
         present(navigationController, animated: true)
     }
     
-   private func presentSuccessVC() {
+    private func presentSuccessVC() {
         let successVC = CheckoutFlowViewController(currentFlow: .success)
         successVC.modalPresentationStyle = .fullScreen
         present(successVC, animated: true)
@@ -144,7 +144,7 @@ extension CartPurchaseViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.currencies.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -152,7 +152,7 @@ extension CartPurchaseViewController: UICollectionViewDataSource {
             for: indexPath) as? CartPurchaseCell else {
             assertionFailure("Unable to dequeue CartPurchaseCell")
             return UICollectionViewCell()
-    }
+        }
         let currency = viewModel.currencies[indexPath.row]
         cell.configureCell(with: currency)
         return cell
@@ -198,7 +198,7 @@ extension CartPurchaseViewController: CartPurchaseDelegate {
             }
         }
     }
-   
+    
     func didTappedAgreementLink() {
         guard let url = URL(string: Constants.linkAgreement.rawValue)
         else { return }
