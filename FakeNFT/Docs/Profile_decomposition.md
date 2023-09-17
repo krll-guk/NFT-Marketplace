@@ -3,6 +3,7 @@
 - Архитектру - **MVVM**
 - Верстка - **в коде**
 - Таск-трекер (filter: **[Profile]**) - https://github.com/users/igor-ignatov/projects/1/views/10
+- Запись экрана - https://www.loom.com/share/f6a56c4cd91040109f29cb414eb0c1ec?sid=7910a248-128f-4e13-97d0-694fc98b58ca
 
 
 # Ожидаемое время
