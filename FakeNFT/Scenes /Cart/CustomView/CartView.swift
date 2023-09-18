@@ -1,12 +1,12 @@
 import UIKit
 protocol CartViewDelegate: AnyObject {
-   func didTapPurchaseButton()
+    func didTapPurchaseButton()
 }
 
 final class CartView: UIView {
-
+    
     weak var delegate: CartViewDelegate?
-
+    
     private let nftCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Regular.size15
@@ -16,7 +16,7 @@ final class CartView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     private let nftFullSumLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Bold.size17
@@ -28,7 +28,7 @@ final class CartView: UIView {
         label.numberOfLines = 1
         return label
     }()
-
+    
     private lazy var purchaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("К оплате", for: .normal)
@@ -40,9 +40,9 @@ final class CartView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     private let nftStackView: UIStackView = {
-       let stackView = UIStackView()
+        let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 2
         stackView.alignment = .leading
@@ -56,27 +56,31 @@ final class CartView: UIView {
         addSubviews()
         setConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     @objc func purchaseButtonTapped() {
         delegate?.didTapPurchaseButton()
     }
+    
     func setNftCount(text: String) {
         nftCountLabel.text = text
     }
+    
     func setSumNft(text: String) {
         nftFullSumLabel.text = text
     }
+    
     private func addSubviews() {
         addSubview(nftStackView)
         nftStackView.addArrangedSubview(nftCountLabel)
         nftStackView.addArrangedSubview(nftFullSumLabel)
         addSubview(purchaseButton)
     }
-
-   private func setConstraints() {
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             nftStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             nftStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
@@ -86,5 +90,5 @@ final class CartView: UIView {
             purchaseButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
-
+    
 }

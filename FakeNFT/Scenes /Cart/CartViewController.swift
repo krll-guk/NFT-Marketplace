@@ -15,6 +15,7 @@ final class CartViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private lazy var sortButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Sort"), for: .normal)
@@ -24,6 +25,7 @@ final class CartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
     private let purchaseView: CartView = {
         let view = CartView()
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
@@ -86,19 +88,24 @@ final class CartViewController: UIViewController {
     
     private func configureSorting() {
         let alertSheet = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
+        
         let sortByPrice = UIAlertAction(title: "По цене", style: .default) { _ in
             self.viewModel.didSortByPrice()
             self.cartTableView.reloadData()
         }
+        
         let sortByRating = UIAlertAction(title: "По рейтингу", style: .default) { _ in
             self.viewModel.didSortByRating()
             self.cartTableView.reloadData()
         }
+        
         let sortByName = UIAlertAction(title: "По имени", style: .default) { _ in
             self.viewModel.didSortByName()
             self.cartTableView.reloadData()
         }
+        
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        
         alertSheet.addAction(sortByPrice)
         alertSheet.addAction(sortByRating)
         alertSheet.addAction(sortByName)

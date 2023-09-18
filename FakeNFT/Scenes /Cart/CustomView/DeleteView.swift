@@ -14,6 +14,7 @@ final class DeleteView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private let bluredBackgroundView: UIVisualEffectView = {
         let effect = UIBlurEffect(style: .regular)
         let view = UIVisualEffectView(effect: effect)
@@ -127,9 +128,11 @@ final class DeleteView: UIView {
     @objc func deleteButtonTapped() {
         onDeleteButtonTapped?()
     }
+    
     @objc func cancelButtonTapped() {
         onCancelButtonTapped?()
     }
+    
     func removeDeleteView() {
         bluredBackgroundView.isHidden = true
         nftImageView.isHidden = true

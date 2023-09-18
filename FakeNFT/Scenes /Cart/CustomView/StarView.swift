@@ -9,13 +9,13 @@ enum Rating: Int {
 }
 
 final class StarView: UIView {
-
+    
     var rating: Rating = .zero {
         didSet {
             setRating(rating)
         }
     }
-
+    
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -25,10 +25,10 @@ final class StarView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private let stars: [UIImageView] = {
         var stars = [UIImageView]()
-
+        
         for _ in 0..<5 {
             let starImage = UIImage(named: "Star")
             let starIV = UIImageView(image: starImage)
@@ -39,12 +39,12 @@ final class StarView: UIView {
         }
         return stars
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -56,12 +56,12 @@ private extension StarView {
         addStars()
         addConstraint()
     }
-
+    
     func addStars() {
         self.addSubview(self.stackView)
         self.stars.forEach { stackView.addArrangedSubview($0) }
     }
-
+    
     func addConstraint() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
@@ -70,10 +70,10 @@ private extension StarView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-
+    
     func setRating(_ rating: Rating) {
         let rating = rating.rawValue
-
+        
         stars.forEach { star in
             guard let starIndex = stars.firstIndex(of: star) else { return }
             star.tintColor = starIndex < rating ? UIColor.yellow : UIColor.lightGray

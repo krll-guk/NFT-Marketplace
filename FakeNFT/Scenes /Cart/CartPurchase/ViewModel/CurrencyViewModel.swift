@@ -1,5 +1,4 @@
 import Foundation
-
 protocol CurrencyViewModelProtocol: AnyObject {
     var currencies: [CurrencyModel] { get }
     var isPaymentSuccesful: Bool { get }
