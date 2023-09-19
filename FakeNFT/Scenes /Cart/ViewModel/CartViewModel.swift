@@ -34,11 +34,13 @@ final class CartViewModel: CartViewModelProtocol {
     }
     
     func viewDidLoad(completion: @escaping () -> Void) {
-        UIProgressHUD.show()
+
         model.fetchNFTs { nfts in
             DispatchQueue.main.async { [weak self] in
+                UIProgressHUD.show()
                 switch nfts {
                 case .success(let models):
+                    UIProgressHUD.dismiss()
                     let viewModels = models.map(NFTCartModel.init(serverModel:))
                     self?.cartModels = viewModels
                     completion()
@@ -48,7 +50,6 @@ final class CartViewModel: CartViewModelProtocol {
                 }
             }
         }
-        UIProgressHUD.dismiss()
     }
     
     func didDeleteNFT(at index: Int) {
