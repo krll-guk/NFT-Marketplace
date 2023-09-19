@@ -82,8 +82,9 @@ final class CartViewController: UIViewController {
             self?.configureTableView()
             self?.cartTableView.reloadData()
             self?.updatePurchaseView()
+            self?.setupView()
         }
-     setupView()
+        setupView()
     }
     
     private func configureSorting() {
@@ -178,7 +179,7 @@ final class CartViewController: UIViewController {
         view.addSubview(deleteView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
         NSLayoutConstraint.activate([
-            purchaseView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -83),
+            purchaseView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             purchaseView.heightAnchor.constraint(equalToConstant: 78),
             purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

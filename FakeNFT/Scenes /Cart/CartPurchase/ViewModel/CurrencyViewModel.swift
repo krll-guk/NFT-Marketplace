@@ -1,14 +1,11 @@
 import Foundation
 
-final class CurrencyViewModel {
-
 protocol CurrencyViewModelProtocol: AnyObject {
     var currencies: [CurrencyModel] { get }
     var isPaymentSuccesful: Bool { get }
     
     func viewDidLoad(completion: @escaping () -> Void)
     func sendGetPayment(selectedId: String, completion: @escaping (Bool) -> Void)
-    
 }
 
 final class CurrencyViewModel: CurrencyViewModelProtocol {
@@ -22,13 +19,6 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
     private var selectedCurrency: CurrencyServerModel?
     private let model: CurrencyManager
     
-    init(model: CurrencyManager) {
-        self.model = model
-    }
-    
-    func viewDidLoad(completion: @escaping () -> Void) {
-        UIProgressHUD.show()
-
     private let cartViewModel: CartViewModelProtocol?
     
     init(model: CurrencyManager, cartViewModel: CartViewModelProtocol) {
@@ -37,12 +27,12 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
     }
     
     func viewDidLoad(completion: @escaping () -> Void) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
         model.fetchCurrencies { currencies in
             DispatchQueue.main.async {
                 switch currencies {
                 case .success(let currencies):
-                    UIBlockingProgressHUD.dismiss()
+                    UIProgressHUD.dismiss()
                     let models = currencies.map(CurrencyModel.init(serverModel:))
                     self.currencies = models
                     completion()
@@ -57,19 +47,6 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
         model.fetchCurrencyById(currencyId: selectedId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case.success(let currency):
-                    self?.model.getPayment(with: currency.id,
-                                           completion: { [weak self] result in
-                        switch result {
-                        case .success(let payment):
-                            self?.isPaymentSuccesful = payment.success
-                            completion(payment.success)
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
-                    })
-                case .failure(let error):
-                    print(error.localizedDescription)
                 case .success(let currency):
                     self?.handleCurrencyFetchSuccess(currency, completion: completion)
                     self?.cartViewModel?.didClearAfterPurchase()

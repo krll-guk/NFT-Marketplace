@@ -4,28 +4,30 @@ struct NFTCartManager {
     let networkClient: NetworkClient
     
     func fetchNFTs(completion: @escaping (Result<[NFTServerModel], Error>) -> Void) {
-        fetchCart { result in
-            switch result {
-            case .success(let models):
-
-                var nfts: [NFTServerModel] = []
-                models.nfts.forEach { id in
-                    fetchNFTs(id: id) { nftResult in
-                        switch nftResult {
-                        case .success(let nft):
-                            nfts.append(nft)
-                            if nfts.count == models.nfts.count {
-                                completion(.success(nfts))
-                            }
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                            completion(.failure(error))
-                        }
-                    }
-                }
-            }
-        }
-    }
+         fetchCart { result in
+             switch result {
+             case .success(let models):
+                 var nfts: [NFTServerModel] = []
+                 models.nfts.forEach { id in
+                     fetchNFTs(id: id) { nftResult in
+                         switch nftResult {
+                         case .success(let nft):
+                             nfts.append(nft)
+                             if nfts.count == models.nfts.count {
+                                 completion(.success(nfts))
+                             }
+                         case .failure(let error):
+                             print(error.localizedDescription)
+                             completion(.failure(error))
+                         }
+                     }
+                 }
+             case .failure(let error):
+                 print(error)
+                 completion(.failure(error))
+             }
+         }
+     }
     
     private func fetchCart(completion: @escaping (Result<Order, Error>) -> Void) {
         let request = NFTNetworkRequest(

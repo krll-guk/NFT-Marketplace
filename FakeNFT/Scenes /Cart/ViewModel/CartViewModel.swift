@@ -34,7 +34,7 @@ final class CartViewModel: CartViewModelProtocol {
     }
     
     func viewDidLoad(completion: @escaping () -> Void) {
-        UIBlockingProgressHUD.show()
+        UIProgressHUD.show()
         model.fetchNFTs { nfts in
             DispatchQueue.main.async { [weak self] in
                 switch nfts {
@@ -48,7 +48,7 @@ final class CartViewModel: CartViewModelProtocol {
                 }
             }
         }
-        UIBlockingProgressHUD.dismiss()
+        UIProgressHUD.dismiss()
     }
     
     func didDeleteNFT(at index: Int) {
