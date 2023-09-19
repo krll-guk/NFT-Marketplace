@@ -1,3 +1,4 @@
+
 excluded:
   - FakeNFTTests
   - FakeNFTUITests
@@ -59,3 +60,4 @@ identifier_name:
 type_name:
   min_length: 3
   max_length: 65
+

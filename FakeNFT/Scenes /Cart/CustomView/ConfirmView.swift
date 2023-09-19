@@ -37,6 +37,7 @@ final class ConfirmView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.969, green: 0.969, blue: 0.973, alpha: 1)
@@ -47,7 +48,7 @@ final class ConfirmView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func addSubviews() {
         addSubview(agreementLabel)
         addSubview(linkAgreementButton)
@@ -60,6 +61,11 @@ final class ConfirmView: UIView {
             agreementLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             agreementLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -152),
 
+            linkAgreementButton.topAnchor.constraint(equalTo: agreementLabel.bottomAnchor),
+            linkAgreementButton.leadingAnchor.constraint(equalTo: agreementLabel.leadingAnchor),
+            linkAgreementButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -126),
+
+            
             linkAgreementButton.topAnchor.constraint(equalTo: agreementLabel.bottomAnchor),
             linkAgreementButton.leadingAnchor.constraint(equalTo: agreementLabel.leadingAnchor),
             linkAgreementButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -126),

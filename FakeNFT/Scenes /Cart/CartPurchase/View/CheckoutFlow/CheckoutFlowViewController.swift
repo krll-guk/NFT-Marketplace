@@ -66,7 +66,7 @@ final class CheckoutFlowViewController: UIViewController {
     }()
     
     private lazy var failureButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setTitle("Попробовать ещё раз", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.masksToBounds = true
@@ -85,7 +85,7 @@ final class CheckoutFlowViewController: UIViewController {
     @objc func failureButtonTapped() {
         dismiss(animated: true)
     }
-                         
+
     @objc func successButtonTapped() {
         let tabBarController = TabBarController()
         tabBarController.modalPresentationStyle = .fullScreen

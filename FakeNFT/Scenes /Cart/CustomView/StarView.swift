@@ -25,7 +25,7 @@ final class StarView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private let stars: [UIImageView] = {
         var stars = [UIImageView]()
 

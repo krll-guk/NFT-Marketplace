@@ -3,15 +3,21 @@ protocol CartViewModelProtocol: AnyObject {
     var cartModels: [NFTCartModel] { get }
     var isPlaceholderHidden: Bool { get }
     var isTableViewHidden: Bool { get }
+    var showAlert: ((String) -> Void)? { get set }
+
     func viewDidLoad(completion: @escaping () -> Void)
     func didDeleteNFT(at index: Int)
     func didSortByPrice()
     func didSortByRating()
+    func didClearAfterPurchase()
     func didSortByName()
     func isCartEmpty()
 }
 
 final class CartViewModel: CartViewModelProtocol {
+
+    var showAlert: ((String) -> Void)?
+
     @Observable
     var cartModels: [NFTCartModel] = []
     
@@ -26,12 +32,11 @@ final class CartViewModel: CartViewModelProtocol {
     init(model: NFTCartManager) {
         self.model = model
     }
+    
     func viewDidLoad(completion: @escaping () -> Void) {
-        UIProgressHUD.show()
-        
+        UIBlockingProgressHUD.show()
         model.fetchNFTs { nfts in
             DispatchQueue.main.async { [weak self] in
-                UIProgressHUD.dismiss()
                 switch nfts {
                 case .success(let models):
                     let viewModels = models.map(NFTCartModel.init(serverModel:))
@@ -39,9 +44,11 @@ final class CartViewModel: CartViewModelProtocol {
                     completion()
                 case .failure(let error):
                     print(error.localizedDescription)
+                    self?.showAlert?("Не удалось загрузить данные. Повторите попытку.")
                 }
             }
         }
+        UIBlockingProgressHUD.dismiss()
     }
     
     func didDeleteNFT(at index: Int) {
@@ -56,6 +63,19 @@ final class CartViewModel: CartViewModelProtocol {
             }
         }
     }
+
+    func didClearAfterPurchase() {
+        cartModels.removeAll()
+        model.clearCartAfterPurchase(id: "1", nfts: cartModels.map {$0.id }) { result in
+            switch result {
+            case .success(let order):
+                print("\(order.id) successfully deleted")
+            case .failure(let failure):
+                print("\(failure.localizedDescription) couldn't delete cart")
+            }
+        }
+    }
+    
     func didAddNFT(nft: NFTCartModel, at index: Int) {
         cartModels.insert(nft, at: index)
         model.addNFTFromStatistics(id: "1",
@@ -84,12 +104,13 @@ final class CartViewModel: CartViewModelProtocol {
     func isCartEmpty() {
         if cartModels.isEmpty {
             isPlaceholderHidden = false
-            return
-        } else {
+            isTableViewHidden = true
+       } else {
             isTableViewHidden = false
             isPlaceholderHidden = true
         }
     }
+
     func bindCart() {
         isCartEmpty()
         self.$cartModels.bind {[weak self] _ in

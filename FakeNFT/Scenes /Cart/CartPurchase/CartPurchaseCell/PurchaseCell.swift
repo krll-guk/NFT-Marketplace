@@ -64,10 +64,11 @@ final class CartPurchaseCell: UICollectionViewCell {
         addSubviews()
         setCostraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 
     func configureCell(with model: CurrencyModel) {
         self.titleLabel.text = model.title

@@ -46,4 +46,25 @@ struct CurrencyManager {
             }
         }
     }
+
+    func getProfileWithNFTs(id: String,
+                            completion: @escaping (Result<ProfileNFTsModel, Error>) -> Void) {
+        let request = NFTNetworkRequest(
+            endpoint: URL(string: Constants.profileAPI.rawValue),
+            httpMethod: .get,
+            dto: nil)
+        networkClient.send(request: request, type: ProfileNFTsModel.self, onResponse: completion)
+    }
+    
+    func updateProfileWithNFTs(id: String,
+                               nfts: [String],
+                               completion: @escaping (Result<ProfileNFTsModel, Error>) -> Void) {
+        let request = NFTNetworkRequest(
+            endpoint: URL(string: Constants.profileAPI.rawValue),
+            httpMethod: .put,
+            dto: ProfileNFTsModel(nfts: nfts))
+        networkClient.send(request: request,
+                           type: ProfileNFTsModel.self,
+                           onResponse: completion)
+    }
 }

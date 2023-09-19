@@ -6,7 +6,8 @@ protocol CartPurchaseDelegate: AnyObject {
 
 final class CartPurchaseViewController: UIViewController {
     
-    private let viewModel: CurrencyViewModel
+
+    private let viewModel: CurrencyViewModelProtocol
     private var selectedCurrencyIndexPath: IndexPath?
     private var selectedCurrencyID: String?
     
@@ -60,7 +61,7 @@ final class CartPurchaseViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     @objc func backButtonDidTapped() {
         dismiss(animated: true)
     }
@@ -102,12 +103,13 @@ final class CartPurchaseViewController: UIViewController {
             confirmView.heightAnchor.constraint(equalToConstant: 186)
         ])
     }
+
     func presentNavigationController() {
         let navigationController = UINavigationController(rootViewController: self)
         navigationController.modalPresentationStyle = .fullScreen
         present(navigationController, animated: true)
     }
-    
+
    private func presentSuccessVC() {
         let successVC = CheckoutFlowViewController(currentFlow: .success)
         successVC.modalPresentationStyle = .fullScreen
@@ -120,8 +122,8 @@ final class CartPurchaseViewController: UIViewController {
         present(failureVC, animated: true)
     }
 }
+
 extension CartPurchaseViewController: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let previousIndexPath = selectedCurrencyIndexPath {
             if let previousCell = collectionView.cellForItem(at: previousIndexPath) as? CartPurchaseCell {
@@ -198,7 +200,7 @@ extension CartPurchaseViewController: CartPurchaseDelegate {
             }
         }
     }
-   
+
     func didTappedAgreementLink() {
         guard let url = URL(string: Constants.linkAgreement.rawValue)
         else { return }
