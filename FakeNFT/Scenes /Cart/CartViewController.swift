@@ -259,6 +259,7 @@ extension CartViewController: CartCellDelegate {
         deleteView.onDeleteButtonTapped = { [weak self] in
             self?.viewModel.didDeleteNFT(at: index)
             self?.setupView()
+            self?.cartTableView.reloadData()
             self?.removeDeleteView()
             self?.deleteView.isHidden = true
         }
