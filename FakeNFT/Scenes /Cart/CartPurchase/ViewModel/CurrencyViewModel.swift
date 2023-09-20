@@ -58,10 +58,13 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
     
     private func handleCurrencyFetchSuccess(_ currency: CurrencyServerModel, completion: @escaping ((Bool) -> Void)) {
         self.model.getPayment(with: currency.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let payment):
-                self?.isPaymentSuccesful = payment.success
-                self?.handlePaymentSuccess(completion: completion)
+                self.isPaymentSuccesful = payment.success
+                guard self.isPaymentSuccesful else
+                { return completion(self.isPaymentSuccesful) }
+                self.handlePaymentSuccess(completion: completion)
             case .failure(let error):
                 print("\(error.localizedDescription) couldn't handle currency")
             }
