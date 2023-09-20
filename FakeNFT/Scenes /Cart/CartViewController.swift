@@ -84,7 +84,7 @@ final class CartViewController: UIViewController {
             self?.updatePurchaseView()
             self?.setupView()
         }
-        setupView()
+        
     }
     
     private func configureSorting() {
@@ -140,14 +140,15 @@ final class CartViewController: UIViewController {
             self?.placeholderLabel.isHidden = isHidden
         }
         viewModel.bindCart()
+        setupView()
     }
     
     private func setupView() {
         view.backgroundColor = .systemBackground
-        if viewModel.cartModels.isEmpty {
-            setupEmptyView()
-        } else {
+        if !viewModel.cartModels.isEmpty {
             setupFilledView()
+        } else {
+            setupEmptyView()
         }
     }
     
@@ -172,6 +173,8 @@ final class CartViewController: UIViewController {
     }
 
     private func setupFilledView() {
+        sortButton.isHidden = false
+        purchaseView.isHidden = false
         configureTableView()
         purchaseView.delegate = self
         view.addSubview(cartTableView)
@@ -190,11 +193,14 @@ final class CartViewController: UIViewController {
             deleteView.topAnchor.constraint(equalTo: view.topAnchor),
             deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            deleteView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            deleteView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50)
         ])
     }
 
     private func setupEmptyView() {
+        sortButton.isHidden = true
+        purchaseView.isHidden = true
+        cartTableView.isHidden = true
         view.addSubview(placeholderLabel)
         NSLayoutConstraint.activate([
             placeholderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -252,7 +258,7 @@ extension CartViewController: CartCellDelegate {
         }
         deleteView.onDeleteButtonTapped = { [weak self] in
             self?.viewModel.didDeleteNFT(at: index)
-            self?.cartTableView.reloadData()
+            self?.setupView()
             self?.removeDeleteView()
             self?.deleteView.isHidden = true
         }

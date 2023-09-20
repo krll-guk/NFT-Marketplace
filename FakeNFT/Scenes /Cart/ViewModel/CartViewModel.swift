@@ -99,7 +99,7 @@ final class CartViewModel: CartViewModelProtocol {
     }
     
     func didSortByName() {
-        cartModels.sort { $0.name > $1.name }
+        cartModels.sort { $0.name < $1.name }
     }
     
     func isCartEmpty() {

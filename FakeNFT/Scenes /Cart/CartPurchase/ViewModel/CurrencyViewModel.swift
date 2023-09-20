@@ -49,7 +49,6 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
                 switch result {
                 case .success(let currency):
                     self?.handleCurrencyFetchSuccess(currency, completion: completion)
-                    self?.cartViewModel?.didClearAfterPurchase()
                 case.failure(let error):
                     print("couldn't pay \(error.localizedDescription)")
                 }
@@ -74,6 +73,7 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
             switch result {
             case .success(let profile):
                 self?.updateProfile(with: profile, completion: completion)
+                print("\(profile) ADDED NFTS")
             case.failure(let error):
                 print("couldn't handle payment \(error.localizedDescription)")
             }
@@ -84,16 +84,18 @@ final class CurrencyViewModel: CurrencyViewModelProtocol {
                                completion: @escaping ((Bool) -> Void)) {
         if let nfts = cartViewModel?.cartModels.map({ $0.id }) {
             let updateNFTs = Array(Set(existingProfile.nfts + nfts))
-            model.updateProfileWithNFTs(id: "1",
-                                        nfts: updateNFTs) { result in
-                switch result {
-                case.success(let profile):
-                    print(profile)
-                    completion(true)
-                case.failure(let error):
-                    print("unable to update profile \(error.localizedDescription)")
+            model.updateProfileWithNFTs(
+                id: "1",
+                nfts: updateNFTs) {[weak self] result in
+                    switch result {
+                    case.success(let profile):
+                        print(profile)
+                        self?.cartViewModel?.didClearAfterPurchase()
+                        completion(true)
+                    case.failure(let error):
+                        print("unable to update profile \(error.localizedDescription)")
+                    }
                 }
-            }
         }
     }
 }
